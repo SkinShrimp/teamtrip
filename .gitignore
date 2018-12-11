@@ -1,6 +1,13 @@
 # Compiled class file
 *.class
 
+.idea/
+target/
+*.iml
+rebel.xml
+generatorConfig.xml
+
+
 # Log file
 *.log
 
