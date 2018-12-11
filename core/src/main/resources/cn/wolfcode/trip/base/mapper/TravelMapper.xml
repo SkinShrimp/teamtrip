@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.trip.base.mapper.TravelMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.Travel">
+    <id column="id" property="id" />
+    <result column="title" property="title" />
+    <result column="travelTime" property="travelTime" />
+    <result column="perExpends" property="perExpends" />
+    <result column="days" property="days" />
+    <result column="person" property="person" />
+    <result column="createTime" property="createTime" />
+    <result column="releaseTime" property="releaseTime" />
+    <result column="isPublic" property="isPublic" />
+    <result column="coverUrl" property="coverUrl" />
+    <result column="lastUpdateTime" property="lastUpdateTime" />
+    <result column="state" property="state" />
+    <association property="travelContent" javaType="TravelContent">
+      <id column="id" property="id" />
+      <result column="content" property="content" />
+    </association>
+    <association property="place" javaType="Region" columnPrefix="r_">
+      <id column="id" property="id" />
+      <result column="name" property="name" />
+    </association>
+    <association property="author" javaType="User" columnPrefix="u_">
+      <id column="id" property="id" />
+      <result column="nickName" property="nickName" />
+      <result column="headImgUrl" property="headImgUrl" />
+    </association>
+  </resultMap>
+  <delete id="deleteByPrimaryKey">
+    delete from travel
+    where id = #{id}
+  </delete>
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into travel (title, travelTime, perExpends, days, person, author_id, 
+      createTime, releaseTime, isPublic, place_id, coverUrl, lastUpdateTime, 
+      state)
+    values (#{title}, #{travelTime}, #{perExpends}, #{days}, #{person}, #{author.id}, 
+      #{createTime}, #{releaseTime}, #{isPublic}, #{place.id}, #{coverUrl}, #{lastUpdateTime}, 
+      #{state})
+  </insert>
+  <update id="updateByPrimaryKey">
+    update travel
+    set title = #{title},
+      travelTime = #{travelTime},
+      perExpends = #{perExpends},
+      days = #{days},
+      person = #{person},
+      isPublic = #{isPublic},
+      place_id = #{place.id},
+      coverUrl = #{coverUrl},
+      lastUpdateTime = #{lastUpdateTime},
+      state = #{state}
+    where id = #{id}
+  </update>
+  <update id="changeState" >
+    UPDATE travel set state = #{state},releaseTime = #{releaseTime}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select t.*,tc.content,r.id r_id, r.name r_name,u.id u_id,u.nickName u_nickName,u.headImgUrl u_headImgUrl
+     from travel t join travelcontent tc on t.id = tc.id
+    join region r on t.place_id = r.id
+    join user u on t.author_id = u.id
+    where t.id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, title, travelTime, perExpends, days, person, author_id, createTime, releaseTime, 
+    isPublic, place_id, coverUrl, lastUpdateTime, state
+    from travel
+  </select>
+  <select id="selectForList" resultMap="BaseResultMap">
+    select t.*,r.id r_id, r.name r_name,u.id u_id,u.nickName u_nickName,u.headImgUrl u_headImgUrl
+    from travel t
+    join region r on t.place_id = r.id
+    join user u on t.author_id = u.id
+    <where>
+      <if test="authorId!=null">
+        and t.author_id = #{authorId}
+      </if>
+      <if test="state!=null and state > -2">
+        and t.state = #{state}
+      </if>
+      <if test="isPublic!=null">
+        and t.isPublic = #{isPublic}
+      </if>
+      <if test="travelId!=null">
+        and t.id = #{travelId}
+      </if>
+    </where>
+  </select>
+</mapper>

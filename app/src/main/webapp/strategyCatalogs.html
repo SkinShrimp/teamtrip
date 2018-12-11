@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>攻略系列</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/js/bootstrap-4.1.1-dist/css/bootstrap.min.css">
+    <script src="/js/jquery/jquery.min.js"></script>
+    <script src="/js/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/font/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/css/reset.css"/>
+    <link rel="stylesheet" href="/css/strategyCatalogs.css"/>
+    <script src="/js/plugins/jrender/jrender.min.js"></script>
+    <link rel="stylesheet" href="/js/plugins/dialog2/dialog.css"/>
+    <script src="/js/plugins/dialog2/dialog.min.js"></script>
+    <script src="/js/common.js"></script>
+
+    <script>
+        $(function () {
+            //获取攻略的id参数
+            var params = getParams();
+            if (params.id) {
+                //根据攻略id获取大攻略信息
+                $.get('/strategies/' + params.id, function (data) {
+                    $(".title").html(data.title);
+                })
+
+
+                //根据攻略id获取攻略分类
+                $.get('/strategies/' + params.id + "/catalogs", function (data) {
+                    var index = 1;
+                    $(".catalogs").renderValues({list: data}, {
+                        getName: function (item, value) {
+                            $(item).html(index + "/" + value);
+                            index++;
+                        },
+                        getHref: getHref
+                    });
+                })
+
+
+                //当前页
+                var currentPage = 1;
+                //总页数
+                var pages;
+                //存储游记的数组
+                var commentArr = [];
+
+                function query() {
+                    //获取该攻略的所有评论
+                    $.get('/strategies/' + params.id + '/comments',{currentPage:currentPage}, function (data) {
+                        $.merge(commentArr,data.list);
+                        $("#comment").renderValues({list:commentArr},{
+                            getStar:function (item, value) {
+                                var temp = "";
+                                //实心
+                                for(var i=0;i<value;i++){
+                                    temp += '<i class="fa fa-star"></i>';
+                                }
+                                //空心
+                                for(var i=0;i<5-value;i++){
+                                    temp += '<i class="fa fa-star-o"></i>';
+                                }
+                                $(item).html(temp);
+                            }
+                        });
+                        pages = data.pages;
+                    })
+                    currentPage = currentPage + 1;
+                }
+
+                query();
+
+                //给window绑定滚动事件
+                $(window).scroll(function () {
+                    if ($(window).height() + $(document).scrollTop() + 1 >= $(document).height()) {
+                        //如果是大于总页数就不发送请求了
+                        if (currentPage <= pages) {
+                            query();
+                        } else {
+                            $(document).dialog({
+                                type: 'notice',
+                                content: '<span class="info-text">亲,已经到底了!</span>',
+                                autoClose: 2500
+                            });
+                        }
+                    }
+                });
+
+                //点评按钮
+                $("#commentBtn").click(function () {
+                    window.location.href = "/mine/addComment.html?id="+params.id;
+                })
+
+            }
+
+
+
+        })
+    </script>
+
+</head>
+
+<body>
+<div class="search-head">
+    <div class="row nav-search">
+        <div class="col-2">
+            <a href="javascript:history.go(-1);">
+                <span><i class="fa fa-chevron-left fa-2x"></i></span>
+            </a>
+        </div>
+        <div class="col-10">
+            <div class="input-group-sm search">
+                <input class="form-control searchBtn" placeholder="搜索旅行攻略">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container strategies">
+    <h5 class="title">广州攻略</h5>
+    <small><span>0</span>人阅读过此攻略</small>
+    <div class="focus">
+        <i class="fa fa-heart"><span> 0</span> 收藏</i>
+        <i class="fa fa-thumbs-up"><span> 0</span> 点赞</i>
+        <button class="btn">想去</button>
+        <button class="btn">去过</button>
+    </div>
+</div>
+<ul class="nav nav-pills nav-justified border border-left-0 border-top-0 border-right-0" id="pills-tab">
+    <li class="nav-item ">
+        <a class="nav-link active" id="pills-catalog-tab" data-toggle="pill" href="#pills-catalog">
+            <span>攻略目录</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link " id="pills-comment-tab" data-toggle="pill" href="#pills-comment">
+            <span>骡友点评</span>
+        </a>
+    </li>
+</ul>
+<div class="tab-content " id="pills-tabContent">
+    <div class="tab-pane fade show active" id="pills-catalog">
+        <div class="container hot">
+            <h6>大家都在看</h6>
+            <div>
+                <a href="travelContent.html">
+                    <button class="btn">上下九</button>
+                </a><a href="travelContent.html">
+                <button class="btn">入住长隆熊猫酒店，天天都是儿童节</button>
+            </a><a href="travelContent.html">
+                <button class="btn">飞到羊城，只为一场最地道的早茶之旅</button>
+            </a></div>
+        </div>
+        <div class="catalogs">
+            <div render-loop="list">
+                <div class="container detail">
+                    <h6 render-key="list.name" render-fun="getName"></h6>
+                    <div render-loop="list.details">
+                        <a data-href="strategyDetails.html?id=" render-key="list.details.id" render-fun="getHref">
+                            <button class="btn" render-html="list.details.title"></button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="tab-pane fade " id="pills-comment">
+
+        <div class="container tag">
+            <h6>骡友标签</h6>
+            <div>
+                <span>价格便宜</span>
+                <span>很热闹</span>
+                <span>交通方便</span>
+                <span>吃的很多</span>
+                <span>风景优美</span>
+                <span>美食很多</span>
+                <span>很特别</span>
+                <span>爱上这座城</span>
+                <span>住宿方便</span>
+                <span>刚刚</span>
+            </div>
+        </div>
+        <hr>
+
+        <div id="comment">
+            <div render-loop="list">
+                <div class="container row comment">
+                    <div class="col-2 comment-head">
+                        <a href="userProfiles.html">
+                            <img class="rounded-circle"
+                                 render-src="list.user.headImgUrl">
+                        </a>
+                    </div>
+                    <div class="col comment-right">
+                        <p class="authorName"><span render-html="list.user.nickName"></span></p>
+                        <span class="comment-star" render-key="list.starNum" render-fun="getStar">
+                        </span>
+                        <span class="comment-date" render-html="list.createTime"></span>
+                        <div class="comment-content">
+                            <a href="strategyComment.html">
+                                <p render-html="list.content"></p>
+                            </a>
+                        </div>
+
+                        <ul class="comment-img" render-loop="list.imgArr">
+                            <li>
+                                <img render-src="list.imgArr.self">
+                            </li>
+                        </ul>
+
+                        <div class="d-flex icon">
+                            <a href="strategyComment.html">
+                                <i class="fa  fa-commenting-o " style="margin-right: 10px"> 评论 </i>
+                                <i class="fa fa-thumbs-o-up"> <span>0</span> </i>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+
+<div class="operation">
+    <button class="btn">加入旅行单</button>
+    <button class="btn" id="commentBtn">点评</button>
+</div>
+
+
+</body>
+</html>

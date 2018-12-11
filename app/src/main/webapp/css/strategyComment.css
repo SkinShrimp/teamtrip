@@ -1,0 +1,133 @@
+.search-head {
+    background-color: #4D4C4B;
+    color: white;
+    overflow-x: hidden;
+}
+
+.nav-search{
+    padding: 7px;
+}
+
+.nav-search i{
+    font-size: 18px;
+    color: white;
+}
+
+.nav-search div:nth-child(2){
+    text-align: center;
+}
+.nav-search span{
+    font-size: 15px;
+}
+
+.comment{
+    margin-top: 20px;
+}
+
+.comment-star i{
+    color: #F3D408;
+}
+
+.comment-date{
+    color: #BBBBBB;
+    margin-left: 20px;
+}
+
+.comment p,.comment span{
+    font-size: 13px;
+}
+
+.comment-img{
+    width:90%;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    list-style: none;
+}
+
+.comment-img li{
+    width:33%;
+    height: 70px;
+}
+.comment-img img{
+    width:90%;
+    height:90%;
+}
+
+.comment-link{
+    position: relative;
+    height: 40px;
+    background-color: #F4EEEE;
+}
+
+.comment-link a{
+    color: rgba(123, 120, 120, 1);
+    font-size: 14px;
+    text-align: center;
+}
+
+.comment-link img{
+    height: 70%;
+    width: 30px;
+    margin: 6px 5px 5px 8px;
+}
+
+.comment-link i{
+    position: absolute;
+    top: 4px;
+    right: 10px;
+
+}
+
+.comment-head img{
+    width: 100%;
+}
+
+
+@media screen and (max-width: 600px) {
+    .comment-head img {
+        width: 150%;
+    }
+}
+
+.comment-head button {
+    font-size: 11px;
+    padding: 3px 10px;
+    margin-top: 10px;
+    background: white;
+    border: 0.1em solid #ABAAAA;
+    margin-left: -8px;
+}
+
+p {
+    margin-top: 5px;
+}
+
+.count{
+    background-color: #F4EEEE;
+    margin-top: 20px;
+    font-size: 13px;
+    color: rgba(123, 120, 120, 1);
+}
+
+
+.count span{
+    margin: auto 10px;
+
+}
+
+.comment-list{
+    height: 200px;
+    text-align: center;
+    line-height: 200px;
+}
+
+.operation{
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    font-size: 13px;
+    color: rgba(123, 120, 120, 100);
+    border-top: darkgray solid 0.1em;
+}

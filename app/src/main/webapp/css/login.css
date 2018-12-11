@@ -1,0 +1,54 @@
+h5 {
+	text-align: center;
+	margin: 30px auto;
+	font-weight: bold;
+	color: black;
+}
+
+.card-container.card {
+	padding: 40px 40px;
+	width: 88%;
+}
+
+.card {
+	margin: 0 auto;
+	border-radius: 2px;
+	box-shadow: 0px 0px 10px 3px #aaa;
+	border-radius: 10px;
+}
+
+.profile-img {
+	text-align: center;
+	margin: 0px auto;
+}
+
+.form-signin input {
+	margin: 10px auto;
+	padding-left: 30px;
+	height: 44px;
+	font-size: 16px;
+}
+
+.form-signin button {
+	background-color: #494B54;
+	color: white;
+	width: 100%;
+	margin: 10px auto;
+}
+
+.forgot-password {
+	font-size: 14px;
+	padding-left: 10px;
+}
+
+.registerLink {
+	display: block;
+	text-align: center;
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
+
+.container {
+	max-width: 400px;
+	color: #8A8787;
+}

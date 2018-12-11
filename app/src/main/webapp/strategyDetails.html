@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+	<head lang="en">
+		<title>首页</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="/js/bootstrap-4.1.1-dist/css/bootstrap.min.css">
+		<script src="/js/jquery/jquery.min.js"></script>
+		<script src="/js/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="/css/font/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="/css/reset.css" />
+		<link rel="stylesheet" href="/css/strategyDetails.css" />
+		<script src="/js/plugins/jrender/jrender.min.js"></script>
+		<script src="/js/common.js"></script>
+		<script>
+			$(function () {
+				var params = getParams();
+				if (params.id){
+					$.get('/strategies/details/'+params.id,function (data) {
+						$(".detail").renderValues(data);
+                    })
+				}
+            })
+		</script>
+	</head>
+
+	<body>
+
+	<div class=" nav-search">
+		<a href="javascript:history.go(-1);">
+			<span><i class="fa fa-chevron-left"></i></span>
+		</a>
+	</div>
+	<hr>
+
+	<div class="container detail">
+		<h4 class="title"><strong render-html="title"></strong></h4>
+		<img class="head-img" render-src="coverUrl">
+		<div class="author">By <span ></span></div>
+		<div class="content" render-html="strategyContent.content" >
+		</div>
+	</div>
+
+
+	</body>
+
+</html>

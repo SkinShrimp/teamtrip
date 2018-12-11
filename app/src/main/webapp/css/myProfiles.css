@@ -1,0 +1,98 @@
+
+.nav-search{
+	padding-left: 15px;
+	margin-top: 5px;
+	margin-bottom: -10px;
+}
+
+.info {
+	margin: 30px auto 15px auto;
+	width: 100%;
+}
+
+.info img {
+	width: 100%;
+	margin-top: -5px;
+}
+
+@media screen and (max-width: 600px) {
+	.info img {
+		width: 220%;
+	}
+}
+
+.info span {
+	margin-left: 5px;
+}
+
+.setting .btn {
+	background-color: #F7E21C;
+	font-size: 14px;
+
+}
+
+.link-box {
+	margin: 30px auto;
+}
+
+.link-box .col {
+	margin-left: 15px;
+}
+
+.link-box small {
+	display: block;
+}
+
+ul {
+	list-style: none outside none;
+	margin: 0;
+	padding: 0;
+}
+
+.mainmenu:after {
+	clear: both;
+	content: " ";
+	display: block;
+}
+
+.mainmenu li {
+	float: left;
+	margin-left: 2.5%;
+	margin-top: 2.5%;
+	width: 30%;
+	overflow: hidden;
+}
+
+.mainmenu li a {
+	display: block;
+	text-align: center;
+	margin: 15px auto;
+}
+
+.mainmenu li a b {
+	display: block;
+	height: 30px;
+	margin: 10px auto 10px;
+}
+
+
+.mainmenu li a span {
+	display: block;
+	height: 30px;
+	line-height: 30px;
+	font-size: 14px;
+}
+
+.mainmenu li:nth-child(1) {color:#F7E21C}
+.mainmenu li:nth-child(2) {color:#FF5788}
+.mainmenu li:nth-child(3) {color:#6273D2}
+.mainmenu li:nth-child(4) {color:#009688}
+.mainmenu li:nth-child(5) {color:#FF9800}
+.mainmenu li:nth-child(6) {color:#732D2D}
+.mainmenu li:nth-child(7) {color:#D99531}
+/*
+
+.footer{
+	margin: -10px 0px  0px 15px;
+}
+*/

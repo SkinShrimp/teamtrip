@@ -1,0 +1,59 @@
+.search-head {
+	background-color: #4D4C4B;
+	
+}
+
+.nav-search{
+	width: 100%;
+	margin: auto;
+	padding: 0 7px;
+}
+
+.nav-search span{
+	display:block;margin:7px -8px;color: white;
+}
+
+.search {
+	padding: 8px 15px;
+	width: 100%;
+}
+
+.searchBtn {
+	cursor: auto;
+	background-image: url(../img/icon/search.png);
+	background-attachment: scroll;
+	background-position: 100% 50%;
+	background-repeat: no-repeat;
+	width: 108%;
+	margin-left:-15px;
+}
+
+
+.news-title{
+	font-size: 20px;
+	margin-top: 20px;
+}
+
+.caption{
+	margin-top: 10px;
+}
+
+.caption p {
+	color: rgba(16, 16, 16, 1);
+	font-size: 14px;
+}
+
+.caption span {
+	opacity: 0.7;
+}
+
+.news{
+	margin: 5px;
+}
+
+
+
+.news i{
+	float: right;
+	margin-top: 2px;
+}

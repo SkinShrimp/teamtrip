@@ -1,0 +1,48 @@
+.search-head {
+	background-color: #4D4C4B;
+	color: white;
+	overflow-x: hidden;
+}
+
+.nav-search{
+	padding: 7px;
+}
+
+.nav-search i{
+	font-size: 18px;
+	color: white;
+}
+
+.nav-search div:nth-child(2){
+	text-align: center;
+}
+.nav-search span{
+	font-size: 15px;
+}
+.list dd{
+	margin: 10px auto;
+}
+
+.list img{
+	width: 100%;
+	max-height:200px;
+}
+
+.title{
+	font-size: 14px;
+	margin: 10px auto;
+}
+
+.list p{
+	line-height: 15px;
+	color: rgba(187, 187, 187, 1);
+	font-size: 12px;
+}
+
+.span-right{
+	float: right;
+}
+
+.span-right i{
+	margin-right: 5px;
+}

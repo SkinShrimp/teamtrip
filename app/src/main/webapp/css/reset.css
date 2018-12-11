@@ -1,0 +1,7 @@
+ body {margin: 0 auto;max-width: 500px;}
+ 
+ a:link{text-decoration:none; cursor:pointer;color: inherit; }  
+ a:visited{text-decoration:none; cursor:pointer;color: inherit;}  
+ a:active{text-decoration:none; cursor:pointer;color: inherit;}  
+ a:hover{text-decoration:none; cursor:pointer;color: inherit;}
+

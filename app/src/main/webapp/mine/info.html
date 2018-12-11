@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>设置个人资料</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="/js/bootstrap-4.1.1-dist/css/bootstrap.min.css">
+		<script src="/js/jquery/jquery.min.js"></script>
+		<script src="/js/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="/css/font/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="/css/reset.css" />
+		<link rel="stylesheet" href="/css/myInfo.css" />
+
+		<script src="/js/plugins/form/jquery.form.js"></script>
+		<script src="/js/plugins/jrender/jrender.min.js"></script>
+
+		<script>
+            $(function () {
+                var user = JSON.parse(sessionStorage.getItem("user"));
+
+                $(".info").renderValues(user);
+
+                //设置背景图片
+				$(".myBg").css('background-image',"url('"+user.coverImgUrl+"')")
+
+				//设置表单请求地址
+				$("#infoForm").attr("action","/users/"+user.id);
+
+				//保存按钮事件
+				$("#saveBtn").click(function () {
+					$("#infoForm").ajaxSubmit(function (data) {
+					     //更新缓存
+						sessionStorage.setItem("user",JSON.stringify(data.result));
+						 //保存成功
+						window.location.href = "/mine/profiles.html";
+                    })
+                })
+
+				//用来标记是修改头像还是修改背景
+				var flag = true;
+
+				//修改头像按钮
+				$("#headBtn").click(function () {
+				    //触发文件框的点击动作
+					$("#fileInput").click();
+                    flag = true;
+                })
+
+				//修改背景按钮
+				$("#coverBtn").click(function () {
+				    //触发文件框的点击动作
+					$("#fileInput").click();
+                    flag = false;
+                })
+
+				//文件框使用change事件
+                $("#fileInput").change(function () {
+                    //判断是否有图片
+                    if($(this).val()){
+                        //上传图片
+						$("#fileForm").ajaxSubmit(function (data) {
+							if(data.status==1){
+							    //判断是修改头像还是修改背景
+							    if(flag){
+									//回显到img上(给人看)
+									$("#headImg").attr('src',data.url);
+									//回显到隐藏域
+									$("[name='headImgUrl']").val(data.url);
+                                }else{
+                                    //回显到背景的样式
+                                    $(".myBg").css('background-image',"url('"+data.url+"')")
+                                    //回显到隐藏域
+                                    $("[name='coverImgUrl']").val(data.url);
+								}
+							}
+                        })
+
+					}
+                })
+
+            })
+		</script>
+	</head>
+
+	<body>
+		<form id="fileForm" action="/images" method="post" enctype="multipart/form-data">
+			<input name="file" type="file" id="fileInput" style="display: none">
+		</form>
+
+		<div class="search-head">
+			<div class="row nav-search">
+				<div class="col">
+					<a href="javascript:window.history.go(-1);">
+						<span>取消</span>
+					</a>
+				</div>
+				<div class="col">
+					<span>设置个人资料</span>
+				</div>
+				<div class="col" >
+					<a href="#" id="saveBtn" >
+						<span>保存</span>
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="container info">
+
+			<div class="myBg">
+				<img id="headImg"  class="rounded-circle" render-src="headImgUrl" />
+				<div class="editHead" id="headBtn" ><i class="fa fa-pencil-square fa-lg " aria-hidden="true"></i></div>
+				<button  class="btn btn-outline-light ibtn " id="coverBtn">设置背景</button>
+			</div>
+
+			<form id="infoForm" method="post" >
+					<!--请求方法的隐藏域-->
+					<input type="hidden" value="put" name="_method" >
+					<!--封面和头像的隐藏域-->
+					<input type="hidden"  name="headImgUrl" render-value="headImgUrl">
+					<input type="hidden"  name="coverImgUrl" render-value="coverImgUrl">
+					<!--用来回显,不做修改-->
+					<input type="hidden"  name="email" render-value="email">
+
+					<label>昵称</label><input type="text" name="nickName" class="form-control" render-value="nickName" >
+					<label>性别</label><select class="form-control" name="gender" render-value="gender">
+							<option value="-1">保密</option>
+							<option value="1">男</option>
+							<option value="0">女</option>
+						</select>
+					<label>地区</label><input type="text" name="place"  class="form-control" render-value="place">
+					<label>签名</label><textarea name="sign" class="form-control" rows="5" render-value="sign"></textarea>
+			</form>
+		</div>
+		
+		
+		
+	</body>
+</html>

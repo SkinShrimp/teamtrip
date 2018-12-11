@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>注册页面</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/js/bootstrap-4.1.1-dist/css/bootstrap.min.css">
+    <script src="/js/jquery/jquery.min.js"></script>
+    <script src="/js/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/font/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/register.css">
+    <script src="/js/plugins/form/jquery.form.js"></script>
+    <link rel="stylesheet" href="/js/plugins/dialog2/dialog.css">
+    <script src="/js/plugins/dialog2/dialog.min.js"></script>
+    <script>
+        $(function () {
+            //把表单变成异步请求表单,但是不会马上提交
+            $("#registerForm").ajaxForm(function (data) {
+                if(data.success){
+                    $(document).dialog({
+                        type : 'confirm',
+                        titleText: '温馨提示',
+                        content: '亲,注册成功!',
+                        buttons: [
+                            {
+                                name: '马上登陆',
+                                callback: function() {
+                                    window.location.href = "/login.html";
+                                }
+                            }
+                        ]
+                    });
+                }else{
+                    $(document).dialog({
+                        content: data.msg,
+                    });
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <h5>注册</h5>
+    <div class="card card-container ">
+        <i id="profile-img" class="fa fa-user-plus fa-5x profile-img" aria-hidden="true"></i>
+        <form class="form-signin" id="registerForm" action="/users" method="post">
+            <input type="text" name="nickName" class="form-control badge-pill" placeholder="昵称">
+            <input type="email" name="email" class="form-control badge-pill" placeholder="邮箱"  >
+            <input id="password" type="password" name="password" class="form-control badge-pill" placeholder="密码">
+            <input type="password" name="confirmPwd"  class="form-control badge-pill" placeholder="确认密码">
+            <button class="btn btn-lg badge-pill" type="submit" >注册</button>
+        </form>
+    </div>
+    <a href="login.html" class="registerLink">
+        已经有账号了？点击此处登录
+    </a>
+</div>
+
+</body>
+</html>

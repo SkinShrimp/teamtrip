@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>个人页面</title>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="/js/bootstrap-4.1.1-dist/css/bootstrap.min.css">
+		<script src="/js/jquery/jquery.min.js"></script>
+		<script src="/js/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="/css/font/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/reset.css"/>
+		<link rel="stylesheet" href="/css/userProfiles.css"/>
+		<script src="/js/plugins/jrender/jrender.min.js"></script>
+		<link rel="stylesheet" href="/js/plugins/dialog2/dialog.css">
+		<script src="/js/plugins/dialog2/dialog.min.js"></script>
+	</head>
+	<body>
+		<div class="container bg" style="background-image: url(&quot;/img/user/bg.jpeg&quot;);">
+			<a href="javascript:window.history.go(-1)" class="my-arrow">
+				<span><i class="fa fa-chevron-left fa-2x"></i></span>
+			</a>
+			<div class="container">
+				<div class="info">
+					<img class="rounded-circle" width="17%" src="/upload/7e854d1d-a7be-4360-8943-8771d18ee0e3.jpg">
+					<p class="name">奋斗的小蜜蜂</p>
+					<p >一直奋斗的小蜜蜂</p>
+
+					<div class="row num">
+						<div class="col-2 border border-left-0 border-top-0 border-bottom-0">
+							<div>
+								<span >1</span>
+							</div>
+							<div>
+								<span>关注</span>
+							</div>
+						</div>
+						<div class="col-2">
+							<div>
+								<span>0</span>
+									</div>
+							<div>
+								<span>粉丝</span>
+							</div>
+						</div>
+						<div class="col">
+							<button class="btn btn-outline-light ibtn" id="letterBtn">私信</button>
+							<button class="btn btn-success ibtn" id="followBtn">关注</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="tabs">
+			<ul class="nav nav-pills nav-justified  border border-left-0 border-top-0 border-right-0" id="pills-tab" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link active" id="travels-tab" data-toggle="pill" href="#travels">
+						TA的游记[<span>1</span>]
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link " id="comments-tab" data-toggle="pill" href="#comments">
+						TA的点评[<span>1</span>]
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact">
+						TA的旅行单[<span>0</span>]
+					</a>
+				</li>
+			</ul>
+			<div class="container tab-content" id="pills-tabContent">
+				<div class="tab-pane fade show active" id="travels">
+						<dl class="list">
+							<dd>
+								<a href="travelContent.html" data-id="2">
+									<img  src="/upload/6bf2b75d-cc43-44a1-9107-fdf1bbcb4222.png">
+									<p><span class="title" >入住长隆熊猫酒店，天天都是儿童节</span>
+										<span class="span-right">
+						 				<span >0</span> <i class="fa fa-thumbs-o-up"></i></span>
+									</p>
+								</a>
+								<hr>
+							</dd>
+						</dl>
+				</div>
+
+				<div class="comment tab-pane fade " id="comments">
+				
+					<div><div class="row">
+							<div class="col-2 comment-head">
+								<img  class="rounded-circle" src="/upload/7e854d1d-a7be-4360-8943-8771d18ee0e3.jpg">
+							</div>
+							<div class="col">
+								<span class="comment-star" ><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i></span>
+
+								<span class="comment-date" >2018-07-11</span>
+								<div class="comment-content">
+									<a href="strategyComment.html"  data-id="4">
+										<p >骑了个单车到沙面，春风把从上下九和宝华路带来的燥热吹散。沙面临江，下午的时光让这富有异国风情的公园显得更加宁静惬意，哪怕...</p>
+									</a>
+								</div>
+								<ul class="comment-img"><li>
+										<img  src="/upload/63bb765d-5dff-44f8-b7f1-cb338b9b9f95.jpeg">
+									</li><li>
+										<img  src="/upload/7d437f8d-a476-465c-bd84-e93a03d8efd5.jpeg">
+									</li></ul>
+
+								<div class="comment-link">
+									<a href="strategyCatalogs.html" data-id="2">
+										<img  src="/upload/e5e8a1a7-b127-4145-9fd0-a94e29f752ba.jpeg"> <span >广州攻略</span>
+										<i class="fa fa-angle-right fa-2x"></i>
+									</a>
+								</div>
+
+							</div>
+						</div></div>
+
+				</div>
+				<div class="tab-pane fade" id="pills-contact">.3333..</div>
+			</div>
+		</div>
+
+	
+
+</body>
+</html>

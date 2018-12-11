@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.trip.base.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.User">
+    <id column="id" property="id" />
+    <result column="email" property="email" />
+    <result column="nickName" property="nickName" />
+    <result column="password" property="password" />
+    <result column="place" property="place" />
+    <result column="headImgUrl" property="headImgUrl" />
+    <result column="gender" property="gender" />
+    <result column="coverImgUrl" property="coverImgUrl" />
+    <result column="sign" property="sign" />
+  </resultMap>
+
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into user (email, nickName, password, place, headImgUrl, gender, coverImgUrl, 
+      sign)
+    values (#{email}, #{nickName}, #{password}, #{place}, #{headImgUrl}, #{gender}, #{coverImgUrl}, 
+      #{sign})
+  </insert>
+  <update id="updateByPrimaryKey">
+    update user
+    set
+      nickName = #{nickName},
+      place = #{place},
+      headImgUrl = #{headImgUrl},
+      gender = #{gender},
+      coverImgUrl = #{coverImgUrl},
+      sign = #{sign}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select id, email, nickName, password, place, headImgUrl, gender, coverImgUrl, sign
+    from user
+    where id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, email, nickName, password, place, headImgUrl, gender, coverImgUrl, sign
+    from user
+  </select>
+
+  <select id="selectByEmailAndPassword" resultMap="BaseResultMap">
+    select id, email, nickName, place, headImgUrl, gender, coverImgUrl, sign
+    from user where email = #{email}
+    <if test="password!=null">
+      and password = #{password}
+    </if>
+  </select>
+    <select id="selectForList" resultType="user" >
+       select id, email, nickName, password, place, headImgUrl, gender, coverImgUrl, sign
+       from user
+       <where>
+         <if test="keyword!=null">
+            and (nickName like concat('%',#{keyword},'%') or email like concat('%',#{keyword},'%'))
+         </if>
+       </where>
+    </select>
+</mapper>

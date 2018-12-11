@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.trip.base.mapper.TravelCommendMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.TravelCommend">
+    <id column="id" property="id" />
+    <result column="title" property="title" />
+    <result column="subTitle" property="subTitle" />
+    <result column="coverUrl" property="coverUrl" />
+    <result column="schedule" property="schedule" />
+    <result column="type" property="type" />
+    <association property="travel" javaType="Travel" columnPrefix="t_">
+      <id column="id" property="id" />
+    </association>
+  </resultMap>
+  <delete id="deleteByPrimaryKey">
+    delete from travelcommend
+    where id = #{id}
+  </delete>
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into travelcommend (travel_id, title, subTitle, coverUrl, schedule, type)
+    values (#{travel.id}, #{title}, #{subTitle}, #{coverUrl}, #{schedule}, #{type})
+  </insert>
+  <update id="updateByPrimaryKey">
+    update travelcommend
+    set
+      title = #{title},
+      subTitle = #{subTitle},
+      coverUrl = #{coverUrl},
+      schedule = #{schedule},
+      type = #{type}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select id, travel_id, title, subTitle, coverUrl, schedule, type
+    from travelcommend
+    where id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, travel_id, title, subTitle, coverUrl, schedule, type
+    from travelcommend
+  </select>
+  <select id="selectForList" resultMap="BaseResultMap" >
+     select id, travel_id t_id, title, subTitle, coverUrl, schedule, type
+    from travelcommend
+    <where>
+      <if test="type!=null and type>-1">
+        and type = #{type}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectForAppList" resultType="map" >
+     select tc.*,t.id t_id,u.headImgUrl u_headImgUrl,u.nickName u_nickName,u.id u_id,r.id r_id,r.name r_name
+    from travelcommend tc
+    LEFT JOIN travel t ON tc.travel_id = t.id
+    LEFT JOIN user u ON t.author_id = u.id
+    LEFT JOIN region r ON t.place_id = r.id
+    <where>
+      <if test="type!=null and type>-1">
+        and tc.type = #{type}
+      </if>
+      and tc.schedule &lt;= now()
+    </where>
+  </select>
+</mapper>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>我的资料</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="/js/bootstrap-4.1.1-dist/css/bootstrap.min.css">
+	<script src="/js/jquery/jquery.min.js"></script>
+	<link rel="stylesheet" href="/css/font/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="/css/reset.css" />
+	<link rel="stylesheet" href="/css/myProfiles.css" />
+	<script src="/js/plugins/jrender/jrender.min.js"></script>
+
+	<script>
+		$(function () {
+			var user = JSON.parse(sessionStorage.getItem("user"));
+
+			$(".info").renderValues(user);
+
+        })
+	</script>
+</head>
+
+<body>
+	<div class="nav-search">
+			<a href="/index.html">
+				<span><i class="fa fa-angle-left fa-2x" ></i></span>
+			</a>
+	</div>
+	<hr/>
+<div class="container">
+	<div class="row info">
+		<div class="col-2" style="margin-right: 25px;">
+			<img  class="rounded-circle" render-src="headImgUrl">
+		</div>
+		<div class="col-8">
+			<h5 render-html="nickName"></h5>
+			<ul class="list-inline">
+				<li class="list-inline-item"><small>常住地</small></li>
+				<li class="list-inline-item"><small render-html="place"></small></li>
+				<li class="list-inline-item"><small>关注<span>0</span></small></li>
+				<li class="list-inline-item"><small>粉丝<span>0</span></small></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="d-flex setting" >
+		<div class="p-2 flex-fill"  >
+			<a href="editTravels.html">
+				<button class="btn">
+					<i class="fa fa-camera fa-fw"></i>
+					记录我的旅游日记</button>
+			</a>
+		</div>
+		<div class="p-2 flex-fill" >
+			<a href="info.html"><button class="btn" >编辑个人资料</button>
+			</a></div>
+	</div>
+
+</div>
+
+<hr />
+
+<div class="row link-box">
+	<div class="col">
+		<ul class="list-inline">
+			<li class="list-inline-item"> <i class="fa fa-shopping-bag fa-2x"></i> </li>
+			<li class="list-inline-item">
+				<h7>积分商城</h7>
+				<small>我的积分 <span>100</span></small></li>
+		</ul>
+
+	</div>
+	<div class="col">
+		<ul class="list-inline">
+			<li class="list-inline-item"> <i class="fa fa-calendar-check-o fa-2x"></i> </li>
+			<li class="list-inline-item">
+				<h7>每日签到</h7>
+				<small>别忘了签到哦</small></li>
+		</ul>
+	</div>
+</div>
+<hr />
+<ul class="mainmenu">
+	<li><a href="#" ><b><i class="fa fa-star fa-2x"></i></b><span>我的收藏</span></a></li>
+	<li><a href="#" ><b><i class="fa fa-commenting-o fa-2x"></i></b><span>我的评论</span></a></li>
+	<li><a href="/mine/travels.html" ><b><i class="fa fa-book fa-2x"></i></b><span>我的游记</span></a></li>
+	<li><a href="#" ><b><i class="fa fa-list-ul fa-2x"></i></b><span>我的心愿单</span></a></li>
+	<li><a href="#" ><b><i class="fa fa-bullhorn fa-2x"></i></b><span>我的消息</span></a></li>
+	<li><a href="#" ><b><i class="fa fa-file-text fa-2x"></i></b><span>我的订单</span></a></li>
+	<li><a href="#" ><b><i class="fa fa-briefcase fa-2x"></i></b><span>我的钱包</span></a></li>
+</ul>
+
+</body>
+
+</html>

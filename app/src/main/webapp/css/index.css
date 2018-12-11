@@ -1,0 +1,163 @@
+.search-head {
+	background-color: #4D4C4B;
+}
+
+.nav-search{
+	width: 95%;
+	margin: auto;
+	padding: 0 5px;
+}
+
+.search {
+	padding: 8px 15px;
+	width: 100%;
+}
+
+.searchBtn {
+	cursor: auto;
+	background-image: url(../img/icon/search.png);
+	background-attachment: scroll;
+	background-position: 100% 50%;
+	background-repeat: no-repeat;
+	width: 108%;
+	margin-left:-15px;
+}
+
+.recommend {
+	width: 205px;
+	height: 23px;
+	line-height: 22px;
+	color: rgba(106, 102, 102, 1);
+	font-size: 15px;
+	text-align: center;
+}
+
+.recommend-author {
+	width: 168px;
+	height:15px;
+	color: rgba(123, 120, 120, 1);
+	font-size: 11px;
+	margin: 5px 0;
+}
+
+.recommend-author img{
+	width: 10%;
+}
+
+.nav-box{
+	margin: 20px 0
+}
+
+.nav-box .col{
+	margin-right: 5px;
+}
+
+.nav-box .col a{
+	color: white;font-size: 23px;line-height: 60px;;
+}
+
+.dynamic {
+	margin: 0px;
+	height: 50px;
+}
+
+.module-title {
+	font-weight: bold;margin: 10px 0;
+}
+.module-title a{
+	float: right; color: rgba(227, 200, 200, 122);font-size: 14px;
+}
+
+
+.dynamic-detail{
+	color: black;font-size: 14px;
+	margin-left: 20px;line-height: 25px
+}
+
+.dynamic-head{
+	height: 50px;margin-left: 20px
+}
+
+@media screen and (max-width: 350px) {
+	.dynamic-head{
+		margin-left: 12px;
+
+	}
+	.dynamic-detail{
+	}
+
+
+}
+
+.caption h5{
+	opacity: 0.84;font-weight:bold;font-size: 18px;line-height: 35px;
+}
+
+.caption p{
+	line-height: 6px;color: rgba(227, 200, 200, 122);font-size: 14px;
+}
+
+
+.news-detail div:nth-child(2){
+	padding-left: 25px;
+}
+
+.news-detail img{
+	display:block;max-width: 120%;
+}
+
+.news-detail h4{
+	line-height: 20px;opacity: 0.64;color: rgba(16, 16, 16, 1);font-size: 17px;
+}
+
+.news-detail p{
+	line-height: 20px;color: rgba(227, 214, 214, 1);font-size: 14px;
+}
+
+.nav {
+	position: absolute;
+	z-index: 11;
+	left: -100%;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	transition: left linear .1s;
+}
+
+.body {
+	max-width: 500px;
+	margin: 0 auto;
+	position: relative;
+	overflow-x: hidden;
+}
+#menu{
+	display: none;
+}
+
+.menu{
+	position: absolute;z-index: 99;margin: 8px 20px;color: white;
+}
+
+
+.menu span:nth-child(2) {
+	display: none;
+}
+
+#menu:checked~.menu span:nth-child(1) {
+	display: none;
+}
+
+#menu:checked~.menu span:nth-child(2) {
+	display: block;
+}
+
+#menu:checked~.nav {
+	left: 0;
+}
+
+.carousel-control-prev,.carousel-control-next{
+	height:85%
+}
+
+.Marquee{ height:50px; overflow:hidden;}
+.Marquee div{ height:50px;}

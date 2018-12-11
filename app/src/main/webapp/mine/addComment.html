@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+
+	<head lang="en">
+		<title>找攻略</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="/js/bootstrap-4.1.1-dist/css/bootstrap.min.css">
+		<script src="/js/jquery/jquery.min.js"></script>
+		<script src="/js/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="/css/font/css/font-awesome.min.css"/>
+		<link rel="stylesheet" href="/css/reset.css"/>
+		<link rel="stylesheet" href="/css/myStrategyComment.css"/>
+		<script src="/js/plugins/jrender/jrender.min.js"></script>
+		<link rel="stylesheet" href="/js/plugins/dialog2/dialog.css"/>
+		<script src="/js/plugins/dialog2/dialog.min.js"></script>
+		<script src="/js/plugins/form/jquery.form.js"></script>
+		<script src="/js/common.js"></script>
+
+		<script>
+            $(function () {
+                var num;
+
+                //给星星绑定点击事件
+				$(".star i").click(function () {
+					//获取星星的数字
+					num = $(this).data("num");
+                    //获取所有星星
+					var all = $(".star i");
+					//去掉实心添加空心
+                    all.removeClass("fa-star").addClass('fa-star-o');
+					for(var i=0;i<num;i++){
+					    //去掉空心添加实心
+                        $(all[i]).removeClass("fa-star-o").addClass('fa-star');
+					}
+                })
+
+				//当前点击的上传div
+				var rect;
+
+                //上传按钮
+                $(".rect").click(function () {
+                    rect = $(this);
+                    $("#fileInput").click();
+                })
+
+                $("#fileInput").change(function () {
+                    if($(this).val()){
+                        $("#fileForm").ajaxSubmit(function (data) {
+                            if (data.status==1){
+                                rect.html('<img src="'+data.url+'" />');
+                            }
+                        })
+                    }
+                })
+
+
+
+				//提交评价
+				$("#submitBtn").click(function () {
+                    var params = getParams();
+                    if(params.id){
+
+                        //获取所有的图片
+                        var imgs = $(".imgs img");
+						var temp = "";
+						for(var i=0;i<imgs.length;i++){
+                            temp += $(imgs[i]).attr('src')+";";
+						}
+
+						//标签数组
+						var tags = [];
+
+						//获取选中的标签(系统推荐标签)
+                        var inputs = $("label.active").children();
+                        //标签数组的索引
+                        var i=0;
+						for(;i<inputs.length;i++){
+                            tags[i] = $(inputs[i]).val();
+						}
+
+						//获取自定义标签
+						var myTags = $("#myTags").val();
+                        var arr = myTags.split(" ");
+                        for(var j=0;j<arr.length;j++){
+                            var tag = arr[j];
+                            if(tag!=""){
+                                tags[i++] = tag;
+							}
+                        }
+						//传递参数时不需要添加[]
+                        jQuery.ajaxSettings.traditional = true;
+
+                        var data = {
+                            starNum:num, //星星数
+							content:$('[name="content"]').val(),//评论内容
+                            imgUrls:temp,  //拼接后的图片url
+                            tags:tags
+                        };
+
+                        console.log(tags);
+
+                        $.post('/strategies/'+params.id+'/comments',data,function (data) {
+                        window.location.href = "/strategyCatalogs.html?id="+params.id;
+                    })
+                }
+
+
+                })
+
+
+
+
+            })
+		</script>
+	</head>
+
+	<body>
+
+	<form id="fileForm" action="/images" method="post" enctype="multipart/form-data">
+		<input name="file" type="file" id="fileInput" style="display: none">
+	</form>
+
+	<div class="search-head">
+		<div class="row nav-search">
+			<div class="col">
+				<a href="javascript:window.history.go(-1)">
+					<span><i class="fa fa-chevron-left" ></i></span>
+				</a>
+
+			</div>
+			<div class="col">
+				<span>点评</span>
+			</div>
+			<div class="col"></div>
+		</div>
+	</div>
+
+	<div class="comment">
+		<div class="container star">
+			<p>你对该旅游地的评价</p>
+			<i class="fa fa-star-o fa-lg" data-num="1"></i>
+			<i class="fa fa-star-o fa-lg" data-num="2"></i>
+			<i class="fa fa-star-o fa-lg" data-num="3"></i>
+			<i class="fa fa-star-o fa-lg" data-num="4"></i>
+			<i class="fa fa-star-o fa-lg" data-num="5"></i>
+		</div>
+		<hr />
+		<div class="container tag">
+			<p>请为该旅游地选择合适的标签（大家都在评）</p>
+			<div class="btn-group-toggle" data-toggle="buttons">
+				<label class="btn btn-outline-danger ">
+					<input type="checkbox" autocomplete="off" value="价格便宜">价格便宜
+				</label>
+				<label class="btn btn-outline-danger">
+					<input type="checkbox" autocomplete="off" value="住宿方便"> 住宿方便
+				</label>
+				<label class="btn btn-outline-danger ">
+					<input type="checkbox" autocomplete="off" value="旅游景点多"> 旅游景点多
+				</label>
+				<label class="btn btn-outline-danger ">
+					<input type="checkbox" autocomplete="off" value="适合拍照">适合拍照
+				</label>
+				<label class="btn btn-outline-danger">
+					<input type="checkbox"  autocomplete="off" value="吃的很多">吃的很多
+				</label>
+				<label class="btn btn-outline-danger">
+					<input type="checkbox"  autocomplete="off" value="交通不方便">交通不方便
+				</label>
+			</div>
+
+			<p>添加你自己的标签</p>
+			<input id="myTags" class="form-control"  placeholder="请使用空格隔开标签，每个标签不超8个字"   />
+
+			<p>更多评价内容</p>
+			<textarea name="content" class="form-control" rows="5" placeholder="请填写你对该旅游地的评价"></textarea>
+		</div>
+		<div class="container imgs ">
+			<p>上传图片</p>
+
+			<div class="row">
+				<div class="col-3 rect">
+					<span>上传</span>
+				</div>
+				<div class="col-3 rect">
+					<span>上传</span>
+				</div>
+				<div class="col-3 rect">
+					<span>上传</span>
+				</div>
+				<div class="col-3 rect">
+					<span>上传</span>
+				</div>
+				<div class="col-3 rect">
+					<span>上传</span>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+
+
+	<div class="operation">
+		<button class="btn" onclick="window.history.go(-1)">放弃评价</button>
+		<button class="btn" id="submitBtn">提交评价</button>
+	</div>
+
+
+
+
+
+	</body>
+
+
+</html>

@@ -1,0 +1,50 @@
+#demo{
+    margin: 0px;
+}
+
+.carousel-indicators{
+    position: fixed;
+    top: 65%;
+    height: 20px;
+}
+
+.carousel-indicators li {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1px solid white;
+}
+
+img{
+    width: 100%;
+
+}
+.carousel-inner{
+    padding: 10px auto;
+    text-align: center;
+
+}
+
+.skip{
+    position: fixed;
+    text-align: center;
+    margin:auto;
+    left:0;
+    right:0;
+    top:75%;
+    bottom:0;
+
+}
+
+.skip button {
+    background-color: #A5ACBB;
+    color: white;
+    width:70%;
+    max-width: 400px;
+}
+
+.body{
+    max-width: 500px;
+    margin: 0 auto;
+    position: relative;
+}

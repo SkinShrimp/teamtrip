@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>简单个人页面</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content= "no-cache, must-revalidate">
+    <link rel="stylesheet" href="/js/bootstrap-4.1.1-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/font/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/css/reset.css">
+    <script src="/js/jquery/jquery.min.js"></script>
+    <script src="/js/plugins/jrender/jrender.min.js"></script>
+
+    <style>
+        .simplePerson {
+            text-align: center;
+            color: #7A786F;
+            padding-top: 50px;
+            padding-bottom: 110px;
+            background-color: #E8E6E8;
+        }
+
+        .mymenu {
+            margin: 15px auto;
+        }
+
+        .mymenu i {
+            margin-right: 20px;
+        }
+
+    </style>
+
+
+    <script>
+
+        $(function () {
+            //获取当前登录用户
+            var user = JSON.parse(sessionStorage.getItem("user"));
+            //渲染数据
+            $(".simplePerson").renderValues(user);
+
+
+            //注销按钮
+            $("#logoutBtn").click(function () {
+                $.ajax({
+                    url:'/sessions',
+                    type:'delete',
+                    success:function () {
+                        //清空登录用户信息
+                        sessionStorage.removeItem("user");
+                        window.parent.location.href = "/index.html";
+                    }
+                })
+            })
+
+
+            //绑定a连接的点击事件
+            $(".skip").click(function () {
+               var url = $(this).data("href");
+               window.parent.location.href = url;
+            })
+
+        })
+
+    </script>
+
+</head>
+
+
+<body>
+
+<div class="simplePerson">
+    <img  class="rounded-circle" width="20%" render-src="headImgUrl">
+    <p><strong render-html="nickName"></strong></p>
+    <p render-html="email"></p>
+    <hr>
+    <div class="mymenu">
+        <i class="fa fa-user fa-2x fa-fw"></i>
+        <a class="skip" data-href="/mine/profiles.html" >
+            我的</a>
+    </div>
+    <div class="mymenu">
+        <i class="fa fa-bell fa-2x fa-fw"></i>
+        <a class="skip" href="#">信息</a>
+    </div>
+    <div class="mymenu">
+        <i class="fa fa-comment fa-2x fa-fw"></i>
+        <a class="skip" href="#">通知</a>
+    </div>
+    <div class="mymenu">
+        <i class="fa fa-cog fa-2x fa-fw"></i>
+        <a class="skip" data-href="/mine/info.html">设置</a>
+    </div>
+    <hr style="margin-top: 50px;">
+    <div class="mymenu">
+        <i class="fa fa-sign-out fa-2x fa-fw"></i>
+        <label id="logoutBtn">退出登录</label>
+    </div>
+</div>
+
+
+
+</body>
+
+</html>

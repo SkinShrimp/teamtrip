@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.trip.base.mapper.StrategyCommentMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.StrategyComment">
+    <id column="id" property="id" />
+    <result column="createTime" property="createTime" />
+    <result column="content" property="content" />
+    <result column="imgUrls" property="imgUrls" />
+    <result column="starNum" property="starNum" />
+    <result column="state" property="state" />
+    <result column="commendTime" property="commendTime" />
+    <association property="user" javaType="User" columnPrefix="u_">
+      <id column="id" property="id" />
+      <result column="nickName" property="nickName" />
+      <result column="headImgUrl" property="headImgUrl" />
+    </association>
+  </resultMap>
+  <delete id="deleteByPrimaryKey">
+    delete from strategycomment
+    where id = #{id}
+  </delete>
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into strategycomment (user_id, createTime, content, imgUrls, starNum, strategy_id, 
+      state, commendTime)
+    values (#{user.id}, #{createTime}, #{content}, #{imgUrls}, #{starNum}, #{strategy.id}, 
+      #{state}, #{commendTime})
+  </insert>
+  <insert id="insertRelation">
+    insert into comment_tag (comment_id,tag_id) values (#{commentId},#{tagId})
+  </insert>
+  <update id="updateByPrimaryKey">
+    update strategycomment
+    set user_id = #{user.id},
+      createTime = #{createTime},
+      content = #{content},
+      imgUrls = #{imgUrls},
+      starNum = #{starNum},
+      strategy_id = #{strategy.id},
+      state = #{state},
+      commendTime = #{commendTime}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select id, user_id, createTime, content, imgUrls, starNum, strategy_id, state, commendTime
+    from strategycomment
+    where id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, user_id, createTime, content, imgUrls, starNum, strategy_id, state, commendTime
+    from strategycomment
+  </select>
+  <select id="selectForList" resultMap="BaseResultMap">
+     select sc.id, sc.user_id, sc.createTime, sc.content, sc.imgUrls, sc.starNum, sc.strategy_id, sc.state, sc.commendTime,
+    u.id u_id,u.nickName u_nickName,u.headImgUrl u_headImgUrl
+    from strategycomment sc JOIN user u on sc.user_id = u.id
+    <where>
+      <if test="strategyId!=null">
+        and sc.strategy_id = #{strategyId}
+      </if>
+    </where>
+  </select>
+
+</mapper>

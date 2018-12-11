@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.trip.base.mapper.StrategyMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.Strategy">
+    <id column="id" property="id" />
+    <result column="title" property="title" />
+    <result column="subTitle" property="subTitle" />
+    <result column="coverUrl" property="coverUrl" />
+    <result column="state" property="state" />
+    <association property="place" javaType="Region" columnPrefix="r_">
+      <id column="id" property="id" />
+      <result column="name" property="name" />
+    </association>
+  </resultMap>
+  <delete id="deleteByPrimaryKey">
+    delete from strategy
+    where id = #{id}
+  </delete>
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into strategy (place_id, title, subTitle, coverUrl, state)
+    values (#{place.id}, #{title}, #{subTitle}, #{coverUrl}, #{state})
+  </insert>
+  <update id="updateByPrimaryKey">
+    update strategy
+    set place_id = #{place.id},
+      title = #{title},
+      subTitle = #{subTitle},
+      coverUrl = #{coverUrl},
+      state = #{state}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select id, place_id, title, subTitle, coverUrl, state
+    from strategy
+    where id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, place_id, title, subTitle, coverUrl, state
+    from strategy
+  </select>
+  <select id="selectForList" resultMap="BaseResultMap">
+      select s.*,r.id r_id,r.name r_name
+      from strategy s
+      LEFT JOIN region r on s.place_id = r.id
+      <where>
+        <if test="keyword!=null">
+          and s.title like concat('%',#{keyword},'%')
+        </if>
+        <if test="state!=null">
+          and s.state = #{state}
+        </if>
+        <if test="regionId!=null">
+          and r.id = #{regionId}
+        </if>
+      </where>
+  </select>
+</mapper>

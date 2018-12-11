@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>编辑游记</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/js/bootstrap-4.1.1-dist/css/bootstrap.min.css">
+    <script src="/js/jquery/jquery.min.js"></script>
+    <script src="/js/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/font/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/css/reset.css"/>
+    <link rel="stylesheet" href="/css/editTravels.css"/>
+    <script src="/js/plugins/jrender/jrender.min.js"></script>
+    <link rel="stylesheet" href="/js/plugins/dialog2/dialog.css" />
+    <script src="/js/plugins/dialog2/dialog.min.js"></script>
+    <script src="/js/plugins/form/jquery.form.js"></script>
+    <script src="/js/My97DatePicker/WdatePicker.js"></script>
+    <script src="/js/common.js"></script>
+    <script>
+        $(function () {
+
+            //获取所有地区
+            $.get('/regions',function (data) {
+                var temp = "";
+                $.each(data,function (index, ele) {
+                    temp += '<option value="'+ele.id+'">'+ele.name+'</option>';
+                })
+                $("#regionSelect").html(temp);
+
+                //获取参数id的值
+                var params = getParams();
+                //有id参数,代表编辑
+                if(params.id){
+                    //设置表单的提交地址
+                    $("#detailForm").attr('action','/travels/'+params.id);
+                    //设置表单的提交方式
+                    $("input[name='_method']").val("put");
+
+                    //发送ajax请求获取游记的详细信息
+                    $.get("/travels/"+params.id,function (data) {
+                        $(".travels").renderValues(data);
+                    })
+                }
+
+            })
+
+            //更换背景
+            $("#changeBtn").click(function () {
+                $("#fileInput").click();
+            })
+
+            $("#fileInput").change(function () {
+                if($(this).val()){
+                    $("#fileForm").ajaxSubmit(function (data) {
+                        if (data.status==1){
+                            $("#coverUrl").attr("src",data.url);
+                        }
+                    })
+                }
+            })
+
+
+            //把表单变成异步请求表单
+            $("#detailForm").ajaxForm({
+                beforeSubmit:function(arr){//提交表单之前会执行该函数
+                    //arr代表提交表单时传递的数据
+                    arr.push({name: "title", value: $("#title").val()});//标题
+                    arr.push({name: "coverUrl", value: $("#coverUrl").attr("src")});//封面
+                    arr.push({name: "state", value: state});//状态
+                    arr.push({name: "travelContent.content", value: edr.getContent()});//游记内容
+                },
+                success:function (data) {//表单提交成功后执行的函数
+                    if(data.success){
+                        window.location.href = "/mine/travels.html";//我的游记
+                    }
+                }
+            })
+
+            var state;
+
+            //草稿
+            $("#save").click(function () {
+                state = 0;
+                //提交表单
+                $("#detailForm").submit();
+            })
+
+            //待发布
+            $("#release").click(function () {
+                state = 1;
+                //提交表单
+                $("#detailForm").submit();
+            })
+
+        })
+    </script>
+
+</head>
+
+<body>
+<form id="fileForm" action="/images" method="post" enctype="multipart/form-data">
+    <input name="file" type="file" id="fileInput" style="display: none">
+</form>
+
+<div class="search-head">
+    <div class="row nav-search">
+        <div class="col-2">
+            <a href="javascript:window.history.go(-1);">
+                <span><i class="fa fa-times"></i></span>
+            </a>
+        </div>
+        <div class="col-5"></div>
+        <div class="col" style="text-align: right;">
+            <i class="fa fa-floppy-o fg-fw" id="save"><span>保存</span></i>
+            <i class="fa fa-check" id="release"><span>发布</span></i>
+        </div>
+    </div>
+</div>
+
+<div class="travels form-group">
+    <div class="cover">
+        <img id="coverUrl" width="100%" height="200px" render-src="coverUrl"/>
+       
+            <button type="button" class="btn" id="changeBtn">
+                <i class="fa fa-pencil-square-o"></i>
+                <small>更换封面</small>
+            </button>
+    </div>
+
+    <div class="title">
+        <input class="form-control" id="title"  placeholder="请输入标题" render-value="title"/>
+    </div>
+    <h6 href="#">点击文章内容即可编辑</h6>
+    <div id="contentEditor" render-html="travelContent.content">
+    </div>
+    <hr/>
+    <div class="container">
+        <form id="detailForm" method="post" action="/travels">
+            <input type="hidden" name="_method" >
+            <label>出行时间:</label>
+            <input type="text" name="travelTime"  class="form-control" onclick="WdatePicker()" render-value="travelTime" >
+            <label>出行天数:</label>
+            <input type="number" name="days" class="form-control" render-value="days">
+            <label>参与人物:</label>
+            <select class="c-select form-control" name="person"  render-value="person">
+                <option value="1" selected>一个人的旅行</option>
+                <option value="2">和父母</option>
+                <option value="3">和朋友</option>
+                <option value="4">和同事</option>
+                <option value="5">和爱人</option>
+                <option value="6">和其他</option>
+            </select>
+            <label>人均费用:</label>
+            <input type="text" name="perExpends" class="form-control" render-value="perExpends">
+
+            <label>旅游地点:</label>
+            <select class="form-control" id="regionSelect" name="place.id" render-value="place.id">
+            </select>
+
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox"  name="isPublic" render-attr='checked=isPublic'
+                          >是否公开
+                </label>
+            </div>
+
+        </form>
+    </div>
+
+    <hr/>
+
+</div>
+<!--编辑器核心文件-->
+<script src="/js/plugins/eleditor/Eleditor.min.js" ></script>
+<!--图片上传-->
+<script src="/js/plugins/eleditor/webuploader.min.js" ></script>
+
+<script>
+    var edr = new Eleditor({
+        el: '#contentEditor',//渲染到页面中哪个位置
+        upload:{
+            server: '/images'
+        }
+    });
+</script>
+
+</body>
+
+</html>

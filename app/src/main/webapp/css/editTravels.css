@@ -1,0 +1,109 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	-webkit-touch-callout: none;
+	background-color: #fff;
+	line-height: inherit;
+}
+
+#contentEditor {
+	width: 100%;
+	min-height: 300px;
+	box-sizing: border-box;
+	padding: 10px;
+	color: #444;
+}
+
+#contentEditor p {
+	letter-spacing: 0.25px;
+	font: 14px/25px Tahoma;
+	margin: 5px 0px;
+}
+
+#contentEditor h4 {
+	font-weight: bold;
+	line-height: 1.333em;
+	margin: 5px 0px;
+	padding: 5px 0;
+	font-size: 16px;
+}
+
+#contentEditor img {
+	width: 100%;
+	height: auto;
+	box-sizing: border-box;
+}
+
+.travels h6{
+	color: rgba(63, 81, 181, 1);
+	font-size: 14px;
+	text-align: right;
+	margin-right: 15px;
+}
+
+
+.search-head {
+	background-color: #4D4C4B;
+	color: white;
+	overflow-x: hidden;
+	height: 35px;
+	position:fixed;
+	width: 100%;
+	max-width: 600px;
+	z-index: 9;
+}
+
+.nav-search {
+	padding: 7px;
+}
+
+.nav-search i {
+	font-size: 18px;
+	color: white;
+}
+
+.nav-search div:nth-child(2) {
+	text-align: center;
+}
+
+.nav-search span {
+	font-size: 13px;
+	margin-right: 5px;
+}
+
+.travels {
+	margin: 0 auto;
+}
+
+.travels .cover {
+	position: relative;
+}
+
+.travels .cover img {
+	margin-top: 35px;
+	width: 100%;
+}
+
+.travels .cover button {
+	background-color: #BBBBBB;
+	color: white;
+	padding: 0px 10px;
+	height: 28px;
+	position: absolute;
+	bottom: 20px;
+	right: 20px;
+}
+
+.travels .title {
+	margin: 20px 20px;
+}
+.travels .title input{
+	 text-align: center;
+}
+
+#detailForm label{
+	margin:10px auto 5px;
+}
