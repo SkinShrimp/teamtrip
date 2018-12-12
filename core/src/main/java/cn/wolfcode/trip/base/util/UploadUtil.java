@@ -9,11 +9,14 @@ import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.ibatis.io.Resources;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.UUID;
 
 /**
@@ -21,12 +24,24 @@ import java.util.UUID;
  */
 public class UploadUtil {
 
-    //存放图片的路径
-    public static final String PATH = "c://trip";
 
-    //七牛云的域名
-    public static final String QI_PATH = "http://pjlx4ywgq.bkt.clouddn.com/";
+    private static Properties properties = new Properties();
+    public static String QI_PATH = null;
+    public static String PATH = null;
 
+    static {
+        try {
+            InputStream in = Resources.getResourceAsStream("upload.properties");
+            properties.load(in);
+            //七牛云的域名
+            QI_PATH = properties.getProperty("QI_PATH");
+            //存放图片的路径
+            PATH = properties.getProperty("imagesLocalPath");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * 处理文件上传
@@ -68,9 +83,9 @@ public class UploadUtil {
         //...其他参数参考类注释
         UploadManager uploadManager = new UploadManager(cfg);
         //...生成上传凭证，然后准备上传
-        String accessKey = "zd890ccts9Eb4SrpTwgPYdwbX5LlE4ITMgY18Y9h";
-        String secretKey = "ev3-K2NtK0EMKagn0SrnWNgSvJeCNnwTKa4j7djA";
-        String bucket = "trip";//存储空间名称
+        String accessKey = properties.getProperty("accessKey");
+        String secretKey = properties.getProperty("secretKey");
+        String bucket = properties.getProperty("bucketName");//存储空间名称
         //默认不指定key的情况下，以文件内容的hash值作为文件名
         String key = null;//指定文件名称
         Auth auth = Auth.create(accessKey, secretKey);//凭证
