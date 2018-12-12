@@ -12,7 +12,7 @@ echo '----------------------------------'
 
 git add .
 
-git commit -m $2
+git commit -m "$2"
 
 # check is master or other branch
 if [ $1 != 'master' ];then
@@ -24,7 +24,7 @@ fi
 
 git push origin master
 
-echo '+---------Result-----------------+'
+echo '+-------------Result-------------+'
 echo '+                                +'
 echo '+       Finish Successfully      +'
 echo '+--------------------------------+'
