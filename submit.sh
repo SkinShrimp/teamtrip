@@ -24,7 +24,7 @@ fi
 
 git push origin master
 
-echo '+-------------Result-------------+'
-echo '+                                +'
-echo '+       Finish Successfully      +'
+echo '+---------Result-----------------+'
+echo '+                                                +'
+echo '+       Finish Successfully            +'
 echo '+--------------------------------+'
