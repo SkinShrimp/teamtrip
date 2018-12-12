@@ -14,19 +14,21 @@ import java.util.Map;
 public class ImageController {
 
     @PostMapping
-    public Map upload(MultipartFile upload){
+    public Map upload(MultipartFile upload) {
         HashMap map = new HashMap();
         //上传图片,保存到指定目录
         try {
-            String url = UploadUtil.upload(upload, UploadUtil.PATH + "/upload");
-            map.put("uploaded",1);
-            map.put("url",url);
+            //String url = UploadUtil.upload(upload, UploadUtil.PATH + "/upload");
+
+            String url = UploadUtil.uploadQiniuyun(upload);
+            map.put("uploaded", 1);
+            map.put("url", url);
         } catch (Exception e) {
             e.printStackTrace();
-            map.put("uploaded",0);
+            map.put("uploaded", 0);
             HashMap temp = new HashMap();
-            temp.put("message","亲,上传失败!");
-            map.put("error",temp);
+            temp.put("message", "亲,上传失败!");
+            map.put("error", temp);
         }
         return map;
     }
