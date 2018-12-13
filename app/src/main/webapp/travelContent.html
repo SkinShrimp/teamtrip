@@ -16,9 +16,9 @@
     <script>
         $(function () {
             var params = getParams();
-            if(params.id){
+            if (params.id) {
                 //获取该游记的相关信息
-                $.get('/travels/'+params.id,function (data) {
+                $.get('/travels/' + params.id, function (data) {
                     $(".travels").renderValues(data);
                 })
 
@@ -41,7 +41,7 @@
 </div>
 
 <div class="travels">
-    <img  class="cover" render-src="coverUrl">
+    <img class="cover" render-src="coverUrl">
     <div class="container">
         <h6 class="title" render-html="title"></h6>
         <small>
@@ -51,7 +51,7 @@
         </small>
         <div class="row">
             <div class="col-2 img">
-                <img  class="rounded-circle" render-src="author.headImgUrl">
+                <img class="rounded-circle" render-src="author.headImgUrl">
             </div>
             <div class="col-6 mine">
                 <small>
@@ -63,7 +63,7 @@
                 </small>
             </div>
             <div class="attention col">
-                <span class="addr" render-html="place.name" ></span>
+                <span class="addr" render-html="place.name"></span>
             </div>
         </div>
     </div>
@@ -97,16 +97,17 @@
     <hr>
 
     <div class="container d-flex">
-        <div class="p-2  flex-fill">
-            <i class="fa fa-thumbs-o-up"  id="likeBtn"> </i>
+        <div class="p-2  flex-fill fa-2x">
+            <i class="fa fa-thumbs-o-up" id="likeBtn"> </i>
         </div>
-        <div class="p-2  flex-fill"><i class="fa  fa-commenting-o"  id="commentBtn"> </i>
+        <div class="p-2  flex-fill fa-2x">
+            <i class="fa  fa-commenting-o" id="commentBtn"> </i>
         </div>
-        <div class="p-2  flex-fill"><i class="fa fa-star-o" id="collectBtn"> </i>
+        <div class="p-2  flex-fill fa-2x">
+            <i class="fa fa-star-o" id="collectBtn"> </i>
         </div>
     </div>
 </div>
-
 
 
 </body>
