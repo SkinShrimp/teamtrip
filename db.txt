@@ -1,2 +1,7 @@
 建表改表说明书：
 格式: xxxx表(user)  xxxx时间(2018/12/12 下午1:58:02)
+<<<<<<< Updated upstream
+=======
+
+sign_in   创建    2018/12/13 下午
+>>>>>>> Stashed changes
