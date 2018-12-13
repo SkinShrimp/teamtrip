@@ -122,54 +122,55 @@
             <span>我的朋友圈</span>
         </div>
         <div class="col"></div>
+        <li><a href="#" ><b><i class="fa fa-edit fa-2x"></i></b><span></span></a></li>
     </div>
 </div>
 <div style="margin:0 auto;display:none;">
-    <img class="data-avt" src="/images/0.jpg">
+    <img class="data-avt" src="">
 </div>
 <header>
-    <img id="bg" src="/images/bg.jpg">
+    <img id="bg" src="">
     <p id="user-name" class="data-name"></p>
-    <img id="avt" class="data-avt" src="/images/0.jpg">
+   <!-- <img id="avt" class="data-avt" src="">-->
 </header>
 <div id="main">
     <div id="list" >
         <ul >
-            <div render-loop="list">
+            <div>
                 <li>
                     <div class="po-avt-wrap">
-                        <img class="po-avt data-avt" render-src="list.dynamic.user.headImgUrl">
+                        <img class="po-avt data-avt" src="">
                     </div>
                     <div class="po-cmt">
                         <div class="po-hd">
-                            <p class="po-name"><span class="data-name" render-html="list.dynamic.user.nickName">唐老爷</span></p>
+                            <p class="po-name"><span class="data-name">唐老爷</span></p>
                             <div class="post">
                                 <p>哈哈哈哈</p>
 
-                                <ul class="comment-img" render-loop="list.dynamic.imgArr">
+                                <ul class="comment-img">
                                     <li >
-                                        <img class="list-img" render-src="list.dynamic.imgArr.self" style="height: 300px;">
+                                        <img class="list-img" src="" style="height: 300px;">
                                     </li>
                                 </ul>
 
                             </div>
-                            <p class="time"  render-key="list.dynamic.createTime" render-fun="getDate"></p>
-                            <a class="userComment"  data-id="" render-key="list.dynamic.id" render-fun="getDynamicId" ><!--评论按钮-->
-                                <img class="c-icon" src="/images/c.png">
+                            <p class="time" ></p>
+                            <a class="userComment"  data-id="" ><!--评论按钮-->
+                                <img class="c-icon" src="">
                             </a>
                         </div>
                         <div class="r"></div>
                         <div class="cmt-wrap">
                             <div class="like">
-                                <a class="userGood"  data-id="" render-key="list.dynamic.id" render-fun="getDynamicId">
-                                    <img src="/images/l.png"><!--点赞按钮-->
-                                    <span class="thumb" render-key="list.dynamic.dynamicGoods" render-fun="getGoodUserName"  >
+                                <a class="userGood"  data-id="" >
+                                    <img src=""><!--点赞按钮-->
+                                    <span class="thumb" >
 
 							</span>
                                 </a>
                             </div>
                             <!--data-id="" render-key="list.dynamic.id" render-fun="getDynamicId"-->
-                            <div class="cmt-list"  render-key="list.dynamic.dynamicComments" render-fun="getComment">
+                            <div class="cmt-list" >
                                 <p><span >xxx：</span><span class="commentContent"> xxxxxxx～</span></p>
                                 <p><span class="data-name">某某科技~贾素杰</span>回复<span>王思聪</span><span>：</span><span class="commentContent"> xxxxxx～</span></p>
                             </div>
