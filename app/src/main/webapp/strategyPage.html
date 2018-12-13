@@ -18,6 +18,22 @@
 
     <script>
         $(function () {
+            //搜索关键字按钮
+            $("#searchBtn").click(function () {
+                var keyword = $("#search").val();
+                if(keyword){
+                    sessionStorage.setItem("keyword",JSON.stringify(keyword));
+                    window.location.href='/searchStrategy.html'
+                }else {
+                    $(document).dialog({
+                        type: 'notice',
+                        content: '<span class="info-text">请输入要搜索的关键字!</span>',
+                        autoClose: 2500
+                    });
+                }
+            })
+
+
             //获取一条攻略推荐数据
             $.get('/travels/commends', {type: 3, pageSize: 1}, function (data) {
                 //渲染数据
@@ -130,15 +146,19 @@
 
 <div class="search-head">
     <div class="row nav-search">
-        <div class="col-2">
+        <div class="col-1">
             <a href="index.html">
-                <span><i class="fa fa-chevron-left fa-2x"></i></span>
+               <span><i class="fa fa-chevron-left fa-2x"></i></span>
             </a>
         </div>
-        <div class="col-10">
+        <div class="col-8">
             <div class="input-group-sm search">
-                <input class="form-control searchBtn" placeholder="找攻略">
+                <input id="search" class="form-control" placeholder="找攻略">
             </div>
+        </div>
+        <div class="col-1">
+            <i class="fa fa-search" id="searchBtn" style="color:white;font-size:25px;position: absolute;top: 23%;left: 88%">
+            </i>
         </div>
     </div>
 </div>
