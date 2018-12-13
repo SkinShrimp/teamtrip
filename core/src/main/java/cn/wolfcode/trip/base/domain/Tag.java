@@ -11,5 +11,7 @@ import lombok.Setter;
 public class Tag extends BaseDomain{
     //名称
     private String name;
+    //攻略id
+    private Strategy strategy;
 
 }

@@ -4,6 +4,10 @@
   <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.Tag">
     <id column="id" property="id" />
     <result column="name" property="name" />
+    <association property="strategy" javaType="strategy" columnPrefix="s_">
+      <id column="id" property="id" />
+      <result column="title" property="title" />
+    </association>
   </resultMap>
   <delete id="deleteByPrimaryKey">
     delete from tag
@@ -27,4 +31,16 @@
     select id, name
     from tag
   </select>
+    <select id="selectByTag"  resultMap="BaseResultMap">
+      SELECT count(t.id) num, t.name FROM tag t
+      LEFT JOIN comment_tag ct on t.id=ct.tag_id
+      LEFT JOIN strategycomment sc on ct.comment_id=sc.id
+      <where>
+        <if test="strategyId!=null">
+          and sc.strategy_id=#{strategyId}
+        </if>
+      </where>
+      GROUP BY t.name
+      ORDER BY num DESC
+    </select>
 </mapper>
