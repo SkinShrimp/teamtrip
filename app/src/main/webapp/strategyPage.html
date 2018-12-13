@@ -22,8 +22,9 @@
             $("#searchBtn").click(function () {
                 var keyword = $("#search").val();
                 if(keyword){
+                    //将输入的关键字保存到sessionStorage中
                     sessionStorage.setItem("keyword",JSON.stringify(keyword));
-                    window.location.href='/searchStrategy.html'
+                    window.location.href='/search.html'
                 }else {
                     $(document).dialog({
                         type: 'notice',
@@ -153,7 +154,7 @@
         </div>
         <div class="col-8">
             <div class="input-group-sm search">
-                <input id="search" class="form-control" placeholder="找攻略">
+                <input id="search" class="form-control" placeholder="找攻略"  >
             </div>
         </div>
         <div class="col-1">
