@@ -3,6 +3,7 @@ package cn.wolfcode.trip.app.controller;
 import cn.wolfcode.trip.base.domain.*;
 import cn.wolfcode.trip.base.query.StrategyCommentQueryObject;
 import cn.wolfcode.trip.base.query.StrategyQueryObject;
+import cn.wolfcode.trip.base.query.TagQueryObject;
 import cn.wolfcode.trip.base.query.TravelQueryObject;
 import cn.wolfcode.trip.base.service.*;
 import cn.wolfcode.trip.base.util.JsonResult;
@@ -30,6 +31,8 @@ public class StrategyController {
 
     @Autowired
     private IStrategyCommentService commentService;
+    @Autowired
+    private ITagService tagService;
 
     @GetMapping
     public PageInfo query(StrategyQueryObject qo){
@@ -63,6 +66,16 @@ public class StrategyController {
     public JsonResult saveComment(StrategyComment strategyComment,String[] tags){
         commentService.save(strategyComment,tags);
         return new JsonResult();
+    }
+
+    /**
+     * 获取前六个标签
+     * @return
+     */
+    @GetMapping("/{strategyId}/tags")
+    public PageInfo selectByTag(TagQueryObject qo){
+        qo.setPageSize(6);
+        return  tagService.query(qo);
     }
 
 }
