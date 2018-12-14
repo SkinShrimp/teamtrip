@@ -18,86 +18,13 @@
     <script src="/js/plugins/dialog2/dialog.min.js"></script>
     <link rel="stylesheet" href="/js/jqueryAlert/common.css">
     <script src="/js/jqueryAlert/alertPopShow.js"></script>
+    <script src="/js/plugins/inputbox/dist/mDialogMin.js"></script>
+    <link rel="stylesheet" href="/js/plugins/inputbox/dist/dialog.css">
 
 
-    <style type="text/css">
-        * {cursor: pointer;}
-        .weui_mask_transition {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background: rgba(0, 0, 0, 0);
-            -webkit-transition: background .3s;
-            transition: background .3s;
-        }
-        .weui_fade_toggle {
-            background: rgba(0, 0, 0, 0.6);
-        }
-        .weui_actionsheet {
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            -webkit-transform: translate(0, 100%);
-            -ms-transform: translate(0, 100%);
-            transform: translate(0, 100%);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            z-index: 2;
-            width: 100%;
-            background-color: #EFEFF4;
-            -webkit-transition: -webkit-transform .3s;
-            transition: transform .3s;
-        }
-        .weui_actionsheet_toggle {
-            -webkit-transform: translate(0, 0);
-            -ms-transform: translate(0, 0);
-            transform: translate(0, 0);
-        }
-        .weui_actionsheet_menu {
-            background-color: #FFFFFF;
-        }
-        .weui_actionsheet_cell:before {
-            content: " ";
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 1px;
-            border-top: 1px solid #D9D9D9;
-            -webkit-transform-origin: 0 0;
-            -ms-transform-origin: 0 0;
-            transform-origin: 0 0;
-            -webkit-transform: scaleY(0.5);
-            -ms-transform: scaleY(0.5);
-            transform: scaleY(0.5);
-        }
-        .weui_actionsheet_cell:first-child:before {
-            display: none;
-        }
-        .weui_actionsheet_cell {
-            position: relative;
-            padding: 10px 0;
-            text-align: center;
-            font-size: 18px;
-        }
-        .weui_actionsheet_cell.title {
-            color: #999;
-        }
-        .weui_actionsheet_action {
-            margin-top: 6px;
-            background-color: #FFFFFF;
-        }
-    </style>
 
     <script>
         $(function () {
-
-
-
 
             //获取到当前用户
             var user = JSON.parse(sessionStorage.getItem("user"));
@@ -120,8 +47,19 @@
                     //设置时间
                     $("#main").renderValues(json);
                     pages = data.pages;
+
+                    //图片预览
+                    $(".mdialog").click(function () {
+                        Dialog.init('<img src="'+$(this).find("img").attr("src")+'" width="100%">',{
+                            title : '图片预览',
+                            button : {
+                                确定 : function(){Dialog.close(this);}
+                            }
+                        });
+                    })
                 })
                 currentPage = currentPage + 1;
+
             }
 
             query();
@@ -153,9 +91,12 @@
             })
 
 
+
+
         })
 
     </script>
+
 
 </head>
 <body>
@@ -213,9 +154,13 @@
 
                                 <ul class="comment-img" render-loop="list.imgArr">
                                     <li >
-                                        <img class="list-img" render-src="list.imgArr.self" style="height: 90px;">
+                                        <a class="mDialogs mdialog"  href="javascript:;">
+                                            <img class="list-img" render-src="list.imgArr.self" style="height: 90px;">
+                                        </a>
                                     </li>
                                 </ul>
+
+
 
                             </div>
                             <p class="time" render-html="list.releaseTime"></p>
