@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.trip.base.mapper.CommentMapper">
+    <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.Comment">
+        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="parentId" jdbcType="INTEGER" property="parentId" />
+        <result column="comment" jdbcType="VARCHAR" property="comment" />
+        <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="type" jdbcType="INTEGER" property="type" />
+        <result column="type_id" jdbcType="INTEGER" property="typeId" />
+        <result column="collect" jdbcType="INTEGER" property="collect" />
+        <result column="praise" jdbcType="INTEGER" property="praise" />
+        <association property="user" javaType="user" columnPrefix="user_">
+            <result property="id" column="id"/>
+            <result property="nickName" column="nickName"/>
+            <result property="headImgUrl" column="headImgUrl"/>
+        </association>
+    </resultMap>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.wolfcode.trip.base.domain.Comment" useGeneratedKeys="true">
+        INSERT INTO comment (parentId, comment, createTime,
+        type, type_id, user_id,
+        collect, praise)
+        VALUES (#{parentId}, #{comment}, #{createTime},
+        #{type}, #{typeId}, #{user.id},
+        #{collect}, #{praise})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="comment">
+        UPDATE COMMENT SET
+        <if test="collect != null">
+          collect = #{collect}
+        </if>
+        <if test="praise != null">
+          praise = #{praise}
+        </if> WHERE id = #{id}
+    </update>
+    <delete id="deleteByPrimaryKey">
+        DELETE FROM COMMENT WHERE id = #{id}
+    </delete>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        SELECT
+        c.id,
+        c.parentId,
+        c. COMMENT,
+        c.createTime,
+        c.type,
+        c.type_id,
+        c.collect,
+        c.praise,
+        u.id user_id,
+        u.nickName user_nickName,
+        u.headImgUrl user_headImgUrl
+        FROM
+        COMMENT c
+        LEFT JOIN user u ON c.user_id = u.id WHERE c.id = #{id}
+    </select>
+    <select id="selectForList" resultMap="BaseResultMap">
+        SELECT
+        c.id,
+        c.parentId,
+        c. COMMENT,
+        c.createTime,
+        c.type,
+        c.type_id,
+        c.collect,
+        c.praise,
+        u.id user_id,
+        u.nickName user_nickName,
+        u.headImgUrl user_headImgUrl
+        FROM
+        COMMENT c
+        LEFT JOIN user u ON c.user_id = u.id
+    </select>
+    <select id="selectByTypeIdAndType"  resultMap="BaseResultMap">
+      SELECT
+        c.id,
+        c.parentId,
+        c. COMMENT,
+        c.createTime,
+        c.type,
+        c.type_id,
+        c.collect,
+        c.praise,
+        u.id user_id,
+        u.nickName user_nickName,
+        u.headImgUrl user_headImgUrl
+        FROM
+        COMMENT c
+        LEFT JOIN user u ON c.user_id = u.id WHERE c.type_id=#{typeId} AND c.type=#{type}
+    </select>
+</mapper>

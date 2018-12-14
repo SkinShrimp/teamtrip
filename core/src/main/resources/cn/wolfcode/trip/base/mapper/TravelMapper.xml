@@ -75,6 +75,7 @@
     from travel t
     join region r on t.place_id = r.id
     join user u on t.author_id = u.id
+    join travelcommend commend on t.title = commend .title
     <where>
       <if test="authorId!=null">
         and t.author_id = #{authorId}
@@ -88,6 +89,10 @@
       <if test="travelId!=null">
         and t.id = #{travelId}
       </if>
+      <if test="keyword!=null and keyword!=''">
+        and t.title like concat('%',#{keyword},'%')
+      </if>
     </where>
+
   </select>
 </mapper>

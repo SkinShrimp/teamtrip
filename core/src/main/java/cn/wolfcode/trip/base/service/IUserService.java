@@ -30,4 +30,11 @@ public interface IUserService {
      * @param user
      */
     void update(User user);
+
+    /**
+     * 根据id获取用户
+     * @param id
+     * @return
+     */
+    User get(Long id);
 }

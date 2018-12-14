@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.trip.base.mapper.DailyContentMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.DailyContent">
+    <id column="id" property="id" />
+    <result column="content" property="content" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey">
+    delete from dailycontent
+    where id = #{id}
+  </delete>
+  <insert id="insert" >
+    insert into dailycontent (id,content)
+    values (#{id},#{content})
+  </insert>
+  <update id="updateByPrimaryKey">
+    update dailycontent
+    set content = #{content}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select id, content
+    from dailycontent
+    where id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, content
+    from dailycontent
+  </select>
+</mapper>

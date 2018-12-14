@@ -12,7 +12,9 @@
     <link rel="stylesheet" href="/css/reset.css"/>
     <link rel="stylesheet" href="/css/travelContent.css"/>
     <script src="/js/plugins/jrender/jrender.min.js"></script>
+    <script src="/js/plugins/form/jquery.form.js"></script>
     <script src="/js/common.js"></script>
+<<<<<<< Updated upstream
     <script>
         $(function () {
             var params = getParams();
@@ -21,11 +23,130 @@
                 $.get('/travels/'+params.id,function (data) {
                     $(".travels").renderValues(data);
                 })
+=======
+    <!--弹出输入框-->
+    <link href="/js/plugins/inputbox/dist/dialog.css" rel="stylesheet">
+</head>
+<script src="/js/plugins/inputbox/dist/mDialogMin.js"></script>
+<script>
+    $(function () {
+        var params = getParams();
+        if (params.id) {
+            //获取该游记的相关信息
+            $.get('/travels/' + params.id, function (data) {
+                $(".travels").renderValues(data);
+            })
+        }
 
+        //初始化点赞、收藏功能
+        $.get("/comments/" + params.id, function (data) {
+            if (data.praise == 1) {
+                $("#likeBtn").removeClass().addClass("fa fa-thumbs-up");
             }
+            if (data.collect == 1) {
+                $("#collectBtn").removeClass().addClass("fa fa-star");
+            }
+        });
+        //点赞、收藏评论
+        $(".d-flex i").click(function () {
 
-        })
-    </script>
+            var data;
+            var collect = 0;
+            var praise = 0;
+            if ($(this).data("id") == 1) {//点赞
+                if ($("#likeBtn").hasClass("fa-thumbs-o-up")) {
+                    praise = 1;
+                    $("#likeBtn").removeClass().addClass("fa fa-thumbs-up");
+                } else {
+                    $("#likeBtn").removeClass().addClass("fa fa-thumbs-o-up");
+                    praise = 0;
+                }
+                data = {
+                    typeId: params.id,
+                    praise: praise
+                }
+            } else if ($(this).data("id") == 2) {//评论
+                //判断用户是否登陆
+                var item = sessionStorage.getItem("user");
+                if (!item) {
+                    window.location.href = "/login.html";
+                    return;
+                }
+>>>>>>> Stashed changes
+
+                /*评论弹出框*/
+                Dialog.init('<input type="text" placeholder="说点什么吧"  style="margin:8px 0;width:100%;padding:11px 8px;font-size:15px; border:1px solid #999;"/>', {
+                    title: '说点什么吧！',
+                    button: {
+                        确定: function () {
+                            if (this.querySelector('input').value.length >= 50) {
+                                Dialog.init('你输入的内容是：' + this.querySelector('input').value);
+                                Dialog.close(this);
+                            } else {
+                                Dialog.init('你输入的内容不符合要求！', 50);
+                            }
+                            ;
+                        },
+                        点击关闭: function () {
+                            Dialog.init('您取消了评论', 1000);
+                            Dialog.close(this);
+                        }
+                    }
+                });
+
+                data = {
+                    typeId: params.id,
+                    praise: 1
+                }
+                return;
+            } else {//收藏
+                //判断用户是否登陆
+                var item = sessionStorage.getItem("user");
+                if (!item) {
+                    window.location.href = "/login.html";
+                    return;
+                }
+
+                if ($("#collectBtn").hasClass("fa fa-star-o")) {
+                    $("#collectBtn").removeClass().addClass("fa fa-star");
+                    collect = 1;
+                } else {
+                    $("#collectBtn").removeClass().addClass("fa fa-star-o");
+                    collect = 0;
+                }
+                data = {
+                    typeId: params.id,
+                    collect: collect
+                }
+            }
+            $.post("/comments/" + params.id + "/collectOrPraise", data, function (data) {
+
+            });
+        });
+
+        //禁用手机自带的键盘输入框
+        function forbidFocus(i) {
+            $('#txt' + i).focus(function () {
+                document.activeElement.blur();
+            });
+        }
+
+        //其次，显示与关闭自定义的输入键盘。
+        // 打开自定义输入键盘
+        function showDialog(i) {
+            $('#txt' + i).on('click', function () {
+                $('#num' + i).animate({bottom: "0"}, 'fast');
+                // 若多种文本输入框时，需隐藏其他的输入键盘
+                hideDialog(i);
+            });
+        }
+
+        // 关闭自定义输入键盘
+        function hideDialog(i) {
+            $('.popup-list').not('#num' + i).animate({bottom: -h + 'px'}, 'fast');
+        }
+    })
+</script>
 </head>
 <body>
 <div class="search-head">
@@ -97,15 +218,27 @@
     <hr>
 
     <div class="container d-flex">
+<<<<<<< Updated upstream
         <div class="p-2  flex-fill">
             <i class="fa fa-thumbs-o-up"  id="likeBtn"> </i>
         </div>
         <div class="p-2  flex-fill"><i class="fa  fa-commenting-o"  id="commentBtn"> </i>
         </div>
         <div class="p-2  flex-fill"><i class="fa fa-star-o" id="collectBtn"> </i>
+=======
+        <div class="p-2  flex-fill fa-2x">
+            <i data-id="1" class="fa fa-thumbs-o-up" id="likeBtn"> </i>
+        </div>
+        <div class="p-2  flex-fill fa-2x">
+            <i data-id="2" class="fa  fa-commenting-o" id="commentBtn"> </i>
+        </div>
+        <div class="p-2  flex-fill fa-2x">
+            <i data-id="3" class="fa fa-star-o" id="collectBtn"> </i>
+>>>>>>> Stashed changes
         </div>
     </div>
 </div>
+<div id="comment"></div>
 
 
 

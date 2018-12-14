@@ -13,12 +13,32 @@
     <script src="/js/plugins/jrender/jrender.min.js"></script>
     <link rel="stylesheet" href="/js/plugins/dialog2/dialog.css"/>
     <script src="/js/plugins/dialog2/dialog.min.js"></script>
+    <script src="/js/common.js"></script>
     <script>
        $(function () {
            //获取当前登录用户
            var user = JSON.parse(sessionStorage.getItem("user"));
            var currentUserId = user.id;
 
+           //查询和当前登录对象有关的所有用户
+           $.get('/userchats',{aboutMeId:currentUserId},function (data) {
+               $(".users").renderValues({list: data}, {
+                   getHref: getHref,
+                   setUnReads:function (item,value) {
+                       $.ajax({
+                           url: '/userchats/'+value+'/'+currentUserId+'/unreads',
+                           type: "get",
+                           data:{status:0},
+                           async:false,
+                           success:function (data) {
+                               if(data){
+                                   $(item).html(data);
+                               }
+                           }
+                       });
+                   }
+               });
+           });
 
 
        });
@@ -39,18 +59,20 @@
         </div>
     </div>
     <div id="receivers">
-        <div render-loop="list">
-        <ul class="list-group">
-            <a data-href="/mine/chat.html?receiverId=" render-key="list.id" render-fun="getHref">
+        <div class="users">
+        <ul class="list-group" render-loop="list">
+            <a data-href="/mine/chat.html?id=" render-fun="getHref" render-key="list.id">
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <div class="item">
                         <img render-src="list.headImgUrl" width="30px"/>
-                        <span render-html="list.nickName"></span>
+                        <span render-html="list.nickName">xxx</span>
                     </div>
+                    <span render-fun="setUnReads" render-key="list.id" class="badge badge-danger badge-pill"></span>
                 </li>
             </a>
         </ul>
         </div>
     </div>
+
 </body>
 </html>

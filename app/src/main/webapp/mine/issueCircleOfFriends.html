@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+	<head lang="en">
+		<title></title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="/js/bootstrap-4.1.1-dist/css/bootstrap.min.css">
+		<script src="/js/jquery/jquery.min.js"></script>
+		<script src="/js/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="/css/font/css/font-awesome.min.css"/>
+		<link rel="stylesheet" href="/css/reset.css"/>
+		<link rel="stylesheet" href="/css/myStrategyComment.css"/>
+		<script src="/js/plugins/jrender/jrender.min.js"></script>
+		<link rel="stylesheet" href="/js/plugins/dialog2/dialog.css"/>
+		<script src="/js/plugins/dialog2/dialog.min.js"></script>
+		<script src="/js/plugins/form/jquery.form.js"></script>
+		<script src="/js/common.js"></script>
+
+		<script>
+            $(function () {
+                var num;
+
+				//当前点击的上传div
+				var rect;
+                //上传按钮
+                $(".rect").click(function () {
+                    rect = $(this);
+                    $("#fileInput").click();
+                })
+
+                $("#fileInput").change(function () {
+                    if($(this).val()){
+                        $("#fileForm").ajaxSubmit(function (data) {
+                            if (data.status==1){
+                                rect.html('<img src="'+data.url+'" />');
+                            }
+                        })
+                    }
+                })
+
+
+				//提交朋友圈
+				$("#submitBtn").click(function () {
+				    //获取当前用户
+				   var user = JSON.parse(sessionStorage.getItem("user"));
+                    console.log(user);
+                    if(user.id){
+
+                        //获取所有的图片
+                        var imgs = $(".imgs img");
+						var temp = "";
+						for(var i=0;i<imgs.length;i++){
+                            temp += $(imgs[i]).attr('src')+";";
+						}
+
+                        var data = {
+							content:$('[name="content"]').val(),//朋友圈内容
+                            imgUrls:temp,  //拼接后的图片url
+                        };
+
+                        console.log(data);
+                        $.post('/circleForFriends',data,function (data) {
+                        window.location.href = "/mine/circleFriends.html";
+                    })
+                }
+
+
+                })
+
+
+
+            })
+		</script>
+	</head>
+
+	<body>
+
+	<form id="fileForm" action="/images" method="post" enctype="multipart/form-data">
+		<input name="file" type="file" id="fileInput" style="display: none">
+	</form>
+
+	<div class="search-head">
+		<div class="row nav-search">
+			<div class="col">
+				<a href="javascript:window.history.go(-1)">
+					<span><i class="fa fa-chevron-left" ></i></span>
+				</a>
+
+			</div>
+			<div class="col">
+				<span>发布朋友圈</span>
+			</div>
+			<div class="col"></div>
+		</div>
+	</div>
+
+	<div class="comment">
+		<hr />
+		<div class="container tag">
+			<p></p>
+			<textarea name="content" class="form-control" rows="5" placeholder="这一刻的想法...."></textarea>
+		</div>
+		<div class="container imgs ">
+			<p>上传图片</p>
+
+			<div class="row">
+				<div class="col-3 rect">
+					<span>上传</span>
+				</div>
+				<div class="col-3 rect">
+					<span>上传</span>
+				</div>
+				<div class="col-3 rect">
+					<span>上传</span>
+				</div>
+				<div class="col-3 rect">
+					<span>上传</span>
+				</div>
+				<div class="col-3 rect">
+					<span>上传</span>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+
+
+	<div class="operation">
+		<button class="btn" onclick="window.history.go(-1)">取消</button>
+		<button class="btn" id="submitBtn">发布</button>
+	</div>
+
+
+
+
+
+	</body>
+
+
+</html>

@@ -12,11 +12,33 @@
 	<link rel="stylesheet" href="/css/reset.css" rel="stylesheet" >
 	<link rel="stylesheet" href="/css/index.css" rel="stylesheet">
 	<script src="/js/plugins/jrender/jrender.min.js"></script>
+	<link rel="stylesheet" href="/js/plugins/dialog2/dialog.css">
+	<script src="/js/plugins/dialog2/dialog.min.js"></script>
 	<script src="/js/common.js"></script>
 
 
 	<script>
 		$(function () {
+            //搜索关键字按钮
+            $("#searchBtn").click(function () {
+                var keyword = $("#search").val();
+                if(keyword){
+                    //将输入的关键字保存到sessionStorage中
+                    sessionStorage.setItem("keyword",JSON.stringify(keyword));
+                    window.location.href='/search.html'
+                }else {
+                    $(document).dialog({
+                        type: 'notice',
+                        content: '<span class="info-text">请输入要搜索的关键字!</span>',
+                        autoClose: 2500
+                    });
+                }
+            })
+
+
+
+
+
 		    //加载侧边栏的时候带上毫秒值,解决缓存问题
 			$("#ipage").attr('src',"/mine/simpleProfiles.html?"+new Date().getTime());
 
@@ -32,7 +54,27 @@
 
             })
 
+            $.get('/dailies', {pageSize: 3}, function (data) {
+                $("#dailyCommends1").renderValues(data.list[0], {
+                    getHref: function (item, value) {
+                        var url = $(item).data("href");
+                        $(item).attr("href", url + value);
+                    }
+                });
+                $("#dailyCommends2").renderValues(data.list[1], {
+                    getHref: function (item, value) {
+                        var url = $(item).data("href");
+                        $(item).attr("href", url + value);
+                    }
+                });
+                $("#dailyCommends3").renderValues(data.list[2], {
+                    getHref: function (item, value) {
+                        var url = $(item).data("href");
+                        $(item).attr("href", url + value);
+                    }
+                });
 
+            });
         })
 	</script>
 
@@ -56,11 +98,19 @@
 
 	<div class="search-head">
 		<div class="row nav-search">
-			<div class="col-2"></div>
-			<div class="col-10">
+			<div class="col-1">
+				<a href="index.html">
+					<span><i class="fa fa-chevron-left fa-2x"></i></span>
+				</a>
+			</div>
+			<div class="col-8">
 				<div class="input-group-sm search">
-					<input class="form-control searchBtn" placeholder="搜索旅行攻略、日记和旅游资讯">
+					<input id="search" class="form-control" placeholder="找攻略/游记/用户/日报"  >
 				</div>
+			</div>
+			<div class="col-1">
+				<i class="fa fa-search" id="searchBtn" style="color:white;font-size:25px;position: absolute;top: 23%;left: 88%">
+				</i>
 			</div>
 		</div>
 	</div>
@@ -133,50 +183,53 @@
 	<hr>
 
 	<div class="container">
-		<h6 class="module-title">骡窝日报 <a href="#">更多</a>  </h6>
-
-
-		<div class="news " id="bigger">
-			<a href="#">
-				<img width="100%" src="/upload/8aa4b264-ed40-4227-a9d4-a3b0117b8a2f.jpeg">
-				<div class="caption">
-					<h5>暑假去哪里旅游凉快？</h5>
-					<p>
-						当然是这个地方了
-					</p>
-				</div>
-			</a>
-		</div>
-
-		<hr>
-		<div id="smaller">
-			<div  style="margin-bottom: 20px">
-				<a href="#">
-					<div class="row news-detail">
-						<div class="col-5">
-							<img src="/upload/e6066b48-85ec-48c2-8c1d-4c2ed41fcacc.jpeg">
-						</div>
-						<div class="col-7">
-							<h4>全球最性感的海滩！</h4>
-							<p>男人女人都为之疯狂。 </p>
-						</div>
+		<h6 class="module-title">骡窝日报 <a href="/newsPage.html">更多</a></h6>
+		<div id="dailyCommends1">
+			<div class="news" id="bigger">
+				<a data-href="newsContent.html?id=" render-key="id" render-fun="getHref">
+					<img width="100%" render-src="coverUrl">
+					<div class="caption">
+						<h5 render-html="title"></h5>
+						<p render-html="subTitle"></p>
 					</div>
 				</a>
-				<hr>
-			</div><div style="margin-bottom: 20px">
-			<a href="#">
-				<div class="row news-detail">
-					<div class="col-5">
-						<img src="/upload/7e1e1d7c-cdeb-455a-af66-32d021a77138.jpeg">
-					</div>
-					<div class="col-7">
-						<h4>名人眼中旅行的意义</h4>
-						<p>旅行对我来说，是恢复青春活力的源泉。</p>
-					</div>
+			</div>
+		</div>
+		<hr>
+		<div id="smaller">
+			<div id="dailyCommends2">
+				<div style="margin-bottom: 20px">
+					<a data-href="newsContent.html?id=" render-key="id" render-fun="getHref">
+						<div class="row news-detail">
+							<div class="col-5">
+								<img render-src="coverUrl">
+							</div>
+							<div class="col-7">
+								<h4 render-html="title"></h4>
+								<p render-html="subTitle"></p>
+							</div>
+						</div>
+					</a>
+					<hr>
 				</div>
-			</a>
-			<hr>
-		</div></div>
+			</div>
+			<div id="dailyCommends3">
+				<div style="margin-bottom: 20px">
+					<a data-href="newsContent.html?id=" render-key="id" render-fun="getHref">
+						<div class="row news-detail">
+							<div class="col-5">
+								<img render-src="coverUrl">
+							</div>
+							<div class="col-7">
+								<h4 render-html="title"></h4>
+								<p render-html="subTitle"></p>
+							</div>
+						</div>
+					</a>
+					<hr>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 

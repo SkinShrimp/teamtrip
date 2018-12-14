@@ -1,0 +1,274 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title style="height: 500px">朋友圈动态</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <link rel="stylesheet" href="/css/myStrategyComment.css"/>
+    <link rel="stylesheet" href="/css/app.css">
+    <script src="/js/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="/js/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/font/css/font-awesome.min.css">
+    <script src="/js/plugins/jrender/jrender.min.js"></script>
+    <link rel="stylesheet" href="/js/plugins/dialog2/dialog.css">
+    <script src="/js/plugins/dialog2/dialog.min.js"></script>
+    <link rel="stylesheet" href="/js/jqueryAlert/common.css">
+    <script src="/js/jqueryAlert/alertPopShow.js"></script>
+    <script src="/js/plugins/inputbox/dist/mDialogMin.js"></script>
+    <link rel="stylesheet" href="/js/plugins/inputbox/dist/dialog.css">
+
+
+
+    <script>
+        $(function () {
+
+            //获取到当前用户
+            var user = JSON.parse(sessionStorage.getItem("user"));
+
+            //获取全部游记(分页)
+            //当前页
+            var currentPage = 1;
+            //总页数
+            var pages;
+            //存储游记的数组
+            var travelArr = [];
+
+            function query() {
+                $.get('/circleForFriends', {currentPage: currentPage}, function (data) {
+
+                    $.merge(travelArr, data.list);
+                    var json = {
+                        list: travelArr
+                    }
+                    //设置时间
+                    $("#main").renderValues(json);
+                    pages = data.pages;
+
+                    //图片预览
+                    $(".mdialog").click(function () {
+                        Dialog.init('<img src="'+$(this).find("img").attr("src")+'" width="100%">',{
+                            title : '图片预览',
+                            button : {
+                                确定 : function(){Dialog.close(this);}
+                            }
+                        });
+                    })
+                })
+                currentPage = currentPage + 1;
+
+            }
+
+            query();
+
+
+            //给window绑定滚动事件
+            $(window).scroll(function () {
+                if ($(window).height() + $(document).scrollTop() + 1 >= $(document).height()) {
+                    //如果是大于总页数就不发送请求了
+                    if (currentPage <= pages) {
+                        query();
+                    } else {
+                        $(document).dialog({
+                            type: 'notice',
+                            content: '<span class="info-text">亲,已经到底了!</span>',
+                            autoClose: 2500
+                        });
+                    }
+                }
+            });
+            //设置朋友圈背景,用户头像昵称
+            $("#bg").attr("src",user.coverImgUrl);
+            $("#avt").attr("src",user.headImgUrl);
+            $("#user-name").html(user.nickName)
+
+          //点击发布按钮跳转发布
+            $("#issue").click(function () {
+                window.location.href="/mine/issueCircleOfFriends.html"
+            })
+
+
+
+
+        })
+
+    </script>
+
+
+</head>
+<body>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="outerdiv" style="position: fixed; top: 0; left: 0; background: rgba(0,0,0,0.7); z-index: 2; width: 100%; height: 100%; display: none;">
+                <div id="innerdiv" style="margin:auto;width: 800px; height: 800px;margin-top:33%;">
+                    <img id="bigimg" style="border: 5px solid #fff; margin: 0 auto;width: 366px; height: 400px; " src="" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="search-head">
+    <div class="row nav-search">
+        <div class="col">
+            <a href="javascript:window.history.go(-1)">
+                <span><i class="fa fa-chevron-left" ></i></span>
+            </a>
+            <div class="col" id="issue" style="float: right"><a href="#" ><b><i class="fa fa-edit fa-2x"></i></b><span></span></a></div>
+        </div>
+        <div class="col">
+            <span>我的朋友圈</span>
+        </div>
+
+    </div>
+</div>
+<div style="margin:0 auto;display:none;">
+    <img class="data-avt" src="">
+</div>
+<header>
+    <img id="bg" src="">
+    <p id="user-name" class="data-name"></p>
+    <img id="avt" class="data-avt">
+</header>
+<div id="main">
+    <div id="list" render-loop="list">
+        <ul >
+            <div>
+                <li>
+                    <div class="po-avt-wrap">
+                        <img class="po-avt data-avt" render-src="list.user.headImgUrl">
+                    </div>
+                    <div class="po-cmt">
+                        <div class="po-hd">
+                            <p class="po-name"><span class="data-name" render-html="list.user.nickName"></span></p>
+                            <div class="post">
+                                <p render-html="list.content"></p>
+
+                                <ul class="comment-img" render-loop="list.imgArr">
+                                    <li >
+                                        <a class="mDialogs mdialog"  href="javascript:;">
+                                            <img class="list-img" render-src="list.imgArr.self" style="height: 90px;">
+                                        </a>
+                                    </li>
+                                </ul>
+
+
+
+                            </div>
+                            <p class="time" render-html="list.releaseTime"></p>
+                            <a class="userComment"  data-id="" ><!--评论按钮-->
+                                <img class="c-icon" src="">
+                            </a>
+                        </div>
+                        <div class="r"></div>
+                        <div class="cmt-wrap">
+                            <div class="like">
+                                <a class="userGood"  data-id="" >
+                                    <img src=""><!--点赞按钮-->
+                                    <span class="thumb" >
+
+							</span>
+                                </a>
+                            </div>
+                            <!--data-id="" render-key="list.dynamic.id" render-fun="getDynamicId"-->
+                            <div class="cmt-list" >
+                                <p><span >xxx：</span><span class="commentContent"> xxxxxxx～</span></p>
+                                <p><span class="data-name">某某科技~贾素杰</span>回复<span>王思聪</span><span>：</span><span class="commentContent"> xxxxxx～</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </div>
+
+
+        </ul>
+    </div>
+
+</div>
+<!--<script>
+    function timeago(dateTimeStamp){   //dateTimeStamp是一个时间毫秒，注意时间戳是秒的形式，在这个毫秒的基础上除以1000，就是十位数的时间戳。13位数的都是时间毫秒。
+
+        var minute=1000*60;      //把分，时，天，周，半个月，一个月用毫秒表示
+
+        var  hour=minute*60;
+
+        var day=hour*24;
+
+        var week=day*7;
+
+        var halfamonth=day*15;
+
+        var month=day*30;
+
+        var  now=new Date().getTime();   //获取当前时间毫秒
+
+        var diffValue=now-dateTimeStamp;//时间差
+
+
+
+        if(diffValue<0){return;}
+
+
+
+        var  minC=diffValue/minute;  //计算时间差的分，时，天，周，月
+
+        var  hourC=diffValue/hour;
+
+        var  dayC=diffValue/day;
+
+        var  weekC=diffValue/week;
+
+        var  monthC=diffValue/month;
+
+
+
+        if(minC>=1){
+
+            result=" "+parseInt(minC)+"分钟前"
+
+        }
+
+
+
+        else  if(hourC>=1){
+
+            result=" "+parseInt(hourC)+"小时前"
+
+        }
+
+        else    if(dayC>=1){
+
+            result=" "+parseInt(dayC)+"天前"
+
+        }
+
+        else    if(weekC>=1){
+
+            result=" "+parseInt(weekC)+"周前"
+
+        }
+
+        else    if(monthC>=1){
+
+            result=" "+parseInt(monthC)+"月前"
+
+        }
+        else{
+
+            result="刚刚";
+
+        }
+
+        return result;
+    }
+</script>-->
+</body>
+</html>
