@@ -40,6 +40,7 @@
 
                     //查询攻略数量
                     var searchSum = data.list.length;
+
                     console.log(searchSum);
                     //拼接
                     $(".strategy").html("攻略"+"("+searchSum+")");
@@ -78,6 +79,7 @@
                 $.get("/travels",{keyword:keyword,currentPage:travelCurrentPage,state:2},function (data) {
                     //查询游记游记数量
                     var searchSum = data.list.length;
+
                     //拼接
                     $(".travel").html("游记"+"("+searchSum+")");
 
@@ -113,6 +115,7 @@
                 $.get("/users",{keyword:keyword,currentPage:userCurrentPage},function (data) {
                     //查询用户数量
                     var searchSum = data.list.length;
+
                     //拼接
                     $(".user").html("用户"+"("+searchSum+")");
 

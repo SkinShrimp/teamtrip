@@ -17,6 +17,24 @@
     <script src="/js/common.js"></script>
     <script>
         $(function () {
+            //搜索关键字按钮
+            $("#searchBtn").click(function () {
+                var keyword = $("#search").val();
+                if(keyword){
+                    //将输入的关键字保存到sessionStorage中
+                    sessionStorage.setItem("keyword",JSON.stringify(keyword));
+                    window.location.href='/search.html'
+                }else {
+                    $(document).dialog({
+                        type: 'notice',
+                        content: '<span class="info-text">请输入要搜索的关键字!</span>',
+                        autoClose: 2500
+                    });
+                }
+            })
+
+
+
             //获取全部游记(分页)
             //当前页
             var currentPage = 1;
