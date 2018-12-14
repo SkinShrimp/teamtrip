@@ -18,4 +18,11 @@ public interface ICircleForFriendsService {
     List<CircleForFriends> selectAll();
 
     List<CircleForFriends> selectReleaseTime(Long id);
+
+    /**
+     * 保存发布朋友圈
+     * @param record
+     * @return
+     */
+    void insert(CircleForFriends record);
 }

@@ -8,11 +8,13 @@ import cn.wolfcode.trip.base.query.CircleForFriendsQueryObject;
 import cn.wolfcode.trip.base.query.QueryObject;
 import cn.wolfcode.trip.base.service.ICircleForFriendsService;
 import cn.wolfcode.trip.base.service.IStrategyCatalogService;
+import cn.wolfcode.trip.base.util.UserContext;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -33,6 +35,14 @@ public class CircleForFriendsServiceImpl implements ICircleForFriendsService {
 
     public List<CircleForFriends> selectReleaseTime(Long id) {
         return circleForFriendsMapper.selectReleaseTime(id);
+    }
+
+    public void insert(CircleForFriends record) {
+        //设置当前时间
+        record.setReleaseTime(new Date());
+        //设置当前用户
+        record.setUser(UserContext.getUser());
+        circleForFriendsMapper.insert(record);
     }
 
 

@@ -102,10 +102,6 @@
             //获取到当前用户
             var user = JSON.parse(sessionStorage.getItem("user"));
 
-
-
-
-
             //获取全部游记(分页)
             //当前页
             var currentPage = 1;
@@ -122,15 +118,7 @@
                         list: travelArr
                     }
                     //设置时间
-                    $("#main").renderValues(json,{
-                        getDate:function (item, value) {
-
-                            //将时间转化为时间戳
-                            var timeString=Date.parse(value);
-                            console.log(timeString);
-                            $(".time").html(timeago(timeString))
-                        }
-                    });
+                    $("#main").renderValues(json);
                     pages = data.pages;
                 })
                 currentPage = currentPage + 1;
@@ -159,32 +147,10 @@
             $("#avt").attr("src",user.headImgUrl);
             $("#user-name").html(user.nickName)
 
-            /* //设置发布时间距离此时多久,10小时内显示**小时前或者**分钟前,超过10小时日期格式为 年-月-日
-             $.get('/circleForFriends', {currentPage: currentPage}, function (data) {
-                 //获取到当前时间
-                 var time = new Date()
-                 //获取到用户发布时间
-                 var userTime = data.list[0].releaseTime;
-                 //将时间转化为时间戳
-                 var t = time.valueOf();
-                 var ut=userTime.valueOf();
-
-                 console.log(t);
-                 console.log(ut);
-
-                 //最大的显示时间10小时内,一小时内显示为多少分钟
-
-                 {
-                        getDate:function (itme, value) {
-                            $(".time").html(diaplayTime(value))
-                        }
-                    }
-
-             })*/
-
-
-            //获取到用户时间的字符串
-
+          //点击发布按钮跳转发布
+            $("#issue").click(function () {
+                window.location.href="/mine/issueCircleOfFriends.html"
+            })
 
 
         })
@@ -215,12 +181,12 @@
             <a href="javascript:window.history.go(-1)">
                 <span><i class="fa fa-chevron-left" ></i></span>
             </a>
+            <div class="col" id="issue" style="float: right"><a href="#" ><b><i class="fa fa-edit fa-2x"></i></b><span></span></a></div>
         </div>
         <div class="col">
             <span>我的朋友圈</span>
         </div>
-        <div class="col"></div>
-        <li><a href="#" ><b><i class="fa fa-edit fa-2x"></i></b><span></span></a></li>
+
     </div>
 </div>
 <div style="margin:0 auto;display:none;">
@@ -245,14 +211,14 @@
                             <div class="post">
                                 <p render-html="list.content"></p>
 
-                                <ul class="comment-img">
+                                <ul class="comment-img" render-loop="list.imgArr">
                                     <li >
-                                        <img class="list-img" render-src="list.imgUrls" style="height: 300px;">
+                                        <img class="list-img" render-src="list.imgArr.self" style="height: 90px;">
                                     </li>
                                 </ul>
 
                             </div>
-                            <p class="time" render-key="list.releaseTime" render-fun="getDate"></p>
+                            <p class="time" render-html="list.releaseTime"></p>
                             <a class="userComment"  data-id="" ><!--评论按钮-->
                                 <img class="c-icon" src="">
                             </a>
@@ -282,13 +248,7 @@
     </div>
 
 </div>
-<script>
-    //时间戳
-    function getLocalTime(nS) {
-        return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');
-    }
-</script>
-<script>
+<!--<script>
     function timeago(dateTimeStamp){   //dateTimeStamp是一个时间毫秒，注意时间戳是秒的形式，在这个毫秒的基础上除以1000，就是十位数的时间戳。13位数的都是时间毫秒。
 
         var minute=1000*60;      //把分，时，天，周，半个月，一个月用毫秒表示
@@ -364,6 +324,6 @@
 
         return result;
     }
-</script>
+</script>-->
 </body>
 </html>
