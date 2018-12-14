@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.trip.base.mapper.CircleForFriendsMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.CircleForFriends">
+    <id column="id" property="id" />
+    <result column="content" property="content" />
+    <result column="imgUrls" property="imgUrls" />
+    <result column="releaseTime" property="releaseTime" />
+
+    <association property="user" javaType="user" columnPrefix="u_">
+      <id column="id" property="id" />
+      <result column="nickName" property="nickName" />
+      <result column="headImgUrl" property="headImgUrl" />
+      <result column="coverImgUrl" property="coverImgUrl" />
+    </association>
+
+  </resultMap>
+  <delete id="deleteByPrimaryKey">
+    delete from circleforfriends
+    where id = #{id}
+  </delete>
+
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into circleforfriends (user_id, content, imgUrls, releaseTime)
+    values (#{user.id}, #{content}, #{imgUrls}, #{releaseTime})
+  </insert>
+
+  <update id="updateByPrimaryKey">
+    update circleforfriends
+    set user_id = #{user.id},
+      content = #{content},
+      imgUrls = #{imgUrls},
+      releaseTime = #{releaseTime}
+    where id = #{id}
+  </update>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select id, user_id, content, imgUrls, releaseTime
+    from circleforfriends
+    where id = #{id}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, user_id, content, imgUrls, releaseTime
+    from circleforfriends
+  </select>
+
+  <select id="selectForList" resultMap="BaseResultMap">
+     select cs.id, cs.user_id, cs.content, cs.imgUrls, cs.releaseTime,
+     u.id u_id,u.nickName u_nickName,u.headImgUrl u_headImgUrl,u.coverImgUrl u_coverImgUrl
+    from circleforfriends cs
+    JOIN user u ON cs.user_id=u.id
+    <where>
+      <if test="userId != null">
+        AND u.id=#{userId}
+      </if>
+    </where>
+
+  </select>
+  <select id="selectReleaseTime" resultMap="BaseResultMap">
+    select cs.id, cs.user_id, cs.content, cs.imgUrls, cs.releaseTime,
+    u.id u_id,u.nickName u_nickName,u.headImgUrl u_headImgUrl,u.coverImgUrl u_coverImgUrl
+    from circleforfriends cs
+    JOIN user u ON cs.user_id=u.id
+    WHERE u.id=#{id}
+
+  </select>
+</mapper>

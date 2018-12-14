@@ -1,65 +1,24 @@
 package cn.wolfcode.trip.base.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
-public class UserChat {
-    private Long id;
+/**
+ * 用户私信数据表
+ */
+@Data
+public class UserChat extends BaseDomain{
+    public final int STATUS_ON = 1;
+    public final int STATUS_OFF = 0;
 
-    private Long sender_id;
-
-    private Long receiver_id;
-
+    private User sender;  //发送者
+    private User receiver;  //接收者
     private String message;
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date sendTime;
-
-    private Integer status;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getSender_id() {
-        return sender_id;
-    }
-
-    public void setSender_id(Long sender_id) {
-        this.sender_id = sender_id;
-    }
-
-    public Long getReceiver_id() {
-        return receiver_id;
-    }
-
-    public void setReceiver_id(Long receiver_id) {
-        this.receiver_id = receiver_id;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Date getSendTime() {
-        return sendTime;
-    }
-
-    public void setSendTime(Date sendTime) {
-        this.sendTime = sendTime;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
+    private Integer status = STATUS_OFF;  //设置状态，默认为1
 }
