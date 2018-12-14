@@ -51,7 +51,7 @@
                     }
                     $("#strategies").renderValues(json, {
                         getHref: function (item, value) {
-                            $(item).attr("href", "/travelContent.html?id=" + value);
+                            $(item).attr("href", "/strategyCatalogs.html?id=" + value);
                         }
                     });
                     strategyPages = data.pages;
@@ -77,7 +77,7 @@
 
                 //查询游记
                 $.get("/travels",{keyword:keyword,currentPage:travelCurrentPage,state:2},function (data) {
-                    //查询游记游记数量
+                    //查询游记数量
                     var searchSum = data.list.length;
 
                     //拼接
@@ -125,7 +125,7 @@
                     }
                     $("#dailys").renderValues(json, {
                         getHref: function (item, value) {
-                            $(item).attr("href", "/travelContent.html?id=" + value);
+                            $(item).attr("href", "/newsContent.html?id=" + value);
                         }
                     });
                     dailyPages = data.pages;
