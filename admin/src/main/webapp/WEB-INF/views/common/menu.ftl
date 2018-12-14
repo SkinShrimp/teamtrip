@@ -31,6 +31,14 @@
         </ul>
     </li>
 </ul>
+<li class="list-group-item">
+    <a href="#" data-toggle="collapse" data-target="#daily_detail">
+        <span>日报管理</span>
+    </a>
+    <ul class="in" id="daily_detail">
+        <li class="daily"><a href="/daily/list.do">日报文章管理</a></li>
+    </ul>
+</li>
 
 <!--设置菜单回显-->
 <script>

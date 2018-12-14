@@ -32,7 +32,27 @@
 
             })
 
+            $.get('/dailies', {pageSize: 3}, function (data) {
+                $("#dailyCommends1").renderValues(data.list[0], {
+                    getHref: function (item, value) {
+                        var url = $(item).data("href");
+                        $(item).attr("href", url + value);
+                    }
+                });
+                $("#dailyCommends2").renderValues(data.list[1], {
+                    getHref: function (item, value) {
+                        var url = $(item).data("href");
+                        $(item).attr("href", url + value);
+                    }
+                });
+                $("#dailyCommends3").renderValues(data.list[2], {
+                    getHref: function (item, value) {
+                        var url = $(item).data("href");
+                        $(item).attr("href", url + value);
+                    }
+                });
 
+            });
         })
 	</script>
 
@@ -133,50 +153,53 @@
 	<hr>
 
 	<div class="container">
-		<h6 class="module-title">骡窝日报 <a href="#">更多</a>  </h6>
-
-
-		<div class="news " id="bigger">
-			<a href="#">
-				<img width="100%" src="/upload/8aa4b264-ed40-4227-a9d4-a3b0117b8a2f.jpeg">
-				<div class="caption">
-					<h5>暑假去哪里旅游凉快？</h5>
-					<p>
-						当然是这个地方了
-					</p>
-				</div>
-			</a>
-		</div>
-
-		<hr>
-		<div id="smaller">
-			<div  style="margin-bottom: 20px">
-				<a href="#">
-					<div class="row news-detail">
-						<div class="col-5">
-							<img src="/upload/e6066b48-85ec-48c2-8c1d-4c2ed41fcacc.jpeg">
-						</div>
-						<div class="col-7">
-							<h4>全球最性感的海滩！</h4>
-							<p>男人女人都为之疯狂。 </p>
-						</div>
+		<h6 class="module-title">骡窝日报 <a href="/newsPage.html">更多</a></h6>
+		<div id="dailyCommends1">
+			<div class="news" id="bigger">
+				<a data-href="newsContent.html?id=" render-key="id" render-fun="getHref">
+					<img width="100%" render-src="coverUrl">
+					<div class="caption">
+						<h5 render-html="title"></h5>
+						<p render-html="subTitle"></p>
 					</div>
 				</a>
-				<hr>
-			</div><div style="margin-bottom: 20px">
-			<a href="#">
-				<div class="row news-detail">
-					<div class="col-5">
-						<img src="/upload/7e1e1d7c-cdeb-455a-af66-32d021a77138.jpeg">
-					</div>
-					<div class="col-7">
-						<h4>名人眼中旅行的意义</h4>
-						<p>旅行对我来说，是恢复青春活力的源泉。</p>
-					</div>
+			</div>
+		</div>
+		<hr>
+		<div id="smaller">
+			<div id="dailyCommends2">
+				<div style="margin-bottom: 20px">
+					<a data-href="newsContent.html?id=" render-key="id" render-fun="getHref">
+						<div class="row news-detail">
+							<div class="col-5">
+								<img render-src="coverUrl">
+							</div>
+							<div class="col-7">
+								<h4 render-html="title"></h4>
+								<p render-html="subTitle"></p>
+							</div>
+						</div>
+					</a>
+					<hr>
 				</div>
-			</a>
-			<hr>
-		</div></div>
+			</div>
+			<div id="dailyCommends3">
+				<div style="margin-bottom: 20px">
+					<a data-href="newsContent.html?id=" render-key="id" render-fun="getHref">
+						<div class="row news-detail">
+							<div class="col-5">
+								<img render-src="coverUrl">
+							</div>
+							<div class="col-7">
+								<h4 render-html="title"></h4>
+								<p render-html="subTitle"></p>
+							</div>
+						</div>
+					</a>
+					<hr>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 

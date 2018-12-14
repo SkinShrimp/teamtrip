@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>点赞</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <script src="/js/jquery/jquery.min.js"></script>
+    <script src="/js/plugins/jrender/jrender.min.js"></script>
+    <link rel="stylesheet" href="/js/plugins/dialog2/dialog.css"/>
+    <script src="/js/plugins/dialog2/dialog.min.js"></script>
+</head>
+<body>
+<script>
+   /* $(function () {
+        var authorId = JSON.parse(sessionStorage.getItem("user")).id;
+
+        var currentPage = 1;//当前页
+        var pages;//总页数
+        var travelData=[];//定义一个数组用来接收每次分页时的数据
+        function query() {//记得传递当前页这个参数
+            $.get("/users/"+authorId+"/travels/userGoods",{currentPage:currentPage},function (data) {
+                $.merge(travelData,data.list);
+                var json = {
+                    list: travelData
+                };
+                $(".userGood").renderValues(json,{
+                    getHref:function (item,value) {
+                        var url = $(item).data("href");
+                        $(item).attr("href",url+value);
+                    }
+                });
+                pages = data.pages;
+            });
+            currentPage ++;
+        }
+        //默认查询第一页
+        query();
+        //监听滚动事件,当滚动条发生变化时触发
+        $(window).scroll(function(){
+            //document滚上去的高度+手机窗口的高度 >= 整个文档的高度
+            if (($(document).scrollTop()+$(window).height()) >= $(document).height()-1){
+                if (currentPage <= pages){//如果当前页数小于等于总页数
+                    query();
+                }else {
+                    $(document).dialog({
+                        type : 'notice',
+                        content: '<span class="info-text">我是有底线的!</span>',
+                        autoClose: 1000,
+                        position: 'bottom'
+                    });
+                }
+            }
+        });
+    });*/
+</script>
+<section class="aui-flexView">
+    <header class="aui-navBar aui-navBar-fixed b-line">
+        <a href="/mine/message.html" class="aui-navBar-item">
+            <i class="icon icon-return"></i>
+        </a>
+        <div class="row nav-search">
+            <div class="col">
+                <a href="javascript:history.go(-1);" style="position: absolute;top: 3px;left: 22px;">
+                    <span><i class="fa fa-chevron-left fa-2x" style="color: white;"></i></span>
+                </a>
+            </div>
+            <div class="aui-center">
+                <span class="aui-center-title">赞我的</span>
+            </div>
+            <div class="col"></div>
+        </div>
+
+        <a href="javascript:;" class="aui-navBar-item">
+        </a>
+    </header>
+    <section class="aui-scrollView userGood">
+        <div class="aui-list-box" >
+            <div class="aui-flex">
+                <a>
+                    <div class="aui-flex-logo">
+                        <img src="" alt="">
+                    </div>
+                </a>
+                <div class="aui-flex-box">
+                    <h2>
+                        <span>彭于晏</span>
+                        <span style="font-size: 12px">赞了你的游记</span>
+                    </h2>
+                    <h3>叩丁狼180日游</h3>
+                </div>
+                </span>
+            </div>
+        </div>
+    </section>
+</section>
+</body>
+</html>

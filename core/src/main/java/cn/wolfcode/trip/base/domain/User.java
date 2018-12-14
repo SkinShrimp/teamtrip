@@ -3,6 +3,8 @@ package cn.wolfcode.trip.base.domain;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
+
 /**
  * 注册用户
  */
@@ -41,5 +43,22 @@ public class User extends BaseDomain{
             temp = "女";
         }
         return temp;
+    }
+
+    /**
+     * id,nickName,headImgUrl相同才认为是同一对象
+     * @param o
+     * @return
+     */
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(nickName, user.nickName) &&
+                Objects.equals(headImgUrl, user.headImgUrl)&&
+                Objects.equals(id, user.id);
+    }
+    public int hashCode() {
+        return Objects.hash(id,nickName, headImgUrl);
     }
 }
