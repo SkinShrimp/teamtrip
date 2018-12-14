@@ -12,18 +12,67 @@
     <link rel="stylesheet" href="/css/reset.css"/>
     <link rel="stylesheet" href="/css/travelContent.css"/>
     <script src="/js/plugins/jrender/jrender.min.js"></script>
+    <script src="/js/plugins/form/jquery.form.js"></script>
     <script src="/js/common.js"></script>
     <script>
         $(function () {
             var params = getParams();
-            if(params.id){
+            if (params.id) {
                 //获取该游记的相关信息
-                $.get('/travels/'+params.id,function (data) {
+                $.get('/travels/' + params.id, function (data) {
                     $(".travels").renderValues(data);
                 })
-
             }
 
+            //初始化点赞、收藏功能
+            $.get("/comments/" + params.id, function (data) {
+                if (data.praise == 1) {
+                    $("#likeBtn").removeClass().addClass("fa fa-thumbs-up");
+                }
+                if (data.collect == 1) {
+                    $("#collectBtn").removeClass().addClass("fa fa-star");
+                }
+            });
+            //点赞、收藏评论
+            $(".d-flex i").click(function () {
+
+                var data;
+                var collect = 0;
+                var praise = 0;
+                if ($(this).data("id") == 1) {//点赞
+                    if ($("#likeBtn").hasClass("fa-thumbs-o-up")) {
+                        praise = 1;
+                        $("#likeBtn").removeClass().addClass("fa fa-thumbs-up");
+                    } else {
+                        $("#likeBtn").removeClass().addClass("fa fa-thumbs-o-up");
+                        praise = 0;
+                    }
+                    data = {
+                        typeId: params.id,
+                        praise: praise
+                    }
+                } else if ($(this).data("id") == 2) {//评论
+                    data = {
+                        typeId: params.id,
+                        praise: 1
+                    }
+                } else {//收藏
+                    if ($("#collectBtn").hasClass("fa fa-star-o")) {
+                        $("#collectBtn").removeClass().addClass("fa fa-star");
+                        collect = 1;
+                    } else {
+                        $("#collectBtn").removeClass().addClass("fa fa-star-o");
+                        collect = 0;
+                    }
+                    data = {
+                        typeId: params.id,
+                        collect: collect
+                    }
+                }
+                $.post("/comments/" + params.id + "/collectOrPraise", data, function (data) {
+
+                });
+            });
         })
     </script>
 </head>
@@ -41,7 +90,7 @@
 </div>
 
 <div class="travels">
-    <img  class="cover" render-src="coverUrl">
+    <img class="cover" render-src="coverUrl">
     <div class="container">
         <h6 class="title" render-html="title"></h6>
         <small>
@@ -51,7 +100,7 @@
         </small>
         <div class="row">
             <div class="col-2 img">
-                <img  class="rounded-circle" render-src="author.headImgUrl">
+                <img class="rounded-circle" render-src="author.headImgUrl">
             </div>
             <div class="col-6 mine">
                 <small>
@@ -63,7 +112,7 @@
                 </small>
             </div>
             <div class="attention col">
-                <span class="addr" render-html="place.name" ></span>
+                <span class="addr" render-html="place.name"></span>
             </div>
         </div>
     </div>
@@ -97,16 +146,18 @@
     <hr>
 
     <div class="container d-flex">
-        <div class="p-2  flex-fill">
-            <i class="fa fa-thumbs-o-up"  id="likeBtn"> </i>
+        <div class="p-2  flex-fill fa-2x">
+            <i data-id="1" class="fa fa-thumbs-o-up" id="likeBtn"> </i>
         </div>
-        <div class="p-2  flex-fill"><i class="fa  fa-commenting-o"  id="commentBtn"> </i>
+        <div class="p-2  flex-fill fa-2x">
+            <i data-id="2" class="fa  fa-commenting-o" id="commentBtn"> </i>
         </div>
-        <div class="p-2  flex-fill"><i class="fa fa-star-o" id="collectBtn"> </i>
+        <div class="p-2  flex-fill fa-2x">
+            <i data-id="3" class="fa fa-star-o" id="collectBtn"> </i>
         </div>
     </div>
 </div>
-
+<div id="comment"></div>
 
 
 </body>
