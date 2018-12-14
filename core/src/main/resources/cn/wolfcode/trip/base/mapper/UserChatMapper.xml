@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.trip.base.mapper.UserChatMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.UserChat">
+    <id column="id" property="id" />
+    <result column="message" property="message" />
+    <result column="sendTime" property="sendTime" />
+    <result column="status" property="status" />
+
+    <association property="sender" javaType="User" columnPrefix="sender_">
+      <id column="id" property="id" />
+      <result column="nickName" property="nickName" />
+      <result column="headImgUrl" property="headImgUrl" />
+    </association>
+    <association property="receiver" javaType="User" columnPrefix="receiver_">
+      <id column="id" property="id" />
+      <result column="nickName" property="nickName" />
+      <result column="headImgUrl" property="headImgUrl" />
+    </association>
+  </resultMap>
+  <delete id="deleteByPrimaryKey">
+    delete from userchat
+    where id = #{id}
+  </delete>
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into userchat (sender_id, receiver_id, message, sendTime, status)
+    values (#{sender.id}, #{receiver.id}, #{message}, #{sendTime}, #{status})
+  </insert>
+
+  <update id="updateByStatus">
+    update userchat
+    set
+      status = #{status}
+    where sender_id = #{sender.id} and receiver_id = #{receiver.id}
+  </update>
+  <update id="updateByPrimaryKey">
+    update userchat
+    set sender_id = #{sender.id},
+      receiver_id = #{receiver.id},
+      message = #{message},
+      sendTime = #{sendTime},
+      status = #{status}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select id, sender_id, receiver_id, message, sendTime, status
+    from userchat
+    where id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, sender_id, receiver_id, message, sendTime, status
+    from userchat
+  </select>
+  <select id="selectForList" resultMap="BaseResultMap">
+    select uc.id, sender.id sender_id, sender.nickName sender_nickName,sender.headImgUrl sender_headImgUrl,
+    receiver.id receiver_id,receiver.nickName receiver_nickName,receiver.headImgUrl receiver_headImgUrl,uc.message, uc.sendTime, uc.status
+    from userchat uc join user sender
+    on uc.sender_id = sender.id
+    join user receiver on uc.receiver_id = receiver.id
+    <where>
+      <if test="status!=null and status > 0">
+        and uc.status = #{status}
+      </if>
+      <if test="senderId != null and receiverId != null">
+        and ((sender.id = #{senderId} and receiver.id = #{receiverId}) or (sender.id = #{receiverId} and receiver.id = #{senderId}))
+      </if>
+      <if test="aboutMeId != null">
+        and (sender_id = #{aboutMeId} or receiver_id = #{aboutMeId})
+      </if>
+      <if test="sendTime != null">
+        and DATE_ADD(uc.sendTime,  INTERVAL 3 SECOND) &gt;= #{sendTime}
+      </if>
+    </where>
+  </select>
+  <select id="selectForListByOrder" resultMap="BaseResultMap">
+    select uc.id, sender.id sender_id, sender.nickName sender_nickName,sender.headImgUrl sender_headImgUrl,
+    receiver.id receiver_id,receiver.nickName receiver_nickName,receiver.headImgUrl receiver_headImgUrl,uc.message, uc.sendTime, uc.status
+    from userchat uc join user sender
+    on uc.sender_id = sender.id
+    join user receiver on uc.receiver_id = receiver.id
+    <where>
+      <if test="status!=null and status > 0">
+        and uc.status = #{status}
+      </if>
+      <if test="senderId != null and receiverId != null">
+        and (sender.id = #{senderId} and receiver.id = #{receiverId})
+      </if>
+      <if test="aboutMeId != null">
+        and (sender_id = #{aboutMeId} or receiver_id = #{aboutMeId})
+      </if>
+      <if test="sendTime != null">
+        and DATE_ADD(uc.sendTime,  INTERVAL 0 SECOND) &gt;= #{sendTime}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectByReceiverId" resultType="int">
+    select count(uc.id)
+    from userchat uc join user sender
+    on uc.sender_id = sender.id
+    join user receiver on uc.receiver_id = receiver.id
+    <where>
+      <if test="receiverId != null">
+        and receiver.id = #{receiverId}
+      </if>
+    </where>
+    and status = 0
+  </select>
+  <select id="selectUnreadsBySenderAndrReceiverId" resultType="int">
+    select count(uc.id)
+    from userchat uc join user sender
+    on uc.sender_id = sender.id
+    join user receiver on uc.receiver_id = receiver.id
+    <where>
+      <if test="status!=null">
+        and uc.status = #{status}
+      </if>
+      <if test="senderId != null">
+        and sender.id = #{senderId}
+      </if>
+      <if test="receiverId != null">
+        and receiver.id = #{receiverId}
+      </if>
+    </where>
+    order by uc.sendTime desc
+  </select>
+</mapper>

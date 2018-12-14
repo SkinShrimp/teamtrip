@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>我的消息</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		    <link rel="stylesheet" href="/js/bootstrap-4.1.1-dist/css/bootstrap.min.css">
+			<script src="/js/jquery/jquery.min.js"></script>
+			<script src="/js/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+			<link rel="stylesheet" href="/css/font/css/font-awesome.min.css"/>
+			<link rel="stylesheet" href="/css/reset.css"/>
+			<link rel="stylesheet" href="/css/message.css" />
+			<script src="/js/plugins/jrender/jrender.min.js"></script>
+			<link rel="stylesheet" href="/js/plugins/dialog2/dialog.css"/>
+			<script src="/js/plugins/dialog2/dialog.min.js"></script>
+
+			<script>
+				$(function () {
+                    //获取当前登录用户
+                    var user = JSON.parse(sessionStorage.getItem("user"));
+                    var currentUserId = user.id;
+
+					//发送ajax查询当前用户有多少条未读信息
+					$.get("/userchats/"+currentUserId+"/unreads",function (data) {
+                        console.log("data:"+data);
+                        if(data){
+                            $("#private").html(data);
+						}
+                    });
+                })
+			</script>
+	</head>
+
+	<body>
+		<div class="search-head">
+			<div class="row nav-search">
+				<div class="col">
+					<a href="/mine/profiles.html">
+						<span><i class="fa fa-chevron-left" ></i></span>
+					</a>
+				</div>
+				<div class="col">
+					<span>我的消息</span>
+				</div>
+				<div class="col"></div>
+			</div>
+		</div>
+
+		<ul class="list-group">
+			<a href="/mine/goodHistory.html">
+				<li class="list-group-item d-flex justify-content-between align-items-center">
+					<div class="item">
+						<span><i class="fa fa-thumbs-o-up" ></i></span>
+						<span>赞</span>
+						<span class="badge badge-danger badge-pill">14</span>
+					</div>
+					<i class="fa fa-chevron-right"></i>
+				</li>
+			</a>
+			<!--<a href="../index.html">
+				<li class="list-group-item d-flex justify-content-between align-items-center">
+					<div class="item">
+						<span><i class="fa fa-at" ></i></span>
+						<span>@我的</span>
+						<span class="badge badge-danger badge-pill">2</span>
+					</div>
+					<i class="fa fa-chevron-right"></i>
+				</li>
+			</a>-->
+			<a href="/mine/myComments.html">
+				<li class="list-group-item d-flex justify-content-between align-items-center">
+					<div class="item">
+						<span><i class="fa fa-commenting-o" ></i>	</span>
+						<span>评论</span>
+						<span class="badge badge-danger badge-pill">1</span>
+					</div>
+					<i class="fa fa-chevron-right"></i>
+				</li>
+			</a>
+			<a href="/mine/chatHistory.html">
+				<li class="list-group-item d-flex justify-content-between align-items-center">
+					<div class="item">
+						<span><i class="fa fa-envelope-o" ></i></span>
+						<span>	私信</span>
+						<span class="badge badge-danger badge-pill" id="private">0</span>
+					</div>
+					<i class="fa fa-chevron-right"></i>
+				</li>
+			</a>
+			<a href="#">
+				<li class="list-group-item d-flex justify-content-between align-items-center">
+					<div class="item">
+						<span><i class="fa fa-globe" ></i></span>
+						<span>朋友圈</span>
+						<span class="badge badge-danger badge-pill">1</span>
+					</div>
+					<i class="fa fa-chevron-right"></i>
+				</li>
+			</a>
+			<a href="#" id="system">
+				<li class="list-group-item d-flex justify-content-between align-items-center">
+					<div class="item">
+						<span><i class="fa fa-bell" ></i></span>
+						<span>系统通知</span>
+						<span class="badge badge-danger badge-pill">1</span>
+					</div>
+					<i class="fa fa-chevron-right"></i>
+				</li>
+			</a>
+		</ul>
+		
+			<div class="container systemMsg">
+					<dl class="itemList">
+						<dd>
+							<p>如果你无法简洁的表达你的想法，那只说明你还不够了解它。</p> 
+							<p>-- 阿尔伯特·爱因斯坦</p>
+							<p>32分钟前</p>
+						</dd>
+						<dd>
+							<p>如果你无法简洁的表达你的想法，那只说明你还不够了解它。</p> 
+							<p>-- 阿尔伯特·爱因斯坦</p>
+							<p>32分钟前</p>
+						</dd>
+						<dd>
+							<p>如果你无法简洁的表达你的想法，那只说明你还不够了解它。</p> 
+							<p>-- 阿尔伯特·爱因斯坦</p>
+							<p>32分钟前</p>
+						</dd>
+					</dl>
+				</div>
+
+	</body>
+
+</html>
