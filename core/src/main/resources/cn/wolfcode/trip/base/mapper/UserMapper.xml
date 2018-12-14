@@ -51,7 +51,7 @@
        select id, email, nickName, password, place, headImgUrl, gender, coverImgUrl, sign
        from user
        <where>
-         <if test="keyword!=null">
+         <if test="keyword!=null and keyword!=''">
             and (nickName like concat('%',#{keyword},'%') or email like concat('%',#{keyword},'%'))
          </if>
        </where>

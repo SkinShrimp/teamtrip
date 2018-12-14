@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <title>骡窝日报</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="/js/bootstrap-4.1.1-dist/css/bootstrap.min.css">
+    <script src="/js/jquery/jquery.min.js"></script>
+    <script src="/js/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/font/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/css/reset.css"/>
+    <link rel="stylesheet" href="/css/news.css"/>
+    <script src="/js/plugins/jrender/jrender.min.js"></script>
+    <link rel="stylesheet" href="/js/plugins/dialog2/dialog.css"/>
+    <script src="/js/plugins/dialog2/dialog.min.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+        $(function () {
+            //当前页
+            var currentPage = 1;
+            //总页数
+            var pages;
+            //存储日报的数组
+            var dailyArr = [];
+
+
+            function query() {
+                //获取所有日报
+                $.get("/dailies", {currentPage: currentPage}, function (data) {
+                    //把第二个数组合并到第一个数组
+                    $.merge(dailyArr, data.list);
+
+                    //用于渲染时循环,循环时是取list的属性出来
+                    var json = {
+                        list: dailyArr
+                    };
+
+                    //渲染数据
+                    $(".newsList").renderValues(json, {
+                        getHref: getHref
+                    });
+
+                    //获取总页数
+                    pages = data.pages;
+                });
+                currentPage += 1;
+            }
+
+            //默认查询第一页
+            query();//默认查询第一页
+
+            $(window).scroll(function () {
+                if ($(window).height() + $(document).scrollTop() >= $(document).height()) {
+                    //如果是大于总页数就不发送请求了
+                    if (currentPage <= pages) {
+                        query();
+                    } else {
+                        $(document).dialog({
+                            type: 'notice',
+                            infoText: '已经到底了',
+                            autoClose: 2500,
+                            position: 'bottom'  // center: 居中; bottom: 底部
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+
+
+<div class="search-head">
+    <div class="row nav-search">
+        <div class="col-2">
+            <a href="index.html">
+                <span><i class="fa fa-chevron-left fa-2x"></i></span>
+            </a>
+        </div>
+        <div class="col-10">
+            <div class="input-group-sm search">
+                <input class="form-control searchBtn" placeholder="搜索资讯">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container news">
+
+    <div class="news">
+        <h6 class="news-title">骡窝日报 </h6>
+        <div class="newsList">
+            <div class="row" render-loop="list">
+
+                <div class="col-6">
+                    <a data-href="/newsContent.html?id=" render-key="list.id" render-fun="getHref">
+                        <img class="rounded" width="100%" height="110px" render-src="list.coverUrl">
+                    </a>
+                    <div class="caption">
+                        <p>
+                            <span> </span>
+                            <i class="fa fa-heart-o"></i>
+                        </p>
+                        <a data-href="newsContent.html?id=" render-key="list.id" render-fun="getHref">
+                            <p render-html="list.title"></p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

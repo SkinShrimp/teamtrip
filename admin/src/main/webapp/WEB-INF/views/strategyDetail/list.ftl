@@ -171,10 +171,10 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label">封面：</label>
                         <div class="col-sm-6">
-                            <img id="coverUrl" width="100%"/>
-                            <input type="file" class="form-control" name="file" >
-                            <input type="hidden" class="form-control" name="coverUrl" >
-                        </div>
+                        <img id="coverUrl" width="100%"/>
+                        <input type="file" class="form-control" name="file" >
+                        <input type="hidden" class="form-control" name="coverUrl" >
+                    </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-4 control-label">所属攻略：</label>

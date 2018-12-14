@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.trip.base.mapper.DailyMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.Daily">
+    <id column="id" property="id" />
+    <result column="title" property="title" />
+    <result column="subTitle" property="subTitle" />
+    <result column="coverUrl" property="coverUrl" />
+    <result column="createTime" property="createTime" />
+    <result column="state" property="state" />
+    <association property="content" javaType="dailyContent" columnPrefix="dc_">
+      <id column="id" property="id" />
+      <result column="content" property="content" />
+    </association>
+  </resultMap>
+  <delete id="deleteByPrimaryKey">
+    delete from daily
+    where id = #{id}
+  </delete>
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into daily (title, subTitle, coverUrl, createTime, state)
+    values (#{title}, #{subTitle}, #{coverUrl}, #{createTime}, #{state})
+  </insert>
+
+  <update id="updateByPrimaryKey">
+    update daily
+    set title = #{title},
+      subTitle = #{subTitle},
+      coverUrl = #{coverUrl},
+      state = #{state}
+    where id = #{id}
+  </update>
+
+  <!--查询单个日报文章及内容-->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select
+    d.id,d.title,d.subTitle,d.coverUrl,d.createTime,d.state,
+    dc.id AS dc_id, dc.content AS dc_content
+    from daily d
+    left join dailycontent dc on d.id = dc.id
+    where d.id = #{id}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, title, subTitle, coverUrl, createTime, state
+    from daily
+  </select>
+
+  <!--分页加高级查询-->
+  <select id="selectForList" resultMap="BaseResultMap">
+    select id, title, subTitle, coverUrl, createTime, state
+    from daily
+    <where>
+      <if test="state!=null and state > -1">
+        and state = #{state}
+      </if>
+
+      <if test="keyword!=null">
+        and title like concat('%',#{keyword},'%')
+        or subTitle like concat('%',#{keyword},'%')
+      </if>
+
+    </where>
+  </select>
+</mapper>
