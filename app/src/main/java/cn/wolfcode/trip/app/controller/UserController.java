@@ -57,4 +57,9 @@ public class UserController {
         qo.setOrderBy("t.lastUpdateTime desc");
         return travelService.query(qo);
     }
+
+    @GetMapping("/{id}")
+    public User get(@PathVariable Long id){
+        return userService.get(id);
+    }
 }
