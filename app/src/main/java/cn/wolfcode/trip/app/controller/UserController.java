@@ -2,6 +2,7 @@ package cn.wolfcode.trip.app.controller;
 
 import cn.wolfcode.trip.base.domain.User;
 import cn.wolfcode.trip.base.query.TravelQueryObject;
+import cn.wolfcode.trip.base.query.UserQueryObject;
 import cn.wolfcode.trip.base.service.ITravelService;
 import cn.wolfcode.trip.base.service.IUserService;
 import cn.wolfcode.trip.base.util.JsonResult;

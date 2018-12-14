@@ -101,6 +101,49 @@
 
 
 
+            //获取全部日报(分页)
+            //当前页
+            var dailyCurrentPage = 1;
+            //总页数
+            var dailyPages;
+            //存储日报的数组
+            var dailyArr = [];
+
+            function dailyQuery(){
+
+                //查询日报
+                $.get("/dailies",{keyword:keyword,currentPage:dailyCurrentPage},function (data) {
+                    //查询日报数量
+                    var searchSum = data.list.length;
+
+                    //拼接
+                    $(".daily").html("游记"+"("+searchSum+")");
+
+                    $.merge(dailyArr, data.list);
+                    var json = {
+                        list: dailyArr
+                    }
+                    $("#dailys").renderValues(json, {
+                        getHref: function (item, value) {
+                            $(item).attr("href", "/travelContent.html?id=" + value);
+                        }
+                    });
+                    dailyPages = data.pages;
+                })
+
+                dailyCurrentPage = dailyCurrentPage + 1;
+            }
+            dailyQuery();
+
+
+
+
+
+
+
+
+
+
             //获取全部用户(分页)
             //当前页
             var userCurrentPage = 1;
