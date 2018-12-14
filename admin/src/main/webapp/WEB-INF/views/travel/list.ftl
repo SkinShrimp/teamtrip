@@ -28,6 +28,13 @@
             $(".changeStateBtn").click(function () {
                 var id = $(this).data("id");
                 var state = $(this).data("state");
+                var json = $(this).data("json");
+                var authorId = json.authorId;
+                console.log("authorId:"+authorId);
+                //通知用户
+                $.post("/notice/save.do",{"travel.id":id,"user.id":authorId,flag:state},function (data) {
+                });
+                //改变游记状态
                 $.post('/travel/changeState.do',{id:id,state:state},function (data) {
                     window.location.reload();
                 })
@@ -90,10 +97,10 @@
                         <td>${entity.author.nickName}</td>
                         <td>${entity.stateName}</td>
                         <td>
-                            <a href="javascript:void(0);" data-state="2"  data-id="${entity.id}" class="changeStateBtn">发布</a>
+                            <a href="javascript:void(0);" data-state="2"  data-id="${entity.id}" class="changeStateBtn" data-json='${entity.json}'>发布</a>
                         </td>
                         <td>
-                            <a href="javascript:void(0);" data-state="-1" data-id="${entity.id}" class="changeStateBtn">拒绝</a>
+                            <a href="javascript:void(0);" data-state="-1" data-id="${entity.id}" class="changeStateBtn" data-json='${entity.json}'>拒绝</a>
                         </td>
                         <td>
                             <a href="javascript:void(0);" class="lookBtn" data-id="${entity.id}">查看文章</a>

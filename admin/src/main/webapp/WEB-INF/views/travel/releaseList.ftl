@@ -28,6 +28,7 @@
             $(".changeStateBtn").click(function () {
                 var id = $(this).data("id");
                 var state = $(this).data("state");
+                var json = $(this).data('json');
                 $.post('/travel/changeState.do', {id:id,state:state},function (data) {
                     window.location.reload();
                 })
@@ -45,6 +46,10 @@
                 $("input[name='coverUrl']").val(json.coverUrl);//提交表单
 
                 $("#inputModal").modal('show');
+
+                //通知用户
+                $.post("/notice/save.do",{"travel.id":json.id,"user.id":json.authorId,flag:1},function (data) {
+                });
             })
 
             //提交表单
@@ -106,9 +111,8 @@
                         <td>${entity.releaseTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                         <td>${entity.stateName}</td>
                         <td>
-                            <a href="javascript:void(0);" data-state="1" data-id="${entity.id}" class="changeStateBtn">取消发布</a>
+                            <a href="javascript:void(0);" data-state="1" data-id="${entity.id}" data-json='${entity.json}' class="changeStateBtn">取消发布</a>
                         </td>
-
                         <td>
                             <a href="javascript:void(0);" class="lookBtn" data-id="${entity.id}">查看文章</a>
                         </td>

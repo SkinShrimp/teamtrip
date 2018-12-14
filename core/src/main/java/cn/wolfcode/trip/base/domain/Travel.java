@@ -102,6 +102,9 @@ public class Travel extends BaseDomain{
         map.put("id",id);
         map.put("title",title);
         map.put("coverUrl",coverUrl);
+        if(author != null){
+            map.put("authorId",author.getId());
+        }
         return JSONUtils.toJSONString(map);
     }
 }

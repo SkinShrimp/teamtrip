@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.trip.base.mapper.NoticeMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.Notice">
+    <id column="id" property="id" />
+    <result column="content" property="content" />
+    <result column="title" property="title" />
+    <result column="notice_time" property="noticeTime" />
+    <result column="travel_id" property="travel_id" />
+    <result column="user_id" property="user_id" />
+    <result column="status" property="status" />
+    <result column="flag" property="flag" />
+
+    <association property="user" javaType="User" columnPrefix="u_">
+      <id column="id" property="id" />
+      <result column="nickName" property="nickName" />
+    </association>
+    <association property="travel" javaType="Travel" columnPrefix="t_">
+      <id column="id" property="id" />
+      <result column="title" property="title" />
+    </association>
+  </resultMap>
+  <delete id="deleteByPrimaryKey">
+    delete from notice
+    where id = #{id}
+  </delete>
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into notice (content, title, notice_time, travel_id, user_id, status,flag
+      )
+    values (#{content}, #{title}, #{noticeTime}, #{travel.id}, #{user.id}, #{status},#{flag}
+      )
+  </insert>
+  <update id="updateByPrimaryKey">
+    update notice
+    set content = #{content},
+      title = #{title},
+      notice_time = #{noticeTime},
+      travel_id = #{travel.id},
+      user_id = #{user.id},
+      status = #{status},
+      flag = #{flag}
+    where id = #{id}
+  </update>
+  <update id="updateByStatus">
+    update notice
+    set
+      status = #{status}
+    where user_id = #{user.id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select n.id, n.content, n.title, n.notice_time, t.id t_id, t.title t_title ,u.id u_id, u.nickName u_nickName,n.status,n.flag
+    from notice n join user u
+    on n.user_id = u.id
+    join travel t on n.travel_id = t.id
+    where n.id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select n.id, n.content, n.title, n.notice_time, t.id t_id, t.title t_title ,u.id u_id, u.nickName u_nickName,n.status,n.flag
+    from notice n join user u
+    on n.user_id = u.id
+    join travel t on n.travel_id = t.id
+  </select>
+  <select id="selectForList" resultMap="BaseResultMap">
+    select n.id, n.content, n.title, n.notice_time, t.id t_id, t.title t_title ,u.id u_id, u.nickName u_nickName,n.status,n.flag
+    from notice n join user u
+    on n.user_id = u.id
+    join travel t on n.travel_id = t.id
+    <where>
+      <if test="status!=null">
+        and n.status = #{status}
+      </if>
+    </where>
+  </select>
+  <select id="selectCountByStatus" resultType="int">
+    select count(id)
+    from notice
+    <where>
+      <if test="status != null">
+        and status = #{status}
+      </if>
+      <if test="userId != null">
+        and user_id = #{userId}
+      </if>
+    </where>
+  </select>
+</mapper>

@@ -26,6 +26,30 @@
             <artifactId>freemarker</artifactId>
         </dependency>
 
-
     </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Tomcat 插件 -->
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.1</version>
+                <configuration>
+                    <port>8082</port> <!-- 应用的端口号 -->
+                    <path>/</path> <!-- 应用的上下文路径 -->
+                    <uriEncoding>UTF-8</uriEncoding> <!-- 针对 GET 方式中文乱码 -->
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
