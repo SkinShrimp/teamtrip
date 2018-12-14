@@ -21,78 +21,87 @@
             //获取关键字
             var keyword = JSON.parse(sessionStorage.getItem("keyword"));
 
-            //获取全部游记(分页)
+            //获取全部攻略(分页)
             //当前页
-            var currentPage = 1;
+            var strategyCurrentPage = 1;
             //总页数
-            var pages;
+            var strategyPages;
             //存储游记的数组
-            var travelArr = [];
+            var strategyArr = [];
 
-            function query() {
-                if(keyword){
-                    //进来默认点击
-                    $("#pills-top").addClass("active").addClass("show");
-                    //回显数据
-                    $("#keyword").val(keyword);
-                    //查询
-                    $.get("/strategies",{keyword:keyword,currentPage:currentPage},function (data) {
+            function strategyQuery() {
 
-                        //查询攻略数量
-                        var searchSum = data.list.length;
-                        console.log(searchSum);
-                        //拼接
-                        $(".strategy").html("攻略"+"("+searchSum+")");
+                //进来默认点击
+                $("#pills-top").addClass("active").addClass("show");
+                //回显数据
+                $("#keyword").val(keyword);
+                //查询
+                $.get("/strategies",{keyword:keyword,currentPage:strategyCurrentPage},function (data) {
 
-                        $.merge(travelArr, data.list);
-                        var json = {
-                            list: travelArr
+                    //查询攻略数量
+                    var searchSum = data.list.length;
+                    console.log(searchSum);
+                    //拼接
+                    $(".strategy").html("攻略"+"("+searchSum+")");
+
+                    $.merge(strategyArr, data.list);
+                    var json = {
+                        list: strategyArr
+                    }
+                    $("#strategies").renderValues(json, {
+                        getHref: function (item, value) {
+                            $(item).attr("href", "/travelContent.html?id=" + value);
                         }
-                        $("#strategies").renderValues(json, {
-                            getHref: function (item, value) {
-                                $(item).attr("href", "/travelContent.html?id=" + value);
-                            }
-                        });
-                        pages = data.pages;
                     });
-
-
-                    //查询游记
-                    $.get("/travels",{keyword:keyword,currentPage:currentPage},function (data) {
-                        //查询游记游记数量
-                        var searchSum = data.list.length;
-                        //拼接
-                        $(".travel").html("游记"+"("+searchSum+")");
-
-                        $.merge(travelArr, data.list);
-                        var json = {
-                            list: travelArr
-                        }
-                        $("#strategies").renderValues(json, {
-                            getHref: function (item, value) {
-                                $(item).attr("href", "/travelContent.html?id=" + value);
-                            }
-                        });
-                        pages = data.pages;
-                    })
-
-
-
-
-
-                    currentPage = currentPage + 1;
-                }
+                    strategyPages = data.pages;
+                });
+                strategyCurrentPage = strategyCurrentPage + 1;
 
             }
 
-            query();
+            strategyQuery();
 
+
+
+
+            //获取全部游记(分页)
+            //当前页
+            var travelCurrentPage = 1;
+            //总页数
+            var travelPages;
+            //存储游记的数组
+            var travelArr = [];
+
+            function travelQuery(){
+
+                //查询游记
+                $.get("/travels",{keyword:keyword,currentPage:travelCurrentPage,state:2},function (data) {
+                    //查询游记游记数量
+                    var searchSum = data.list.length;
+                    //拼接
+                    $(".travel").html("游记"+"("+searchSum+")");
+
+                    $.merge(travelArr, data.list);
+                    var json = {
+                        list: travelArr
+                    }
+                    $("#travels").renderValues(json, {
+                        getHref: function (item, value) {
+                            $(item).attr("href", "/travelContent.html?id=" + value);
+                        }
+                    });
+                    travelPages = data.pages;
+                })
+
+                travelCurrentPage = travelCurrentPage + 1;
+            }
+            travelQuery();
 
             //给window绑定滚动事件
             $(window).scroll(function () {
                 if ($(window).height() + $(document).scrollTop() + 1 >= $(document).height()) {
                     //如果是大于总页数就不发送请求了
-                    if (currentPage <= pages) {
+                    if (strategyCurrentPage <= strategyPages || travelCurrentPage<=travelPages) {
                         query();
                     } else {
                         $(document).dialog({
@@ -175,6 +184,7 @@
         </div>
     </div>
 
+
     <div class="tab-pane fade " id="pills-travel">
         <div class="askComment">
             <div id="travels">
@@ -192,48 +202,29 @@
             </div>
         </div>
     </div>
-    <div class="tab-pane fade " id="pills-daily">
-        <div class="askComment">
-            <div id="dailys">
-                <div class="container dailyCommend" render-loop="list">
-                    <div>
-                        <br/>
-                        <div class="row hot">
-                            <div class="col-12 dailys">
-                                <a data-href="dailyContent.html?id=" render-key="list.id" render-fun="getHref">
-                                    <img render-src="list.coverUrl">
-                                    <p render-html="list.title"></p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="tab-pane fade " id="pills-user">
+
+    <!--<div class="tab-pane fade " id="pills-travel">
         <div class="askComment">
-            <div id="users">
-                <div class="container strategyCommend">
+            <div id="travels">
+                <div class="container strategyCommend" render-loop="list">
                     <br/>
-                    <div class="row hot" render-loop="list">
-                        <div class="col-6 users">
-                            <a data-href="userProfiles.html?id=" render-key="list.id" render-fun="getHref">
-                                <img render-src="list.headImgUrl">
-                                <p render-html="list.nickName"></p>
-                                <p render-html="list.email"></p>
-
+                    <div class="row hot" >
+                        <div class="col-12 travels">
+                            <a data-href="travelContent.html?id=" render-key="list.id" render-fun="getHref">
+                                <img render-src="list.coverUrl">
+                                <p render-html="list.title"></p>
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
+
 
 </div>
-</div>
+
 
 
 
