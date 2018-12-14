@@ -15,12 +15,12 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>dispatcherServlet</servlet-name>
-        <!--
-            /:除JSP以外的所有的资源
-            *.do:所有的以.do结尾的请求经过该前端控制器的处理
-            以后所有的controller的请求都加上.do
-        -->
-        <url-pattern>*.do</url-pattern>
+    <!--
+        /:除JSP以外的所有的资源
+        *.do:所有的以.do结尾的请求经过该前端控制器的处理
+        以后所有的controller的请求都加上.do
+    -->
+    <url-pattern>*.do</url-pattern>
     </servlet-mapping>
     <filter>
         <filter-name>characterEncodingFilter</filter-name>
