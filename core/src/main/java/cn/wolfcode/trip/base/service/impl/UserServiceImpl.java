@@ -51,4 +51,8 @@ public class UserServiceImpl implements IUserService {
     public void update(User user) {
         userMapper.updateByPrimaryKey(user);
     }
+
+    public User get(Long id) {
+        return userMapper.selectByPrimaryKey(id);
+    }
 }
