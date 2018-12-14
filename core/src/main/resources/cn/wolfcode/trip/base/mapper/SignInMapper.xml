@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.trip.base.mapper.SignInMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.SignIn">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="sign_time" jdbcType="DATE" property="signTime" />
+    <result column="last_sign" jdbcType="DATE" property="lastSign" />
+    <result column="integral" jdbcType="INTEGER" property="integral" />
+    <result column="continuous" jdbcType="INTEGER" property="continuous" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sign_in
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.wolfcode.trip.base.domain.SignIn" useGeneratedKeys="true">
+    insert into sign_in (user_id, sign_time, last_sign, 
+      integral, continuous)
+    values (#{user.id,jdbcType=BIGINT}, #{signTime,jdbcType=DATE}, #{lastSign,jdbcType=DATE},
+      #{integral,jdbcType=INTEGER}, #{continuous,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.wolfcode.trip.base.domain.SignIn">
+    update sign_in
+    set user_id = #{user.id,jdbcType=BIGINT},
+      sign_time = #{signTime,jdbcType=DATE},
+      last_sign = #{lastSign,jdbcType=DATE},
+      integral = #{integral,jdbcType=INTEGER},
+      continuous = #{continuous,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateSignTimeByUserId">
+    update sign_in
+    set
+      last_sign = sign_time,
+      sign_time = #{date}
+    where user_id = #{userId}
+  </update>
+  <update id="updateIntegralAndContinuousByUserId">
+    update sign_in
+    set
+      integral = integral + 1,
+      continuous = continuous+1
+    where user_id = #{userId}
+  </update>
+    <update id="resetContinuous">
+    update sign_in
+    set
+      integral = integral + 1,
+      continuous = 1
+    where user_id = #{userId}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, user_id, sign_time, last_sign, integral, continuous
+    from sign_in
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, user_id, sign_time, last_sign, integral, continuous
+    from sign_in
+  </select>
+  <select id="SelectByUserId" resultMap="BaseResultMap">
+    select id, user_id, sign_time, last_sign, integral, continuous
+    from sign_in
+    where user_id = #{userId}
+      <if test="data!=null">
+          and TO_DAYS(sign_time)=TO_DAYS(#{data})
+      </if>
+  </select>
+    <select id="isContinuous" resultMap="BaseResultMap">
+        select id, user_id, sign_time, last_sign, integral, continuous
+        from sign_in where TO_DAYS(sign_time)= TO_DAYS(DATE_ADD(last_sign,interval +1 day))
+    </select>
+</mapper>

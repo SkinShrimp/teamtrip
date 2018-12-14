@@ -14,16 +14,17 @@
     <script src="/js/plugins/jrender/jrender.min.js"></script>
     <script src="/js/plugins/form/jquery.form.js"></script>
     <script src="/js/common.js"></script>
-<<<<<<< Updated upstream
     <script>
         $(function () {
             var params = getParams();
-            if(params.id){
+            if (params.id) {
                 //获取该游记的相关信息
-                $.get('/travels/'+params.id,function (data) {
+                $.get('/travels/' + params.id, function (data) {
                     $(".travels").renderValues(data);
                 })
-=======
+            }
+            });
+    </script>
     <!--弹出输入框-->
     <link href="/js/plugins/inputbox/dist/dialog.css" rel="stylesheet">
 </head>
@@ -72,7 +73,6 @@
                     window.location.href = "/login.html";
                     return;
                 }
->>>>>>> Stashed changes
 
                 /*评论弹出框*/
                 Dialog.init('<input type="text" placeholder="说点什么吧"  style="margin:8px 0;width:100%;padding:11px 8px;font-size:15px; border:1px solid #999;"/>', {
@@ -162,7 +162,7 @@
 </div>
 
 <div class="travels">
-    <img  class="cover" render-src="coverUrl">
+    <img class="cover" render-src="coverUrl">
     <div class="container">
         <h6 class="title" render-html="title"></h6>
         <small>
@@ -172,7 +172,7 @@
         </small>
         <div class="row">
             <div class="col-2 img">
-                <img  class="rounded-circle" render-src="author.headImgUrl">
+                <img class="rounded-circle" render-src="author.headImgUrl">
             </div>
             <div class="col-6 mine">
                 <small>
@@ -184,7 +184,7 @@
                 </small>
             </div>
             <div class="attention col">
-                <span class="addr" render-html="place.name" ></span>
+                <span class="addr" render-html="place.name"></span>
             </div>
         </div>
     </div>
@@ -218,14 +218,15 @@
     <hr>
 
     <div class="container d-flex">
-<<<<<<< Updated upstream
         <div class="p-2  flex-fill">
             <i class="fa fa-thumbs-o-up"  id="likeBtn"> </i>
+        <div class="p-2  flex-fill fa-2x">
+            <i class="fa fa-thumbs-o-up" id="likeBtn"> </i>
         </div>
-        <div class="p-2  flex-fill"><i class="fa  fa-commenting-o"  id="commentBtn"> </i>
+        <div class="p-2  flex-fill fa-2x">
+            <i class="fa  fa-commenting-o" id="commentBtn"> </i>
         </div>
         <div class="p-2  flex-fill"><i class="fa fa-star-o" id="collectBtn"> </i>
-=======
         <div class="p-2  flex-fill fa-2x">
             <i data-id="1" class="fa fa-thumbs-o-up" id="likeBtn"> </i>
         </div>
@@ -234,12 +235,12 @@
         </div>
         <div class="p-2  flex-fill fa-2x">
             <i data-id="3" class="fa fa-star-o" id="collectBtn"> </i>
->>>>>>> Stashed changes
+        <div class="p-2  flex-fill fa-2x">
+            <i class="fa fa-star-o" id="collectBtn"> </i>
         </div>
     </div>
 </div>
 <div id="comment"></div>
-
 
 
 </body>
