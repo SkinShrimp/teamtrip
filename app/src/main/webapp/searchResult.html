@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>酒店查询结果页</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="iTunesArtwork@2x.png" sizes="114x114" rel="apple-touch-icon-precomposed">
+    <link type="text/css" rel="stylesheet" href="themes/css/base.css">
+    <link type="text/css" rel="stylesheet" href="themes/css/icon.css">
+    <link type="text/css" rel="stylesheet" href="themes/css/home.css">
+</head>
+<body>
+
+<section class="aui-flexView">
+    <header class="aui-navBar aui-navBar-fixed">
+        <a href="javascript:window.history.go(-1)" class="aui-navBar-item">
+            <i class="aui-icon icon-return"></i>
+        </a>
+        <div class="aui-center" style="margin-left:5%; width:100%">
+            <span class="aui-center-title">
+                <div class="aui-search-content">
+                    <div id="checkinout">
+                        <div id="firstSelect">
+                            <div class="Date_lr">
+                                <p>住</p><input id="startDate" type="text" value="" style="" readonly="">
+                            </div>
+                            <div class="Date_lr Date_lr2">
+                                <p>离</p><input id="endDate" type="text" value="" style="" readonly="">
+                            </div>
+                            <i class="aui-icon icon-down"></i>
+                        </div>
+                    </div>
+                    <div class="aui-search-fictitious">
+                        <i class="aui-icon icon-search-small"></i>
+                        <input type="text" placeholder="试试搜搜" value="" name="" >
+                    </div>
+                </div>
+            </span>
+        </div>
+        <a href="javascript:;" class="aui-navBar-item" style="min-width: 5%; -webkit-flex: 0 0 25%; -ms-flex: 0 0 25%; flex: 0 0 5%;" data-ydui-actionsheet="{target:'#actionSheet',closeElement:'#cancel'}">
+            <i class="aui-icon icon-price"></i>
+        </a>
+    </header>
+    <section class="aui-scrollView">
+        <div class="aui-search-box">
+            <a href="javascript:;" class="aui-flex b-line">
+                <div class="aui-flex-img-hi">
+                    <img src="themes/img/img/temporary-005.png" alt="">
+                </div>
+                <div class="aui-flex-box">
+                    <h2>北京古北水镇别墅</h2>
+                    <h3><em>4.8<i>分</i></em>距离古北水镇288米</h3>
+                    <p>龙湖长城源著小区17号楼B1110室</p>
+                    <span>￥<em>789</em>起</span>
+                </div>
+            </a>
+        </div>
+
+    </section>
+</section>
+
+<!-- 入住离店日期弹窗 begin -->
+<div class="mask_calendar">
+    <div class="calendar"></div>
+    <div class="calendar_tishi aui-calendar-tips">请选择离店时间</div>
+</div>
+<!-- 入住离店日期弹窗 end -->
+
+<!-- 价格/星级弹窗 begin -->
+<div class="m-actionsheet" id="actionSheet">
+    <div class="aui-price-cells">
+        <h3>价格</h3>
+        <div class="aui-touch-slide">
+            <div class="aui-touch-slide-title">
+                <a href="javascript:;" class="aui-touch-slide-item aui-touch-gray">
+                    <span>1</span>
+                </a>
+                <a href="javascript:;" class="aui-touch-slide-item aui-touch-gray">
+                    <span>100</span>
+                </a>
+                <a href="javascript:;" class="aui-touch-slide-item aui-touch-green">
+                    <span>200</span>
+                </a>
+                <a href="javascript:;" class="aui-touch-slide-item">
+                    <span>300</span>
+                </a>
+                <a href="javascript:;" class="aui-touch-slide-item">
+                    <span>400</span>
+                </a>
+                <a href="javascript:;" class="aui-touch-slide-item">
+                    <span>500</span>
+                </a>
+                <a href="javascript:;" class="aui-touch-slide-item aui-touch-green">
+                    <span>不限</span>
+                </a>
+            </div>
+            <div class="aui-touch-gray-line">
+                <div class="aui-touch-gray-line-top" style="width:67%"></div>
+                <span class="aui-touch-left-btn" style="left:95px;"></span>
+                <span class="aui-touch-right-btn"></span>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="aui-price-cells">
+        <h3>星级</h3>
+        <div class="aui-price-grids">
+            <a href="javascript:;" class="aui-grids-item">
+                <span>经济型</span>
+            </a>
+            <a href="javascript:;" class="aui-grids-item">
+                <span>舒适/三星</span>
+            </a>
+            <a href="javascript:;" class="aui-grids-item this-card">
+                <span>高档/四星</span>
+            </a>
+            <a href="javascript:;" class="aui-grids-item">
+                <span>豪华/五星</span>
+            </a>
+        </div>
+    </div>
+    <div class="aui-price-button">
+        <button class="aui-flex-button-btn" id="cancel">完成</button>
+    </div>
+</div>
+<!-- <a href="javascript:;" id="cancel" class="">关闭</a> -->
+<!-- 价格/星级弹窗 end -->
+
+<script type="text/javascript" src="themes/js/jquery.js"></script>
+<script type="text/javascript" src="themes/js/tab.js"></script>
+<script type="text/javascript" src="themes/js/data.js"></script>
+<script type="text/javascript" src="themes/js/layer.js"></script>
+
+<script type="text/javascript">
+    $(function() {
+        $('#firstSelect').on('click', function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            $('.mask_calendar').show();
+        });
+        $('.mask_calendar').on('click', function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            if (e.target.className == "mask_calendar") {
+                $('.calendar').slideUp(200);
+                $('.mask_calendar').fadeOut(200);
+            }
+        })
+        $('#firstSelect').calendarSwitch({
+            selectors: {
+                sections: ".calendar"
+            },
+            index: 4,
+            //展示的月份个数
+            animateFunction: "slideToggle",
+            //动画效果
+            controlDay: true,
+            //知否控制在daysnumber天之内，这个数值的设置前提是总显示天数大于90天
+            daysnumber: "60",
+            //控制天数
+            comeColor: "#0bc66f",
+            //入住颜色
+            outColor: "#0bc66f",
+            //离店颜色
+            comeoutColor: "#c0f7dd",
+            //入住和离店之间的颜色
+            callback: function() {
+                //回调函数
+                $('.mask_calendar').fadeOut(200);
+                var startDate = $('#startDate').val();
+                //入住的天数
+                var endDate = $('#endDate').val();
+                //离店的天数
+                var NumDate = $('.NumDate').text();
+                //共多少晚
+                console.log(startDate);
+                console.log(endDate);
+                console.log(NumDate);
+                //下面做ajax请求
+            },
+            comfireBtn: '.comfire'//确定按钮的class或者id
+        });
+        var b = new Date();
+        var ye = b.getFullYear();
+        var mo = b.getMonth() + 1;
+        mo = mo < 10 ? "0" + mo : mo;
+        var da = b.getDate();
+        da = da < 10 ? "0" + da : da;
+        $('#startDate').val(ye + '-' + mo + '-' + da);
+        b = new Date(b.getTime() + 24 * 3600 * 1000);
+        var ye = b.getFullYear();
+        var mo = b.getMonth() + 1;
+        mo = mo < 10 ? "0" + mo : mo;
+        var da = b.getDate();
+        da = da < 10 ? "0" + da : da;
+        $('#endDate').val(ye + '-' + mo + '-' + da);
+    });
+</script>
+<script type="text/javascript">
+
+
+    $('.aui-grids-item').click(function(e){
+
+        $(this).addClass('this-card').siblings().removeClass('this-card');
+
+        $('#type-amount').html($(this).find('.cardAmount').html());
+
+    })
+
+
+</script>
+
+
+</body>
+</html>
