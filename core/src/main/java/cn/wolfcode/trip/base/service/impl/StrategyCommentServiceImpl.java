@@ -39,13 +39,15 @@ public class StrategyCommentServiceImpl implements IStrategyCommentService {
         strategyCommentMapper.insert(strategyComment);
 
         //保存标签
+        if (tags!=null && tags.length!=0){
         for (String tagString : tags) {
             Tag tag = new Tag();
             tag.setName(tagString);
             tagMapper.insert(tag);
 
             //关联中间表
-            strategyCommentMapper.insertRelation(strategyComment.getId(),tag.getId());
+            strategyCommentMapper.insertRelation(strategyComment.getId(), tag.getId());
+        }
         }
     }
 }

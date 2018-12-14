@@ -87,6 +87,12 @@
                     }
                 });
 
+                //发请求获取最热标签
+                $.get('/strategies/'+params.id+'/tags',function (data) {
+                    console.log(data);
+                    $('#tags').renderValues(data)
+                })
+
                 //点评按钮
                 $("#commentBtn").click(function () {
                     window.location.href = "/mine/addComment.html?id="+params.id;
@@ -170,17 +176,10 @@
 
         <div class="container tag">
             <h6>骡友标签</h6>
-            <div>
-                <span>价格便宜</span>
-                <span>很热闹</span>
-                <span>交通方便</span>
-                <span>吃的很多</span>
-                <span>风景优美</span>
-                <span>美食很多</span>
-                <span>很特别</span>
-                <span>爱上这座城</span>
-                <span>住宿方便</span>
-                <span>刚刚</span>
+            <div id="tags">
+                <div render-loop="list">
+                    <span render-html="list.name"></span>
+                </div>
             </div>
         </div>
         <hr>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.trip.base.mapper.UserChatMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.UserChat">
+    <id column="id" property="id" />
+    <result column="sender_id" property="sender_id" />
+    <result column="receiver_id" property="receiver_id" />
+    <result column="message" property="message" />
+    <result column="sendTime" property="sendTime" />
+    <result column="status" property="status" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey">
+    delete from userchat
+    where id = #{id}
+  </delete>
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into userchat (sender_id, receiver_id, message, sendTime, status)
+    values (#{sender_id}, #{receiver_id}, #{message}, #{sendTime}, #{status})
+  </insert>
+  <update id="updateByPrimaryKey">
+    update userchat
+    set sender_id = #{sender_id},
+      receiver_id = #{receiver_id},
+      message = #{message},
+      sendTime = #{sendTime},
+      status = #{status}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select id, sender_id, receiver_id, message, sendTime, status
+    from userchat
+    where id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, sender_id, receiver_id, message, sendTime, status
+    from userchat
+  </select>
+</mapper>
