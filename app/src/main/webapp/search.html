@@ -97,11 +97,59 @@
             }
             travelQuery();
 
+
+
+            //获取全部用户(分页)
+            //当前页
+            var userCurrentPage = 1;
+            //总页数
+            var userPages;
+            //存储用户的数组
+            var userArr = [];
+
+            function userQuery(){
+
+                //查询用户
+                $.get("/users",{keyword:keyword,currentPage:userCurrentPage},function (data) {
+                    //查询用户数量
+                    var searchSum = data.list.length;
+                    //拼接
+                    $(".user").html("用户"+"("+searchSum+")");
+
+                    $.merge(userArr, data.list);
+                    var json = {
+                        list: userArr
+                    }
+                    $("#users").renderValues(json, {
+                        getHref: function (item, value) {
+                            $(item).attr("href", "/userProfiles.html?id=" + value);
+                        }
+                    });
+                    userPages = data.pages;
+                })
+
+                userCurrentPage = userCurrentPage + 1;
+            }
+            userQuery();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             //给window绑定滚动事件
             $(window).scroll(function () {
                 if ($(window).height() + $(document).scrollTop() + 1 >= $(document).height()) {
                     //如果是大于总页数就不发送请求了
-                    if (strategyCurrentPage <= strategyPages || travelCurrentPage<=travelPages) {
+                    if (strategyCurrentPage <= strategyPages || travelCurrentPage<=travelPages || userCurrentPage<=userPages) {
                         query();
                     } else {
                         $(document).dialog({
@@ -147,7 +195,7 @@
     </li>
     <li class="nav-item" style="width: 25%">
         <a id="travel" class="nav-link clickTab" data-toggle="pill" href="#pills-travel">
-            <span class="travel">旅游</span>
+            <span class="travel">游记</span>
         </a>
     </li>
     <li class="nav-item" style="width: 25%">
@@ -203,24 +251,47 @@
         </div>
     </div>
 
-
-    <!--<div class="tab-pane fade " id="pills-travel">
+    <div class="tab-pane fade " id="pills-daily">
         <div class="askComment">
-            <div id="travels">
-                <div class="container strategyCommend" render-loop="list">
+            <div id="dailys">
+                <div class="container dailyCommend" render-loop="list">
+                    <div>
+                        <br/>
+                        <div class="row hot">
+                            <div class="col-12 dailys">
+                                <a data-href="dailyContent.html?id=" render-key="list.id" render-fun="getHref">
+                                    <img render-src="list.coverUrl">
+                                    <p render-html="list.title"></p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-pane fade " id="pills-user">
+        <div class="askComment">
+            <div id="users">
+                <div class="container strategyCommend">
                     <br/>
-                    <div class="row hot" >
-                        <div class="col-12 travels">
-                            <a data-href="travelContent.html?id=" render-key="list.id" render-fun="getHref">
-                                <img render-src="list.coverUrl">
-                                <p render-html="list.title"></p>
+                    <div class="row hot" render-loop="list">
+                        <div class="col-6 users">
+                            <a data-href="userProfiles.html?id=" render-key="list.id" render-fun="getHref">
+                                <img render-src="list.headImgUrl">
+                                <p render-html="list.nickName"></p>
+                                <p render-html="list.email"></p>
+
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>-->
+    </div>
+
+
 
 
 </div>
