@@ -93,6 +93,104 @@
         }
     </style>
 
+    <script>
+        $(function () {
+
+
+
+
+            //获取到当前用户
+            var user = JSON.parse(sessionStorage.getItem("user"));
+
+
+
+
+
+            //获取全部游记(分页)
+            //当前页
+            var currentPage = 1;
+            //总页数
+            var pages;
+            //存储游记的数组
+            var travelArr = [];
+
+            function query() {
+                $.get('/circleForFriends', {currentPage: currentPage}, function (data) {
+
+                    $.merge(travelArr, data.list);
+                    var json = {
+                        list: travelArr
+                    }
+                    //设置时间
+                    $("#main").renderValues(json,{
+                        getDate:function (item, value) {
+
+                            //将时间转化为时间戳
+                            var timeString=Date.parse(value);
+                            console.log(timeString);
+                            $(".time").html(timeago(timeString))
+                        }
+                    });
+                    pages = data.pages;
+                })
+                currentPage = currentPage + 1;
+            }
+
+            query();
+
+
+            //给window绑定滚动事件
+            $(window).scroll(function () {
+                if ($(window).height() + $(document).scrollTop() + 1 >= $(document).height()) {
+                    //如果是大于总页数就不发送请求了
+                    if (currentPage <= pages) {
+                        query();
+                    } else {
+                        $(document).dialog({
+                            type: 'notice',
+                            content: '<span class="info-text">亲,已经到底了!</span>',
+                            autoClose: 2500
+                        });
+                    }
+                }
+            });
+            //设置朋友圈背景,用户头像昵称
+            $("#bg").attr("src",user.coverImgUrl);
+            $("#avt").attr("src",user.headImgUrl);
+            $("#user-name").html(user.nickName)
+
+            /* //设置发布时间距离此时多久,10小时内显示**小时前或者**分钟前,超过10小时日期格式为 年-月-日
+             $.get('/circleForFriends', {currentPage: currentPage}, function (data) {
+                 //获取到当前时间
+                 var time = new Date()
+                 //获取到用户发布时间
+                 var userTime = data.list[0].releaseTime;
+                 //将时间转化为时间戳
+                 var t = time.valueOf();
+                 var ut=userTime.valueOf();
+
+                 console.log(t);
+                 console.log(ut);
+
+                 //最大的显示时间10小时内,一小时内显示为多少分钟
+
+                 {
+                        getDate:function (itme, value) {
+                            $(".time").html(diaplayTime(value))
+                        }
+                    }
+
+             })*/
+
+
+            //获取到用户时间的字符串
+
+
+
+        })
+
+    </script>
+
 </head>
 <body>
 
@@ -131,30 +229,30 @@
 <header>
     <img id="bg" src="">
     <p id="user-name" class="data-name"></p>
-   <!-- <img id="avt" class="data-avt" src="">-->
+    <img id="avt" class="data-avt">
 </header>
 <div id="main">
-    <div id="list" >
+    <div id="list" render-loop="list">
         <ul >
             <div>
                 <li>
                     <div class="po-avt-wrap">
-                        <img class="po-avt data-avt" src="">
+                        <img class="po-avt data-avt" render-src="list.user.headImgUrl">
                     </div>
                     <div class="po-cmt">
                         <div class="po-hd">
-                            <p class="po-name"><span class="data-name">唐老爷</span></p>
+                            <p class="po-name"><span class="data-name" render-html="list.user.nickName"></span></p>
                             <div class="post">
-                                <p>哈哈哈哈</p>
+                                <p render-html="list.content"></p>
 
                                 <ul class="comment-img">
                                     <li >
-                                        <img class="list-img" src="" style="height: 300px;">
+                                        <img class="list-img" render-src="list.imgUrls" style="height: 300px;">
                                     </li>
                                 </ul>
 
                             </div>
-                            <p class="time" ></p>
+                            <p class="time" render-key="list.releaseTime" render-fun="getDate"></p>
                             <a class="userComment"  data-id="" ><!--评论按钮-->
                                 <img class="c-icon" src="">
                             </a>
@@ -184,6 +282,88 @@
     </div>
 
 </div>
+<script>
+    //时间戳
+    function getLocalTime(nS) {
+        return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');
+    }
+</script>
+<script>
+    function timeago(dateTimeStamp){   //dateTimeStamp是一个时间毫秒，注意时间戳是秒的形式，在这个毫秒的基础上除以1000，就是十位数的时间戳。13位数的都是时间毫秒。
 
+        var minute=1000*60;      //把分，时，天，周，半个月，一个月用毫秒表示
+
+        var  hour=minute*60;
+
+        var day=hour*24;
+
+        var week=day*7;
+
+        var halfamonth=day*15;
+
+        var month=day*30;
+
+        var  now=new Date().getTime();   //获取当前时间毫秒
+
+        var diffValue=now-dateTimeStamp;//时间差
+
+
+
+        if(diffValue<0){return;}
+
+
+
+        var  minC=diffValue/minute;  //计算时间差的分，时，天，周，月
+
+        var  hourC=diffValue/hour;
+
+        var  dayC=diffValue/day;
+
+        var  weekC=diffValue/week;
+
+        var  monthC=diffValue/month;
+
+
+
+        if(minC>=1){
+
+            result=" "+parseInt(minC)+"分钟前"
+
+        }
+
+
+
+        else  if(hourC>=1){
+
+            result=" "+parseInt(hourC)+"小时前"
+
+        }
+
+        else    if(dayC>=1){
+
+            result=" "+parseInt(dayC)+"天前"
+
+        }
+
+        else    if(weekC>=1){
+
+            result=" "+parseInt(weekC)+"周前"
+
+        }
+
+        else    if(monthC>=1){
+
+            result=" "+parseInt(monthC)+"月前"
+
+        }
+        else{
+
+            result="刚刚";
+
+        }
+
+        return result;
+    }
+</script>
 </body>
 </html>
