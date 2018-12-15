@@ -17,5 +17,11 @@ public interface CommentMapper {
 
     void deleteByPrimaryKey(Long id);
 
-    Comment selectByTypeIdAndType(@Param("typeId") Integer typeId, @Param("type") Integer type);
+    Comment selectByTypeIdAndType(Comment entry);
+
+    void updateCommentById(Comment entry);
+
+    Long selectMaxFlagId(Comment entry);
+
+    Long selectByCollect(Comment entry);
 }

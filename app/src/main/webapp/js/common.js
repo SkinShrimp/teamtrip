@@ -25,25 +25,25 @@ function getHref(item, value) {
 //-------------------树结构的js实现--------------------//
 /*pId---> parentId(父节点的ID)*/
 var zNodes = [
-    {id: 0, pId: -1, content: "Aaaa"},
-    {id: 1, pId: 0, content: "A"},
-    {id: 11, pId: 1, content: "A1"},
-    {id: 12, pId: 1, content: "A2"},
-    {id: 13, pId: 1, content: "A3"},
-    {id: 2, pId: 0, content: "B"},
-    {id: 21, pId: 2, content: "B1"},
-    {id: 22, pId: 2, content: "B2"},
-    {id: 23, pId: 2, content: "B3"},
-    {id: 3, pId: 0, content: "C"},
-    {id: 31, pId: 3, content: "C1"},
-    {id: 32, pId: 3, content: "C2"},
-    {id: 33, pId: 3, content: "C3"},
-    {id: 34, pId: 31, content: "x"},
-    {id: 35, pId: 31, content: "y"},
-    {id: 36, pId: 31, content: "z"},
-    {id: 37, pId: 36, content: "z1123"},
-    {id: 38, pId: 37, content: "z123123123"},
-    {id: 39, pId: 38, content: "lwww"},
+    {id: 0, pId: -1, comment: "Aaaa"},
+    {id: 1, pId: 0, comment: "A"},
+    {id: 11, pId: 1, comment: "A1"},
+    {id: 12, pId: 1, comment: "A2"},
+    {id: 13, pId: 1, comment: "A3"},
+    {id: 2, pId: 0, comment: "B"},
+    {id: 21, pId: 2, comment: "B1"},
+    {id: 22, pId: 2, comment: "B2"},
+    {id: 23, pId: 2, comment: "B3"},
+    {id: 3, pId: 0, comment: "C"},
+    {id: 31, pId: 3, comment: "C1"},
+    {id: 32, pId: 3, comment: "C2"},
+    {id: 33, pId: 3, comment: "C3"},
+    {id: 34, pId: 31, comment: "x"},
+    {id: 35, pId: 31, comment: "y"},
+    {id: 36, pId: 31, comment: "z"},
+    {id: 37, pId: 36, comment: "z1123"},
+    {id: 38, pId: 37, comment: "z123123123"},
+    {id: 39, pId: 38, comment: "lwww"},
 ];
 
 function treeMenu(a) {
@@ -68,16 +68,15 @@ treeMenu.prototype = {
 
             }
         }
-        console.log(this.groups);
-
+        // console.log(this.groups);
     },
     getDom: function (a) {
         if (!a) {
             return ''
         }
-        var html = '\n<ul >\n';
+        var html = '\n<ul style="list-style-type:none;">\n';
         for (var i = 0; i < a.length; i++) {
-            html += '<li><a href="#">' + a[i].content + '</a>';
+            html += '<li><a href="#">' + a[i].comment + '</a>';
             html += this.getDom(this.groups[a[i].id]);
             html += '</li>\n';
         }
@@ -86,4 +85,4 @@ treeMenu.prototype = {
         return html;
     }
 };
-var html = new treeMenu(zNodes).init(0);
+// var html = new treeMenu(zNodes).init(0);
