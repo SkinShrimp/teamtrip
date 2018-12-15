@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>酒店详情页</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+    <script type="text/javascript" src="themes/js/jquery.js"></script>
+    <script type="text/javascript" src="themes/js/tab.js"></script>
+    <script type="text/javascript" src="themes/js/data.js"></script>
+    <script type="text/javascript" src="themes/js/touchSlider.js"></script>
+    <script type="text/javascript"></script>
+
+
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="iTunesArtwork@2x.png" sizes="114x114" rel="apple-touch-icon-precomposed">
+    <link type="text/css" rel="stylesheet" href="themes/css/base.css">
+    <link type="text/css" rel="stylesheet" href="themes/css/icon.css">
+    <link type="text/css" rel="stylesheet" href="themes/css/home.css">
+
+  <!--  <script src="/js/jquery/jquery.min.js"></script>-->
+    <script src="/js/plugins/jrender/jrender.min.js"></script>
+    <script src="/js/common.js"></script>
+    <link rel="stylesheet" href="/js/plugins/dialog2/dialog.css">
+    <script src="/js/plugins/dialog2/dialog.min.js"></script>
+
+    <script>
+        $(function () {
+
+            var params = getParams();
+            if (params.id) {//params.id-->酒店的id
+                //获取该房间的相关信息
+                $.get('/hotels/' + params.id, function (data) {
+                    $(".aui-flexView").renderValues(data);
+                })
+            }
+
+            //点击查看全部点评跳转到点评界面
+            $(".userEvaluate").click(function () {
+                window.location.href="/userEvaluate.html";
+            })
+
+
+
+            //当前页
+            var currentPage = 1;
+            //总页数
+            var pages;
+            //存储房间的数组
+            var roomArr = [];
+
+            function query(){
+                //获取我的房间
+                $.get("/hotels/"+params.id+"/rooms",{currentPage:currentPage},function (data) {
+                    //把第二个数组合并第一个数组中
+                    $.merge(roomArr,data.list);
+                    var json = {
+                        list:roomArr
+                    };
+                    //渲染数据
+                    $(".aui-room-list").renderValues(json);
+                    $(".order").click(function () {
+                        window.location.href="/mine/orderDetails.html"
+                    })
+
+                    //获取总页数
+                    pages = data.pages;
+                })
+                currentPage = currentPage + 1;
+            }
+
+            //默认查询第一页
+            query();
+
+            //给window绑定滚动事件
+            $(window).scroll( function() {
+                if($(window).height()+$(document).scrollTop()+1>=$(document).height()){
+                    //如果是大于总页数就不发送请求了
+                    if(currentPage<=pages){
+                        query();
+                    }else{
+                        $(document).dialog({
+                            type : 'notice',
+                            content: '<span class="info-text">亲,已经到底了!</span>',
+                            autoClose: 2500
+                        });
+                    }
+                }
+            });
+
+
+
+
+        })
+    </script>
+
+</head>
+<body>
+    <section class="aui-flexView" id="navHead" style="height:auto">
+        <header class="aui-navBar aui-navBar-bg aui-navBar-fixed" id="nav-wrap">
+            <a href="javascript:window.history.go(-1)" class="aui-navBar-item">
+                <i class="aui-icon icon-return"></i>
+            </a>
+            <div class="aui-center">
+                <span class="aui-center-title aui-center-title-none" render-html="name"></span>
+            </div>
+            <a href="javascript:;" class="aui-navBar-item" style="min-width: 13%; flex: 0 0 13%;">
+                <i class="icon icon-news"></i>
+            </a>
+        </header>
+        <section class="aui-scrollView">
+            <div class="img_gallery" id="commodity">
+                <div class="main_img">
+                    <ul>
+                        <li>
+                            <img src="themes/img/img/banner-001.png" alt="">
+                        </li>
+                        <li>
+                            <img src="themes/img/img/banner-002.png" alt="">
+                        </li>
+                        <li>
+                            <img src="themes/img/img/banner-001.png" alt="">
+                        </li>
+                        <li>
+                            <img src="themes/img/img/banner-002.png" alt="">
+                        </li>
+                        <li>
+                            <img src="themes/img/img/banner-001.png" alt="">
+                        </li>
+                        <li>
+                            <img src="themes/img/img/banner-001.png" alt="">
+                        </li>
+                        <li>
+                            <img src="themes/img/img/banner-002.png" alt="">
+                        </li>
+                    </ul>
+                </div>
+                <div class="img_font">
+                    <span>1/7</span>
+                    <span>2/7</span>
+                    <span>3/7</span>
+                    <span>4/7</span>
+                    <span>5/7</span>
+                    <span>6/7</span>
+                    <span>7/7</span>
+                </div>
+            </div>
+            <div class="aui-content-text">
+                <div class="aui-content-box">
+                    <div class="aui-introduce">
+                        <h2 render-html="name"></h2>
+                        <p render-html="hotelRegion"></p>
+                        <p>中国/北京/密云</p>
+                        <p render-html="distance"></p>
+                        <p render-html="hotelContent.content"></p>
+                    </div>
+                    <div class="aui-flex aui-flex-clear-align-items">
+                        <div class="aui-flex-in-title">入住须知：</div>
+                        <div class="aui-flex-box">
+                            <p>本店提供无烟房间，行李寄存业务。</p>
+                            <p>完善的访客制度保障客人的安全。</p>
+                        </div>
+                    </div>
+                    <div class="aui-flex">
+                        <div class="aui-flex-box">
+                           <span class="aui-tag-coup">酒店红包</span>
+                           <span class="aui-tag-coup">门店新客立减</span>
+                           <span class="aui-tag-coup">连住优惠</span>
+                        </div>
+                        <div class="aui-green-arrow"></div>
+                    </div>
+                    <div class="aui-flex">
+                        <div class="aui-flex-box">
+                            <span class="aui-hotel-stars-small">
+                                <img src="themes/img/icon/stars-one.png" alt="">
+                            </span>
+                            <h5>4.8</h5>
+                        </div>
+                        <div class="aui-green-arrow userEvaluate">查看全部点评</div>
+                    </div>
+                    <div class="aui-flex aui-flex-go-to">
+                        <div class="aui-flex-item-info">
+                            <h3>入住</h3>
+                            <p>9月12日今天</p>
+                        </div>
+                        <div class="aui-flex-item-info">
+                            <h4>共8晚</h4>
+                        </div>
+                        <div class="aui-flex-item-info">
+                            <h3>离店</h3>
+                            <p>9月26日周三</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="aui-room-list">
+                <ul class="aui-data-show-list" render-loop="list">
+                    <li class="aui-flex b-line" >
+                        <div class="aui-flex-small-room">
+                            <img render-src="list.roomPic">
+                           <!-- <a   render-key="list.id" render-fun="getHref">
+
+                            </a>-->
+
+                        </div>
+                        <div class="aui-flex-box">
+                            <h3 render-html="list.price"> <em>￥</em></h3>
+                            <p class="aui-price-one" render-html="list.roomName"></p>
+                            <div class="aui-company">
+                                <span render-html="list.roomArea">中国国家航空公司</span>
+                            </div>
+                        </div>
+                        <div class="aui-flex-take">
+                            <div class="aui-flex-take-text order">订</div>
+                            <div class="aui-flex-take-pay">在线付</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </section>
+
+    <script>
+        $(document).ready(function() {
+
+            $(".main_img").touchSlider({
+                flexible: true,
+                speed: 200,
+                btn_prev: $("#btn_prev"),
+                btn_next: $("#btn_next"),
+                paging: $(".point a"),
+                counter: function(e) {
+                    $(".point a").removeClass("on").eq(e.current - 1).addClass("on");
+                    $(".img_font span").hide().eq(e.current - 1).show();
+                }
+            });
+
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var navHeight = $("#navHead").offset().top;
+            var navFix = $("#nav-wrap");
+            $(window).scroll(function() {
+                if ($(this).scrollTop() > navHeight) {
+                    navFix.addClass("aui-flex");
+                } else {
+                    navFix.removeClass("aui-flex");
+                }
+            })
+        });
+
+        $(document).ready(function() {
+            $(".btn-slide").click(function() {
+                $("#show").slideToggle();
+            });
+        });
+    </script>
+
+</body>
+</html>

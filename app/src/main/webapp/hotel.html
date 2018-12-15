@@ -17,6 +17,8 @@
     
     <script>
         $(function () {
+            //先清空
+            $("#search").val("");
             //点击输入框跳转到城市页面
             $("#search").click(function(){
                 window.location.href="/city.html";
@@ -29,6 +31,13 @@
 
             $(".queryBtn").click(function () {
                 window.location.href="/searchResult.html";
+            })
+
+            //点击星级下面的按钮,拿到对应的星级,共享到sessionStorage
+            $(".aui-grids-item").click(function () {
+                var starLevel = $(this).data('star');
+                //alert(starLevel)
+                sessionStorage.setItem("starLevel",JSON.stringify(starLevel));
             })
         })
     </script>
@@ -305,17 +314,17 @@
         <div class="aui-price-cells">
             <h3>星级</h3>
             <div class="aui-price-grids">
-                <a href="javascript:;" class="aui-grids-item">
-                    <span>经济型</span>
+                <a href="javascript:;" class="aui-grids-item" data-star="2">
+                    <span >经济型</span>
                 </a>
-                <a href="javascript:;" class="aui-grids-item">
-                    <span>舒适/三星</span>
+                <a href="javascript:;" class="aui-grids-item" data-star="3">
+                    <span >舒适/三星</span>
                 </a>
-                <a href="javascript:;" class="aui-grids-item this-card">
-                    <span>高档/四星</span>
+                <a href="javascript:;" class="aui-grids-item this-card" data-star="4">
+                    <span >高档/四星</span>
                 </a>
-                <a href="javascript:;" class="aui-grids-item">
-                    <span>豪华/五星</span>
+                <a href="javascript:;" class="aui-grids-item" data-star="5">
+                    <span >豪华/五星</span>
                 </a>
             </div>
         </div>

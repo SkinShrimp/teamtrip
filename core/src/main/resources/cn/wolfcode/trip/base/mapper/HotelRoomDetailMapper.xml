@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.trip.base.mapper.HotelRoomDetailMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.HotelRoomDetail">
+    <id column="id" property="id" />
+    <result column="roomName" property="roomName" />
+    <result column="price" property="price" />
+    <result column="roomPic" property="roomPic" />
+    <result column="roomArea" property="roomArea" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey">
+    delete from hotelroomdetail
+    where id = #{id}
+  </delete>
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into hotelroomdetail (hotel_id, roomName, price, roomPic, roomArea)
+    values (#{hotel.id}, #{roomName}, #{price}, #{roomPic}, #{roomArea})
+  </insert>
+  <update id="updateByPrimaryKey">
+    update hotelroomdetail
+    set hotel_id = #{hotel.id},
+      roomName = #{roomName},
+      price = #{price},
+      roomPic = #{roomPic},
+      roomArea = #{roomArea}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select id, hotel_id, roomName, price, roomPic, roomArea
+    from hotelroomdetail
+    where id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, hotel_id, roomName, price, roomPic, roomArea
+    from hotelroomdetail
+  </select>
+  <select id="selectForList" resultMap="BaseResultMap">
+     select id, hotel_id, roomName, price, roomPic, roomArea
+    from hotelroomdetail
+    <where>
+      <if test="hotelId !=null ">
+        and hotel_id = #{hotelId}
+      </if>
+    </where>
+  </select>
+</mapper>

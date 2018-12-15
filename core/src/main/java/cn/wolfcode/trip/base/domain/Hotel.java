@@ -19,4 +19,6 @@ public class Hotel extends BaseDomain{
 
     private Long price;//价格
 
+    private HotelContent hotelContent;//酒店内容
+
 }

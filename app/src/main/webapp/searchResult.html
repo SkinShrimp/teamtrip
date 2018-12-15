@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>酒店查询结果页</title>
     <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+
     <meta content="yes" name="apple-mobile-web-app-capable"/>
     <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
     <meta content="telephone=no" name="format-detection"/>
@@ -12,6 +13,69 @@
     <link type="text/css" rel="stylesheet" href="themes/css/base.css">
     <link type="text/css" rel="stylesheet" href="themes/css/icon.css">
     <link type="text/css" rel="stylesheet" href="themes/css/home.css">
+
+    <script src="/js/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="/js/plugins/dialog2/dialog.css">
+    <script src="/js/plugins/jrender/jrender.min.js"></script>
+    <script src="/js/plugins/dialog2/dialog.min.js"></script>
+
+
+    <script>
+        $(function () {
+            //从sessionStorage中获取点击拿到数据
+            var data = JSON.parse(sessionStorage.getItem("data"));
+            var starLevel = JSON.parse(sessionStorage.getItem("starLevel"));
+
+            //获取全部酒店(分页)
+            //当前页
+            var currentPage = 1;
+            //总页数
+            var pages;
+            //存储酒店的数组
+            var hotelArr = [];
+
+            function query() {
+
+                //进来默认点击
+                //$("#pills-top").addClass("active").addClass("show");
+
+                //查询
+                $.get("/hotels",{keyword:data,starLevel:starLevel,currentPage:currentPage},function (data) {
+                    $.merge(hotelArr, data.list);
+                    var json = {
+                        list: hotelArr
+                    }
+                    $(".aui-scrollView").renderValues(json, {
+                        getHref: function (item, value) {
+                            $(item).attr("href", "/hotelDetails.html?id=" + value);
+                        }
+                    });
+                    pages = data.pages;
+                });
+                currentPage = currentPage + 1;
+
+            }
+
+            query();
+
+            //给window绑定滚动事件
+            $(window).scroll(function () {
+                if ($(window).height() + $(document).scrollTop() + 1 >= $(document).height()) {
+                    //如果是大于总页数就不发送请求了
+                    if (currentPage <= pages) {
+                        query();
+                    } else {
+                        $(document).dialog({
+                            type: 'notice',
+                            content: '<span class="info-text">亲,已经到底了!</span>',
+                            autoClose: 2500
+                        });
+                    }
+                }
+            });
+
+        })
+    </script>
 </head>
 <body>
 
@@ -46,16 +110,16 @@
         </a>
     </header>
     <section class="aui-scrollView">
-        <div class="aui-search-box">
-            <a href="javascript:;" class="aui-flex b-line">
+        <div class="aui-search-box" render-loop="list">
+            <a  class="aui-flex b-line" render-key="list.id" render-fun="getHref">
                 <div class="aui-flex-img-hi">
-                    <img src="themes/img/img/temporary-005.png" alt="">
+                    <img render-src="list.pic" >
                 </div>
                 <div class="aui-flex-box">
-                    <h2>北京古北水镇别墅</h2>
-                    <h3><em>4.8<i>分</i></em>距离古北水镇288米</h3>
-                    <p>龙湖长城源著小区17号楼B1110室</p>
-                    <span>￥<em>789</em>起</span>
+                    <h2 render-html="list.name"></h2>
+                    <h3 render-html="list.distance"><em render-html="list.starLevel"><i>分</i></em></h3>
+                    <p render-html="list.hotelRegion"></p>
+                    <span>￥<em render-html="list.price"></em>起</span>
                 </div>
             </a>
         </div>
@@ -131,7 +195,6 @@
 <!-- <a href="javascript:;" id="cancel" class="">关闭</a> -->
 <!-- 价格/星级弹窗 end -->
 
-<script type="text/javascript" src="themes/js/jquery.js"></script>
 <script type="text/javascript" src="themes/js/tab.js"></script>
 <script type="text/javascript" src="themes/js/data.js"></script>
 <script type="text/javascript" src="themes/js/layer.js"></script>

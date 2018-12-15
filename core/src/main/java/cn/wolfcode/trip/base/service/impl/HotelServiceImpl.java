@@ -23,4 +23,9 @@ public class HotelServiceImpl implements IHotelService {
         List<Hotel> list = hotelMapper.selectForList(qo);
         return new PageInfo(list);
     }
+
+    @Override
+    public Hotel selectById(Long id) {
+        return hotelMapper.selectByPrimaryKey(id);
+    }
 }

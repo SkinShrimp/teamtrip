@@ -9,6 +9,10 @@
     <result column="distance" property="distance" />
     <result column="starLevel" property="starLevel" />
     <result column="price" property="price" />
+    <association property="hotelContent" javaType="HotelContent" columnPrefix="hc_">
+      <id column="id" property="id" />
+      <result column="content" property="content" />
+    </association>
   </resultMap>
   <delete id="deleteByPrimaryKey">
     delete from hotel
@@ -29,20 +33,27 @@
     where id = #{id}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap">
-    select id, hotelRegion, name, pic, distance, starLevel, price
-    from hotel
-    where id = #{id}
+    select h.id, h.hotelRegion, h.name, h.pic, h.distance, h.starLevel, h.price,
+    hc.id hc_id,hc.content hc_content
+    from hotel h
+    join hotelcontent hc on h.id =  hc.id
+    where h.id = #{id}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select id, hotelRegion, name, pic, distance, starLevel, price
     from hotel
   </select>
   <select id="selectForList" resultMap="BaseResultMap">
-    select id, hotelRegion, name, pic, distance, starLevel, price
-    from hotel
+    select h.id, h.hotelRegion, h.name, h.pic, h.distance, h.starLevel, h.price,
+    hc.id hc_id,hc.content hc_content
+    from hotel h
+    join hotelcontent hc on h.id =  hc.id
     <where>
       <if test="keyword!=null">
         and (hotelRegion like concat('%',#{keyword},'%') or name like concat('%',#{keyword},'%'))
+      </if>
+      <if test="starLevel!=null">
+        and h.starLevel = #{starLevel}
       </if>
     </where>
   </select>

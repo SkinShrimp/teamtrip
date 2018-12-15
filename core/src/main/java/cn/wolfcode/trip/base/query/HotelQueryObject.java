@@ -7,5 +7,6 @@ import lombok.Setter;
 @Setter
 public class HotelQueryObject extends QueryObject {
     private String keyword;//关键字
+    private Integer starLevel;//星级
 
 }
