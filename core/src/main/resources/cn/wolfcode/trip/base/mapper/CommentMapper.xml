@@ -85,6 +85,7 @@
         COMMENT c
         LEFT JOIN user u ON c.user_id = u.id WHERE c.type_id=#{typeId} AND c.type=#{type}
     </select>
+
     <select id="selectByTypeIdAndType"  resultMap="BaseResultMap">
         SELECT
         c.id,
@@ -102,7 +103,12 @@
         FROM
         COMMENT c
         LEFT JOIN user u ON c.user_id = u.id WHERE c.type_id=#{typeId} AND c.type=#{type}
-        AND c.parentId = 0
+        <if test="parentId != null">
+            AND c.parentId = 0
+        </if>
+        <if test="parentId == null">
+            AND c.parentId IS NULL
+        </if>
         <if test="user != null and user.id != null">
             AND c.user_id = #{user.id}
         </if>
