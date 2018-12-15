@@ -1,0 +1,1218 @@
+@charset "utf-8";html {
+    font-size: 62.5%;
+    line-height: 1em
+}
+
+body,ul,ol,p,h1,h2,h3,dl,dt,dd,li,input,textarea,button {
+    margin: 0;
+    padding: 0;
+    word-break: break-all
+}
+
+body {
+    text-align: left;
+    font-family: 'PingFangSC-Light',Arial,Helvetica,sans-serif,"Hiragino Sans GB";
+    color: #474747;
+    background-color: #FFF;
+    font-size-adjust: none;
+    -webkit-text-size-adjust: none
+}
+
+ul,li,dl,dt,dd {
+    list-style: none
+}
+
+a,a:visited {
+    text-decoration: none;
+    color: #474747
+}
+
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0)
+}
+
+input,textarea {
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
+    font-family: 'PingFangSC-Light',Arial,Helvetica,sans-serif
+}
+
+img {
+    vertical-align: middle
+}
+
+.clearfix:after {
+    clear: both;
+    height: 0;
+    overflow: hidden;
+    display: block;
+    visibility: hidden;
+    content: "."
+}
+
+.fl-l {
+    float: left
+}
+
+.fl-r {
+    float: right
+}
+
+.hide {
+    display: none
+}
+
+.btn-getmore {
+    margin: 9px;
+    font-size: 14px;
+    line-height: 50px;
+    display: block;
+    background-color: #f0f0f0;
+    color: #747474;
+    text-align: center
+}
+
+.da-push {
+    margin: 9px 9px 0;
+    line-height: 0
+}
+
+.channel-l {
+    clear: both;
+    margin: 10px 9px 0;
+    line-height: 0
+}
+
+.channel-l .a1 {
+    width: 49%;
+    float: left
+}
+
+.channel-l .a2 {
+    width: 49%;
+    float: right
+}
+
+.TipPop {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 998;
+    width: 154px;
+    height: 60px;
+    padding: 2px;
+    margin: -30px 0 0 -77px;
+    background-color: rgba(0,0,0,0.8);
+    box-shadow: 1px 1px 3px #333
+}
+
+.TipPop p {
+    line-height: 59px;
+    text-align: center;
+    color: #fff;
+    font-size: 16px
+}
+
+.TipPop i {
+    width: 20px;
+    height: 22px;
+    background: url(/mobile/images/postbg12.png) -135px -210px no-repeat;
+    background-size: 302px 300px;
+    vertical-align: middle;
+    display: inline-block;
+    margin-left: 3px
+}
+
+.MfwHead {
+    background-color: #fff;
+    border-bottom: 1px solid #e5e5e5;
+    height: 50px;
+    position: relative
+}
+
+.MfwHead .LBtn {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 2
+}
+
+.MfwHead .RBtn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    text-align: right
+}
+
+.MfwHead .CBtn {
+    text-align: center;
+    position: relative
+}
+
+.MfwHead .logo {
+    width: 94px;
+    height: 25px;
+    display: inline-block;
+    background: url(/mobile/images/header/logo2.png) no-repeat;
+    background-size: 81px 21px;
+    padding: 15px 10px 0
+}
+
+.MfwHead .LBtn .logo {
+    padding: 15px 10px 0;
+    background-position: 10px 15px
+}
+
+.MfwHead .CBtn .logo {
+    padding: 15px 0 0;
+    background-position: 0 15px
+}
+
+.MfwHead .CBtn h1 {
+    line-height: 50px;
+    font-size: 1.6rem;
+    font-weight: normal;
+    color: #666;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.MfwHead .searchBox {
+    padding: 12px 50px 0 104px
+}
+
+.MfwHead .searchBox .search-wrap {
+    background-color: #f3f3f3;
+    border-radius: 15px;
+    font-size: 1.2rem;
+    padding: 0 35px 0 12px;
+    position: relative
+}
+
+.MfwHead .searchBox input {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    height: 10px;
+    padding: 8px 0;
+    background: 0;
+    border-radius: 13px;
+    font-size: 1.2rem
+}
+
+.MfwHead .searchBox .s-btn {
+    width: 35px;
+    height: 30px;
+    border: 0;
+    background: url(/mobile/images/header/btn_search2.png) 8px 4px no-repeat;
+    background-size: 17px 17px;
+    position: absolute;
+    right: 0;
+    top: 0
+}
+
+.MfwHead .user {
+    position: absolute;
+    right: 0;
+    top: 0
+}
+
+.MfwHead .avastar {
+    width: 30px;
+    height: 30px;
+    padding: 1px;
+    background-color: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    position: absolute;
+    top: 10px;
+    right: 10px
+}
+
+.MfwHead .avastar img {
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    overflow: hidden
+}
+
+.MfwHead .mess {
+    position: absolute;
+    top: 17px;
+    right: 5px;
+    display: inline;
+    padding: 3px 6px;
+    color: #fff;
+    border-radius: 20px;
+    border: 1px solid #fff;
+    line-height: 1em;
+    font-size: 1.1rem;
+    font-family: Arial,Helvetica,sans-serif;
+    background-color: #ff7272
+}
+
+.MfwHead .ka {
+    z-index: 1;
+    width: 30px;
+    height: 30px;
+    padding-left: 10px;
+    position: absolute;
+    border: 0;
+    line-height: 30px;
+    color: #fff;
+    right: 0;
+    top: 17px;
+    display: inline-block;
+    font-size: 1.2rem;
+    background-color: #41c6ad;
+    border-radius: 15px 0 0 15px;
+    color: #fff
+}
+
+.MfwHead a.btn {
+    background: url(/mobile/images/header/i_head5.png) no-repeat;
+    background-size: 100px 300px;
+    display: inline-block;
+    height: 50px;
+    width: 50px
+}
+
+.MfwHead a.btn.back {
+    background-position: 0 0
+}
+
+.MfwHead a.btn.search {
+    background-position: -5px -50px
+}
+
+.MfwHead a.btn.setting {
+    background-position: -50px -50px;
+    text-indent: -200px;
+    overflow: hidden
+}
+
+.MfwHead .ka {
+    z-index: 1;
+    width: 30px;
+    height: 30px;
+    padding-left: 10px;
+    position: absolute;
+    border: 0;
+    line-height: 30px;
+    color: #fff;
+    right: 0;
+    top: 10px;
+    display: inline-block;
+    font-size: 1.2rem;
+    background-color: #41c6ad;
+    border-radius: 15px 0 0 15px;
+    color: #fff
+}
+
+.MfwHead a.myorder {
+    display: inline-block;
+    font-size: 14px;
+    line-height: 24px;
+    border: 1px solid #ffa800;
+    padding: 0 6px 0 10px;
+    color: #ffa800;
+    border-radius: 16px 0 0 16px;
+    margin-top: 12px
+}
+
+.MfwHead a.link {
+    display: inline-block;
+    font-size: 14px;
+    line-height: 24px;
+    padding: 0 6px;
+    color: #ffa800;
+    margin-top: 12px
+}
+
+.MfwHead .setpop {
+    width: 88px;
+    position: absolute;
+    top: 46px;
+    right: 0;
+    background: url(/mobile/images/loginbg.png) -213px 0 no-repeat;
+    background-size: 275px 165px;
+    padding-top: 4px;
+    z-index: 9
+}
+
+.MfwHead .setpop .con {
+    padding: 0 4px 2px;
+    background-color: #9f9f9f
+}
+
+.MfwHead .setpop .con a {
+    display: block;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    color: #fff;
+    text-align: center
+}
+
+.MfwHead .setpop .con a:nth-child(1) {
+    border-bottom: 1px solid #adadad
+}
+
+.subnav {
+    background-color: #fff;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    position: relative;
+    margin-top: -1px
+}
+
+.subnav ul {
+    display: table
+}
+
+.subnav li {
+    display: table-cell
+}
+
+.subnav a {
+    display: inline-block;
+    padding: 0 18px;
+    line-height: 45px;
+    font-size: 1.7rem;
+    color: #111;
+    position: relative
+}
+
+.subnav a.cur {
+    color: #ff9d00
+}
+
+.subnav a.cur:after {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    right: 10px;
+    height: 2px;
+    background-color: #ff9d00
+}
+
+.head2home {
+    height: 50px;
+    background: #fff url("/mobile/images/header/line1.png") 0 bottom repeat-x;
+    background-size: 5px;
+    position: relative
+}
+
+.head2home .logo {
+    display: block;
+    padding: 10px 15px;
+    width: 102px;
+    height: 27px;
+    background: url("/mobile/images/header/logo-new204.png") center center no-repeat;
+    background-size: 102px
+}
+
+.head2home .rBtn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 0
+}
+
+.head2home .rBtn a.home {
+    display: inline-block;
+    width: 93px;
+    line-height: 50px;
+    font-size: 15px;
+    color: #ff9d00;
+    vertical-align: top;
+    text-align: center;
+    position: relative
+}
+
+.head2home .rBtn a.home:after {
+    content: "";
+    display: block;
+    width: 1px;
+    height: 15px;
+    background-color: #efefef;
+    position: absolute;
+    right: 0;
+    top: 17px
+}
+
+.head2home .rBtn a.sch {
+    display: inline-block;
+    background: url(/mobile/images/header/i_head5.png) 0 -50px no-repeat;
+    background-size: 100px 300px;
+    height: 50px;
+    width: 50px
+}
+
+.omcToAppBar {
+    display: block;
+    height: 74px;
+    background: #fff url("/mobile/images/header/line1.png") 0 bottom repeat-x;
+    background-size: 5px;
+    position: relative
+}
+
+.omcToAppBar .logo {
+    width: 53px;
+    height: 53px;
+    background: url("/mobile/images/omc/logo106.png") no-repeat;
+    background-size: 53px;
+    position: absolute;
+    top: 10px;
+    left: 20px
+}
+
+.omcToAppBar .context {
+    padding: 10px 0 0 90px;
+    background: 0
+}
+
+.omcToAppBar p {
+    padding: 0;
+    margin: 0
+}
+
+.omcToAppBar .context .t1 {
+    font-size: 16px;
+    line-height: 32px;
+    color: #333
+}
+
+.omcToAppBar .context .t2 {
+    font-size: 12px;
+    line-height: 1em;
+    color: #909090
+}
+
+.omcToAppBar .btn {
+    width: 82px;
+    height: 26px;
+    line-height: 26px;
+    background-color: #fec933;
+    border-radius: 3px;
+    text-align: center;
+    font-size: 12px;
+    color: #333;
+    position: absolute;
+    top: 22px;
+    right: 18px
+}
+
+.omcTopBar {
+    display: block;
+    height: 97px;
+    background: #fff url("/mobile/images/header/line1.png") 0 bottom repeat-x;
+    background-size: 5px;
+    position: relative
+}
+
+.omcTopBar .logo {
+    width: 70px;
+    height: 70px;
+    background: url("/mobile/images/header/logo140.png") no-repeat;
+    background-size: 70px;
+    position: absolute;
+    top: 10px;
+    left: 18px
+}
+
+.omcTopBar .context {
+    padding: 10px 0 0 108px
+}
+
+.omcTopBar .context .t1 {
+    font-size: 9px;
+    line-height: 18px;
+    color: #797979
+}
+
+.omcTopBar .context .t1 .kk {
+    display: inline-block;
+    line-height: 16px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    padding: 0 5px
+}
+
+.omcTopBar .context .t1 .stars {
+    display: inline-block;
+    width: 56px;
+    height: 10px;
+    background: url("/mobile/images/header/omcstars.png") no-repeat;
+    background-size: 56px;
+    vertical-align: middle;
+    margin: 0 4px
+}
+
+.omcTopBar .context .t2 {
+    font-size: 15px;
+    line-height: 27px;
+    color: #202020
+}
+
+.omcTopBar .context .btns {
+    font-size: 0
+}
+
+.omcTopBar .context .btns a {
+    display: inline-block;
+    margin-right: 24px;
+    width: 103px;
+    line-height: 26px;
+    text-align: center;
+    font-size: 12px;
+    color: #202020;
+    background-color: #ffcb10;
+    border-radius: 2px
+}
+
+.omcToBan {
+    display: block;
+    height: 70px;
+    background: #fff url("/mobile/images/header/line1.png") 0 bottom repeat-x;
+    background-size: 5px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9
+}
+
+.omcToBan .logo {
+    width: 52px;
+    height: 52px;
+    background: url("/mobile/images/omc/logo106.png") no-repeat;
+    background-size: 52px;
+    position: absolute;
+    top: 8px;
+    left: 10px
+}
+
+.omcToBan .context {
+    padding: 15px 0 0 75px
+}
+
+.omcToBan .context .t1 {
+    font-size: 15px;
+    line-height: 22px;
+    color: #202020
+}
+
+.omcToBan .context .t2 {
+    font-size: 13px;
+    line-height: 1em;
+    color: #202020;
+    padding-top: 5px
+}
+
+.omcToBan .context .t2 strong {
+    color: #ffa200;
+    font-weight: normal
+}
+
+.omcToBan .btn {
+    width: 88px;
+    height: 34px;
+    line-height: 34px;
+    background-color: #ffde40;
+    border-radius: 3px;
+    text-align: center;
+    font-size: 13px;
+    color: #202020;
+    position: absolute;
+    top: 18px;
+    right: 12px
+}
+
+.omc2Guide {
+    display: block;
+    background-color: #f8f8f8;
+    position: relative;
+    padding-bottom: 20px
+}
+
+.omc2Guide .btn {
+    width: 110px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 15px;
+    background-color: #ffdb26;
+    color: #474747;
+    font-size: 15px;
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    margin-left: -55px;
+    text-align: center
+}
+
+.nav-wrapper {
+    position: relative;
+    height: 40px;
+    overflow: hidden;
+    background: #f9f9f9
+}
+
+.nav-wrapper .btn {
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    background: #f9f9f9 url(/mobile/images/indexv3/i_dir.png) no-repeat;
+    background-size: 70px 35px;
+    position: absolute;
+    top: 0
+}
+
+.nav-wrapper .btn-pre {
+    background-position: 0 0;
+    left: 0;
+    box-shadow: 3px 0 3px rgba(204,204,204,.3)
+}
+
+.nav-wrapper .btn-next {
+    background-position: -35px 0;
+    right: 0;
+    box-shadow: -3px 0 3px rgba(204,204,204,.3)
+}
+
+.sub-nav {
+    background-color: #f9f9f9;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    position: absolute;
+    left: 0;
+    top: 0
+}
+
+.sub-nav:before {
+    content: "";
+    display: block;
+    height: 1px;
+    top: 0;
+    background-color: #e5e5e5;
+    position: absolute;
+    left: -50%;
+    width: 200%;
+    transform: scale(.5)
+}
+
+.sub-nav:after {
+    content: "";
+    display: block;
+    height: 1px;
+    bottom: 0;
+    background-color: #e5e5e5;
+    position: absolute;
+    left: -50%;
+    width: 200%;
+    transform: scale(.5)
+}
+
+.sub-nav ul {
+    white-space: nowrap
+}
+
+.sub-nav li {
+    display: inline-block;
+    padding: 0 11px;
+    line-height: 40px;
+    font-size: 1.5rem;
+    color: #333;
+    position: relative
+}
+
+.sub-nav a.on {
+    color: #ff9d00
+}
+
+.sub-nav a.on:after {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #ff9d00
+}
+
+.T-head {
+    height: 43px;
+    background-color: #ff9d00
+}
+
+.T-head ul {
+    width: 100%;
+    display: table
+}
+
+.T-head li {
+    display: table-cell;
+    width: 25%
+}
+
+.T-head li a {
+    display: block;
+    text-align: center;
+    line-height: 43px;
+    font-size: 16px;
+    color: #fff;
+    position: relative
+}
+
+.T-head li a:before {
+    content: "";
+    display: block;
+    width: 1px;
+    height: 28px;
+    background-color: #ffce80;
+    transform: scale(.5);
+    -webkit-transform: scale(.5);
+    position: absolute;
+    right: 0;
+    top: 7px
+}
+
+.footer {
+    background-color: #2a282c;
+    padding-bottom: 17px
+}
+
+.footer ul {
+    display: table;
+    width: 100%;
+    padding: 20px 0
+}
+
+.footer li {
+    display: table-cell;
+    vertical-align: top;
+    text-align: center
+}
+
+.footer li a {
+    display: inline-block;
+    width: 71px;
+    line-height: 22px;
+    height: 22px;
+    text-align: center;
+    border: 1px solid #403e42;
+    background-color: #403e42;
+    border-radius: 4px;
+    font-size: 1.2rem;
+    color: #929193
+}
+
+.footer li a.on {
+    background-color: #2a282c
+}
+
+.footer li a.light {
+    color: #ff9d00
+}
+
+.footer p {
+    color: #575658;
+    font-size: .9rem;
+    text-align: center
+}
+
+.sechead {
+    margin-bottom: 9px;
+    height: 50px;
+    background-color: #ffa800;
+    position: relative
+}
+
+.sechead h1 {
+    text-align: center;
+    color: #fff;
+    font-size: 18px;
+    line-height: 50px
+}
+
+.sechead a.back {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    left: 0;
+    display: inline-block;
+    background: url(/mobile/images/m_i_s10.png) -50px -250px no-repeat;
+    background-size: 100px 400px;
+    text-indent: -200px;
+    overflow: hidden
+}
+
+.sechead a.setting {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    right: 0;
+    display: inline-block;
+    background: url(/mobile/images/loginbg.png) -72px 15px no-repeat;
+    background-size: 275px 165px;
+    text-indent: -200px;
+    overflow: hidden
+}
+
+.sechead .setpop {
+    width: 88px;
+    position: absolute;
+    top: 46px;
+    right: 0;
+    background: url(/mobile/images/loginbg.png) -213px 0 no-repeat;
+    background-size: 275px 165px;
+    padding-top: 4px;
+    z-index: 9
+}
+
+.sechead .setpop .con {
+    padding: 0 4px 2px;
+    background-color: #9f9f9f
+}
+
+.sechead .setpop .con a {
+    display: block;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    color: #fff;
+    text-align: center
+}
+
+.sechead .setpop .con a:nth-child(1) {
+    border-bottom: 1px solid #adadad
+}
+
+.search-box {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    float: right;
+    background: #fff url(/mobile/images/i_head4.png) no-repeat;
+    background-size: 100px 300px;
+    background-position: 0 -50px
+}
+
+.search-box .search-inner {
+    padding: 0
+}
+
+.search-box .inp-search {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #fff url(/mobile/images/i_head4.png) no-repeat;
+    background-size: 100px 300px;
+    background-position: 0 -50px;
+    border: 0
+}
+
+.search-box a.search-back {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: -50px;
+    left: 0;
+    display: none;
+    background: url(/mobile/images/i_head4.png?v3) no-repeat;
+    background-size: 100px 300px;
+    background-position: 0 0
+}
+
+.search-box-on {
+    width: 100%;
+    background: #fff;
+    height: 100%;
+    min-height: 500px;
+    top: 50px;
+    left: 0;
+    position: absolute;
+    z-index: 9
+}
+
+.search-box-on .search-inner {
+    padding: 6px 8px
+}
+
+.search-box-on .inp-search {
+    height: 30px;
+    padding: 8px 0;
+    line-height: 14px;
+    font-size: 14px;
+    color: #666;
+    background: 0;
+    position: static;
+    width: 100%;
+    box-sizing: border-box
+}
+
+.search-box-on .inp-search:focus {
+    outline: 0
+}
+
+.search-box-on a.search-back {
+    display: block
+}
+
+.search-box-on form {
+    margin-right: 35px;
+    background: #ececec url(/mobile/images/hotel_sprite4.png) -62px 8px no-repeat;
+    background-size: 240px 250px;
+    padding-left: 30px;
+    border-radius: 6px
+}
+
+.search-box-on .cancelsearch {
+    position: absolute;
+    right: 8px;
+    top: 6px;
+    width: 35px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 1.5rem;
+    color: #f39c11
+}
+
+.sug-box {
+    position: absolute;
+    z-index: 2;
+    background-color: #fff;
+    top: 38px;
+    left: 0;
+    width: 100%
+}
+
+.sug-box a {
+    height: 27px;
+    padding: 12px 25px 10px 9px;
+    border-bottom: 1px solid #f4f4f4;
+    font-size: 15px;
+    color: #333;
+    line-height: 27px;
+    display: block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    background: #fff url(/mobile/images/turn_v1.png) right 18px no-repeat;
+    background-size: 19px 12px
+}
+
+.sug-box a:hover {
+    background: #f9f9f9 url(/mobile/images/turn_v1.png) right 18px no-repeat;
+    background-size: 19px 12px
+}
+
+.sug-box strong {
+    color: #ffa800;
+    font-weight: normal
+}
+
+.sug-box span {
+    color: #999;
+    margin-left: 10px
+}
+
+.sug-box i {
+    width: 22px;
+    height: 22px;
+    display: inline-block;
+    vertical-align: middle;
+    background: url(/mobile/images/sug_i.png) no-repeat;
+    background-size: 22px 110px;
+    background-position: 22px 0;
+    margin-right: 5px
+}
+
+.sug-box i.mdd {
+    background-position: 0 0
+}
+
+.sug-box i.hotel {
+    background-position: 0 -22px
+}
+
+.sug-box i.spot {
+    background-position: 0 -44px
+}
+
+.sug-box i.food {
+    background-position: 0 -66px
+}
+
+.qq-bro {
+    width: 100%;
+    height: 35px;
+    margin: 0 auto;
+    background-color: #e7e7e7;
+    box-shadow: 0 0 3px rgba(0,0,0,0.6)
+}
+
+.qq-bro h1 {
+    width: 165px;
+    float: left;
+    font-size: 14px;
+    color: #666;
+    line-height: 35px;
+    font-weight: normal;
+    Letter-spacing: .2em;
+    padding-left: 12px
+}
+
+.qq-bro a {
+    width: 96px;
+    float: right;
+    display: block;
+    font-size: 14px;
+    color: #333;
+    background: url(/mobile/images/qqbro.png) 0 5px no-repeat;
+    background-size: 36px 26px;
+    padding: 0 0 0 41px;
+    line-height: 35px
+}
+
+.app-browse {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,.75);
+    display: table;
+    text-align: center;
+    vertical-align: middle
+}
+
+.app-browse .v-middle {
+    display: table-cell;
+    padding-bottom: 50px;
+    vertical-align: middle
+}
+
+.app-browse-img {
+    margin: 0 auto;
+    width: 231px;
+    height: 223px;
+    background: url(/mobile/images/indexv3/app-browse-img.png) no-repeat 0 0;
+    background-size: 231px
+}
+
+.app-browse-action {
+    margin: 25px 0
+}
+
+.app-browse-action a {
+    display: inline-block;
+    margin: 0 10px;
+    height: 36px;
+    width: 85px;
+    line-height: 36px;
+    font-size: 15px;
+    border-radius: 3px;
+    color: #fff
+}
+
+.app-browse-action .btn-continue {
+    background-color: #acacac
+}
+
+.app-browse-action .btn-app {
+    background-color: #ffdd41;
+    position: relative;
+    color: #000
+}
+
+.app-browse-action .btn-app:after {
+    content: '';
+    position: absolute;
+    right: 3px;
+    top: 40px;
+    width: 191px;
+    height: 57px;
+    background: url(/mobile/images/indexv3/app-browse-tip.png) no-repeat 0 0;
+    background-size: 191px
+}
+
+.base-scroll-wrapper {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box
+}
+
+.ui-slider {
+    height: 132px;
+    overflow: hidden;
+    position: relative;
+    -webkit-user-select: none
+}
+
+.ui-slider-wheel {
+    height: 100%;
+    position: relative;
+    left: 0;
+    top: 0;
+    -webkit-transform: translate3d(0,0,0);
+    -webkit-transition-duration: 0ms;
+    -webkit-animation-timing-function: ease-out
+}
+
+.ui-slider-wheel a {
+    display: block;
+    text-decoration: none
+}
+
+.ui-slider-group {
+    height: 100%;
+    float: left
+}
+
+.ui-slider-item {
+    height: 100%;
+    width: 100%;
+    top: 0;
+    display: inline-block;
+    overflow: hidden
+}
+
+.ui-slider-item p {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: left;
+    pointer-events: none;
+    overflow: hidden;
+    word-break: break-all;
+    white-space: nowrap;
+    text-overflow: ellipsis
+}
+
+.ui-slider-dots {
+    position: absolute;
+    bottom: 5px;
+    right: 13px;
+    padding: 0 3px;
+    text-align: right
+}
