@@ -58,6 +58,9 @@
       <if test="strategyId!=null">
         and sc.strategy_id = #{strategyId}
       </if>
+      <if test="userId!=null">
+        and sc.user_id = #{userId}
+      </if>
     </where>
   </select>
 

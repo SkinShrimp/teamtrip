@@ -7,4 +7,5 @@ import lombok.Setter;
 @Getter
 public class StrategyCommentQueryObject extends QueryObject{
     private Long strategyId;//攻略id
+    private Long userId;
 }

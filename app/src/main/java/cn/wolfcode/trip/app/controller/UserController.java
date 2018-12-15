@@ -1,5 +1,6 @@
 package cn.wolfcode.trip.app.controller;
 
+import cn.wolfcode.trip.base.domain.Focus;
 import cn.wolfcode.trip.base.domain.User;
 import cn.wolfcode.trip.base.query.TravelQueryObject;
 import cn.wolfcode.trip.base.query.UserQueryObject;
@@ -10,6 +11,8 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 
 /**
  * 用户资源控制器
@@ -68,4 +71,35 @@ public class UserController {
     public PageInfo query(UserQueryObject qo){
         return userService.query(qo);
     }
+
+    /**
+     * 关注/取消关注
+     * @return
+     */
+    @PostMapping("/{focuserId}/{focuseeId}")
+    public JsonResult focus(Focus focus){
+        JsonResult json = new JsonResult();
+        userService.focus(focus);
+        return json;
+    }
+
+    /**
+     * 查询一个用户的关注数
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}/focuses")
+    public Integer getFocuses(@PathVariable Long id){
+        return userService.getFocuses(id);
+    }
+
+    /**
+     * 查询一个用户是否关注了另一个用户
+     * @return
+     */
+    @GetMapping("/{focuserId}/{focuseeId}")
+    public Integer checkFocusRelation(Focus focus){
+        return userService.checkFocusRelation(focus);
+    }
+
 }

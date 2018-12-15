@@ -14,17 +14,74 @@
     <script src="/js/plugins/jrender/jrender.min.js"></script>
     <script src="/js/plugins/form/jquery.form.js"></script>
     <script src="/js/common.js"></script>
+    <link rel="stylesheet" href="/js/plugins/dialog2/dialog.css">
+    <script src="/js/plugins/dialog2/dialog.min.js"></script>
     <!--弹出输入框-->
     <link href="/js/plugins/inputbox/dist/dialog.css" rel="stylesheet">
 </head>
 <script src="/js/plugins/inputbox/dist/mDialogMin.js"></script>
 <script>
     $(function () {
+        var user = JSON.parse(sessionStorage.getItem("user"));
+        var currentUserId = user.id;
+
         var params = getParams();
         if (params.id) {
             //获取该游记的相关信息
             $.get('/travels/' + params.id, function (data) {
                 $(".travels").renderValues(data);
+
+                var checkUserId = data.author.id;
+                console.log(checkUserId);
+                //关注
+                //向后台发送请求判断当前用户是否已关注
+                $.get("/users/"+currentUserId+"/"+checkUserId,function (data) {
+                    if(data){
+                        changeFocusState(1);
+                    }else{
+                        changeFocusState(0);
+                    }
+
+                })
+                //向后台发送请求判断当前被查看用户的关注数
+                $.get("/users/"+checkUserId+"/focuses",function (data) {
+                    if(data){
+                        $(".followNum").html(data);
+                    }
+                })
+
+                //关注/取消关注改变样式
+                function changeFocusState(flag){
+                    if(flag){
+                        $(".followNum").html(parseInt($(".followNum").html())+1);
+                        $("#followBtn").html("取消关注");
+                        $("#followBtn").css("background-color","blue");
+                    }else{
+                        $(".followNum").html(parseInt($(".followNum").html())-1);
+                        $("#followBtn").html("关注");
+                        $("#followBtn").css("background-color","green");
+                    }
+                }
+
+                $("#followBtn").click(function () {
+                    if($("#followBtn").html()=='关注'){
+                        changeFocusState(1);
+                        //发送请求，关注该用户
+                        $.post("/users/"+currentUserId+"/"+checkUserId,{flag:1},function (data) {
+                            $(document).dialog({
+                                content: "关注成功!"
+                            });
+                        });
+                    }else{
+                        changeFocusState(0);
+                        //发送请求，取消关注该用户
+                        $.post("/users/"+currentUserId+"/"+checkUserId,{flag:0},function (data) {
+                            $(document).dialog({
+                                content: "取消关注!"
+                            });
+                        });
+                    }
+                })
             })
         }
 
@@ -37,6 +94,8 @@
                 $("#collectBtn").removeClass().addClass("fa fa-star");
             }
         });
+
+
         //点赞、收藏评论
         $(".d-flex i").click(function () {
 
@@ -166,7 +225,7 @@
             <div class="col-6 mine">
                 <small>
                     <span render-html="author.nickName"></span>
-                    <button class="btn" id="followBtn">关注</button>
+                    <button class="btn btn-success" id="followBtn">关注</button>
                     <br>
                     <span>0 </span>篇游记
                     <span>0 </span>粉丝

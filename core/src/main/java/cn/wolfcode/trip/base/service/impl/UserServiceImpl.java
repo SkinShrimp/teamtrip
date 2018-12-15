@@ -1,6 +1,8 @@
 package cn.wolfcode.trip.base.service.impl;
 
+import cn.wolfcode.trip.base.domain.Focus;
 import cn.wolfcode.trip.base.domain.User;
+import cn.wolfcode.trip.base.mapper.FocusMapper;
 import cn.wolfcode.trip.base.mapper.UserMapper;
 import cn.wolfcode.trip.base.query.QueryObject;
 import cn.wolfcode.trip.base.service.IUserService;
@@ -10,6 +12,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -17,6 +20,8 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private FocusMapper focusMapper;
 
     public void register(User user) {
         //检查邮箱是否已经被注册
@@ -54,5 +59,23 @@ public class UserServiceImpl implements IUserService {
 
     public User get(Long id) {
         return userMapper.selectByPrimaryKey(id);
+    }
+
+    public void focus(Focus focus) {
+        if(focus.getFlag() == 1){
+            focusMapper.insert(focus);
+        }else {
+            focusMapper.deleteByFocus(focus);
+        }
+    }
+
+    @Override
+    public Integer getFocuses(Long id) {
+        return focusMapper.selectCountByFocuseeId(id);
+    }
+
+    @Override
+    public Integer checkFocusRelation(Focus focus) {
+        return focusMapper.selectCountByFocuserIdAndFocuseeId(focus);
     }
 }
