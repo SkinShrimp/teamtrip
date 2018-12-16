@@ -23,7 +23,7 @@ public class CommentController {
     }
 
     /**
-     * 增加陪你概论
+     * 增加互相评论
      *
      * @param entry
      * @return
@@ -34,9 +34,15 @@ public class CommentController {
         return new JsonResult();
     }
 
+    /**
+     * 查询点赞、收藏
+     * @param entry
+     * @return
+     */
     @GetMapping("/{typeId}")
     public Comment get(Comment entry) {
         entry.setUser(UserContext.getUser());
+        entry.setParentId(null);
         return commentService.getCommentByTypeId(entry);
     }
 
