@@ -14,6 +14,8 @@
     <script src="js/jquery.min.js" type="text/javascript"></script>
     <script src="js/others.js"></script>
 	<script src="js/swiper.jquery.min.js"></script>
+	<script src="/js/common.js"></script>
+	<script src="/js/plugins/jrender/jrender.min.js"></script>
 	<script type="text/javascript">
 		$(window).load(function(){
 			$(".loading").addClass("loader-chanage")
@@ -35,6 +37,21 @@
 				},300);
 			})
 		}
+	</script>
+	<script>
+		$(function () {
+
+            //获取地址栏的id
+			var params=getParams();
+            console.log(params.id);
+
+			if(params.id){
+				$.get("/points/getGoodsById/"+params.id+"/goodses",function (data) {
+                    console.log(data);
+                    $(".showGoods").renderValues(data);
+                })
+			}
+        })
 	</script>
 </head>
 <!--loading页开始-->
@@ -64,11 +81,11 @@
 			<div class="detail clearfloat">
 				<!--banner star-->
 				<div class="banner swiper-container">
-		            <div class="swiper-wrapper">
+		            <div class="swiper-wrapper showGoods">
+		                <div class="swiper-slide"><a href="javascript:void(0)"><img class="swiper-lazy" alt="" render-src="picture"></a></div>
+		                <!--<div class="swiper-slide"><a href="javascript:void(0)"><img class="swiper-lazy" data-src="images/xj3.jpg" alt=""></a></div>
 		                <div class="swiper-slide"><a href="javascript:void(0)"><img class="swiper-lazy" data-src="images/xj3.jpg" alt=""></a></div>
-		                <div class="swiper-slide"><a href="javascript:void(0)"><img class="swiper-lazy" data-src="images/xj3.jpg" alt=""></a></div>
-		                <div class="swiper-slide"><a href="javascript:void(0)"><img class="swiper-lazy" data-src="images/xj3.jpg" alt=""></a></div>
-		                <div class="swiper-slide"><a href="javascript:void(0)"><img class="swiper-lazy" data-src="images/xj3.jpg" alt=""></a></div>
+		                <div class="swiper-slide"><a href="javascript:void(0)"><img class="swiper-lazy" data-src="images/xj3.jpg" alt=""></a></div>-->
 		            </div>
 		            <div class="swiper-pagination"></div>
 		        </div>
@@ -83,18 +100,18 @@
 							<p>分享</p>
 						</div>
 					</div>
-					<div class="xia clearfloat">
-						<p class="jifen fl box-s"><samp>100000</samp>积分</p>
-						<span class="fr">销量8件</span>
+					<div class="xia clearfloat showGoods">
+						<p class="jifen fl box-s"><samp render-html="money"></samp>积分</p>
+						<span class="fr" render-html="sellcount">销量8件</span>
 					</div>
 				</div>
-				<div class="middle clearfloat box-s">
+				<div class="middle clearfloat box-s showGoods">
 					<a href="#">
 						<span class="fl">商品详情</span>
 						<i class="iconfont icon-jiantou1 fr"></i>
 					</a>
 				</div>
-				<div class="middle clearfloat box-s">
+				<div class="middle clearfloat box-s showGoods">
 					<a href="#">
 						<span class="fl">商品评价</span>
 						<i class="iconfont icon-jiantou1 fr"></i>

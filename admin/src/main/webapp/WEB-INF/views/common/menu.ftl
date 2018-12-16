@@ -30,17 +30,25 @@
             <li class="region"><a href="/region/list.do">旅游地区管理</a></li>
         </ul>
     </li>
-</ul>
-<li class="list-group-item">
-    <a href="#" data-toggle="collapse" data-target="#daily_detail">
-        <span>日报管理</span>
-    </a>
-    <ul class="in" id="daily_detail">
-        <li class="daily"><a href="/daily/list.do">日报文章管理</a></li>
-    </ul>
-</li>
 
-<!--设置菜单回显-->
+    <li class="list-group-item">
+        <a href="#" data-toggle="collapse" data-target="#daily_detail">
+            <span>日报管理</span>
+        </a>
+        <ul class="in" id="daily_detail">
+            <li class="daily"><a href="/daily/list.do">日报文章管理</a></li>
+        </ul>
+    </li>
+    <li class="list-group-item">
+        <a href="#" data-toggle="collapse" data-target="#travel_detail">
+            <span>积分商城管理</span>
+        </a>
+        <ul class="in" id="system_detail">
+            <li class="goods"><a href="/goods/list.do">商品管理</a></li>
+        </ul>
+    </li>
+</ul>
+
 <script>
     $(".in li.${currentMenu}").addClass("active");
 </script>

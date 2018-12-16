@@ -14,11 +14,29 @@
     <script src="js/jquery.min.js" type="text/javascript"></script>
     <script src="js/others.js"></script>
 	<script src="js/swiper.jquery.min.js"></script>
+	<script src="/js/plugins/jrender/jrender.min.js"></script>
+	<script src="/js/common.js"></script>
 	<script type="text/javascript">
 		$(window).load(function(){
 			$(".loading").addClass("loader-chanage")
 			$(".loading").fadeOut(300)
 		})
+	</script>
+	<script>
+        $(function () {
+
+            $.get("/points/getTypeId/1/goodses",function (data) {
+                $("#boyfriend").renderValues(data,{
+                    getHref:getHref
+                });
+                console.log(data);
+            })
+            $.get("/points/getTypeId/2/goodses",function (data) {
+                $("#girlfriend").renderValues(data,{
+                    getHref:getHref
+                });
+            })
+        })
 	</script>
 </head>
 <!--loading页开始-->
@@ -161,7 +179,48 @@
 		        		</div>
 		        	</div>
 		        </div>
-		        
+				<!--单身旅游必备-->
+				<div class="theme clearfloat">
+					<div class="boutit clearfloat">
+						<span></span>
+						<samp>男朋友招租</samp>
+					</div>
+					<div class="content clearfloat" id="boyfriend">
+						<div class="list clearfloat fl" render-loop="list">
+							<a data-href="detail.html?id=" render-key="list.type.id" render-fun="getHref">
+								<div class="tu clearfloat fr">
+									<span></span>
+									<img render-src="list.picture"/>
+								</div>
+								<div class="shang clearfloat fl box-s">
+									<p class="tit over" render-html="list.name"></p>
+									<p><span>积分:</span><span class="over db red" render-html="list.money"></span></p>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="theme clearfloat">
+					<div class="boutit clearfloat">
+						<span></span>
+						<samp>女朋友招租</samp>
+					</div>
+					<div class="content clearfloat" id="girlfriend">
+						<div class="list clearfloat fl" render-loop="list">
+							<a data-href="detail.html?id=" render-key="list.type.id" render-fun="getHref">
+								<div class="tu clearfloat fr">
+									<span></span>
+									<img render-src="list.picture"/>
+								</div>
+								<div class="shang clearfloat fl box-s">
+									<p class="tit over" render-html="list.name"></p>
+									<p><span>积分:</span><span class="over db red" render-html="list.money"></span></p>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+
 		        <!--1F家居用品、电器-->
 		        <div class="theme clearfloat">
 		        	<div class="boutit clearfloat">
