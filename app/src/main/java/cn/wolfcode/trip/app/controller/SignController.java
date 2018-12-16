@@ -61,9 +61,6 @@ public class SignController {
 
     /**
      * 判断当日是否签到
-     *
-     */    /**
-     * 获取签到的记录数据
      * @return
      */
     @ResponseBody
