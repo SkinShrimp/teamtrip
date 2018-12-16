@@ -85,9 +85,7 @@ treeMenu.prototype = {
         return html;
     }
 };
-<<<<<<< HEAD
 // var html = new treeMenu(zNodes).init(0);
-=======
 var html = new treeMenu(zNodes).init(0);
 
 
@@ -116,4 +114,3 @@ function CurentTimeWithSeconds(date) {
     clock += ss;
     return clock;
 }
->>>>>>> chenjin
