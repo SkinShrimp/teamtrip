@@ -17,7 +17,7 @@ public class NormalComment extends BaseDomain{
     private Date createTime;
     //类型
     private Integer type;
-    //主体id 问答状态: 2
+    //主体id
     private Long typeId;
     //最外层父节点
     private Long parentId;
