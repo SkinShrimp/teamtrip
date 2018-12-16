@@ -9,4 +9,5 @@ public interface ISignService {
 
     SignIn getByUserId();
 
+    Integer getIntegral(Long userId);
 }

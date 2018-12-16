@@ -14,10 +14,19 @@
     <script src="/js/common.js"></script>
     <script>
         $(function () {
+            //获取当前用户的id
+            var user = JSON.parse(sessionStorage.getItem("user"));
+            var userId = user.id;
+
+            //向后台发送请求查询积分
+            $.get("/sign/getIntegral.do",{userId:userId},function (data) {
+                
+            });
+
+
             $(".game").click(function () {
                 var url = $(this).data("href");
                 var num = $(this).data("num");
-                //点击游戏，向后台发请求判断积分是否足够
                 $(document).dialog({
                     type: 'confirm',
                     closeBtnShow: true,
@@ -39,6 +48,7 @@
         </a>
         <div class="aui-center">
             <span class="aui-center-title">游戏中心</span>
+            <span class="aui-center-title">所剩积分:4</span>
         </div>
         <a href="javascript:;" class="aui-navBar-item">
         </a>

@@ -62,4 +62,8 @@ public class SignServiceImpl implements ISignService {
         Date date =new Date();
         return  signInMapper.SelectByUserId(UserId, date);
     }
+
+    public Integer getIntegral(Long userId) {
+        return signInMapper.selectIntegral(userId);
+    }
 }

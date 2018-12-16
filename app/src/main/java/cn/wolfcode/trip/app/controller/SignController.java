@@ -73,4 +73,9 @@ public class SignController {
     }
 
 
+    @ResponseBody
+    @GetMapping("/getTodaySign")
+    public Integer getIntegral(Long userId){
+        return signInService.getIntegral(userId);
+    }
 }
