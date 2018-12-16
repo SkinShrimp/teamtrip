@@ -27,23 +27,18 @@
 
 
             var user = JSON.parse(sessionStorage.getItem("user"));
-            console.log(user.id);
+            console.log(user);
+            console.log("userId:"+user.id);
             if (!user) {
                 $("#userQuestion").html(
                     "<a href=\"/login.html\" role=\"button\" >点击此处登录回复</a>"
                 );
 
             }
-            //通过当前用户id查询用户信息
-            $.get("/questions/"+user.id+"/users",function (data) {
-                $(".container").renderValues(data, {
-                    getHref: function (item, value) {
-                        var href = $(item).data("href");
-                        $(item).attr("href", href + value);
-                    }
-                })
-            })
 
+
+            //点击关注对象的用户id
+            var checkUserId;
             //拿到传过来的id查询提问的内容
             var questionId = getParams().id;
             console.log(questionId);
@@ -51,6 +46,9 @@
             //默认查询一次当前的信息
             $.get("/questions/" + questionId, function (data) {
                 console.log(data);
+                checkUserId=data.user.id;
+                console.log("checkUserId:"+checkUserId);
+
                 question = data;
                 $("#askQuestion").renderValues(data, {
                     getHref: function (item, value) {
@@ -64,6 +62,67 @@
                     url: "/questions",
                     data: {pageView: data.pageView, id: data.id}
                 });
+
+                //通过当前用户id查询用户信息
+                $.get("/questions/"+checkUserId+"/users",function (data) {
+                    $(".container").renderValues(data, {
+                        getHref: function (item, value) {
+                            var href = $(item).data("href");
+                            $(item).attr("href", href + value);
+                        }
+                    })
+                })
+
+                //当前登录用户
+                var currentUserId=user.id
+
+                //关注
+                //向后台发送请求判断当前用户是否已关注
+                $.get("/users/"+currentUserId+"/"+checkUserId,function (data) {
+                    if(data){
+                        changeFocusState(1);
+                    }else{
+                        changeFocusState(0);
+                    }
+
+                })
+                //向后台发送请求判断当前被查看用户的关注数
+                $.get("/users/"+checkUserId+"/focuses",function (data) {
+                    if(data){
+                        $(".followNum").html(data);
+                    }
+                })
+
+                //关注/取消关注改变样式
+                function changeFocusState(flag){
+                    if(flag){
+                        $("#followBtn").html("取消关注");
+                        $("#followBtn").css("background-color","blue");
+                    }else{
+                        $("#followBtn").html("关注");
+                        $("#followBtn").css("background-color","green");
+                    }
+                }
+
+                $("#followBtn").click(function () {
+                    if($("#followBtn").html()=='关注'){
+                        changeFocusState(1);
+                        //发送请求，关注该用户
+                        $.post("/users/"+currentUserId+"/"+checkUserId,{flag:1},function (data) {
+                            $(document).dialog({
+                                content: "关注成功!"
+                            });
+                        });
+                    }else{
+                        changeFocusState(0);
+                        //发送请求，取消关注该用户
+                        $.post("/users/"+currentUserId+"/"+checkUserId,{flag:0},function (data) {
+                            $(document).dialog({
+                                content: "取消关注!"
+                            });
+                        });
+                    }
+                })
             });
             var currentPage = 1;
 
@@ -104,9 +163,6 @@
                                     if(this.querySelector('input').value.length >= 5){
                                         //点击确定时保存评论内容回显
                                         //$.post("/normalComments")
-
-
-
 
                                     }else{
                                         Dialog.init('你输入的内容不符合要求！',1100);
@@ -212,9 +268,6 @@
             });
 
 
-
-
-
         })
     </script>
 <body>
@@ -233,18 +286,18 @@
 <div class="comment" id="askQuestion">
     <div class="container">
         <div class="row">
-            <div class="col-2 comment-head">
+            <div class="col-3 comment-head">
                 <a data-href="userProfiles.html?id=" render-key="id" render-fun="getHref">
-                    <img class="rounded-circle imgPlace" render-src="headImgUrl" style="width: 80%">
+                    <img class="rounded-circle imgPlace" render-src="headImgUrl" style="width: 100%">
                 </a>
-                <button class="btn" id="followBtn"><i class="fa fa-hand-o-right"> </i> 关注</button>
+                <a class="btn btn-success ibtn" id="followBtn" style="height: 20px;width: 60px;color:#d0d0cf">关注</a>
             </div>
             <div class="col">
                 <span class="comment-star" render-html="nickName"></span>
                 <span class="comment-date" render-html="releaseTime"></span>
                 <div class="comment-content">
                     <h5 render-html="title"></h5>
-                    <img render-src="imgUrls" style="width: 40%">
+                    <img render-src="imgUrls" style="width: 80%">
                     <p render-html="content"></p>
                 </div>
             </div>
