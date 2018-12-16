@@ -27,8 +27,6 @@
 
 
             var user = JSON.parse(sessionStorage.getItem("user"));
-            console.log(user);
-            console.log("userId:"+user.id);
             if (!user) {
                 $("#userQuestion").html(
                     "<a href=\"/login.html\" role=\"button\" >点击此处登录回复</a>"
@@ -41,14 +39,11 @@
             var checkUserId;
             //拿到传过来的id查询提问的内容
             var questionId = getParams().id;
-            console.log(questionId);
             var question;
             //默认查询一次当前的信息
             $.get("/questions/" + questionId, function (data) {
                 console.log(data);
                 checkUserId=data.user.id;
-                console.log("checkUserId:"+checkUserId);
-
                 question = data;
                 $("#askQuestion").renderValues(data, {
                     getHref: function (item, value) {
@@ -56,15 +51,10 @@
                         $(item).attr("href", href + value);
                     }
                 });
-                //加载此页面会将浏览量加一
-                $.ajax({
-                    type: "put",
-                    url: "/questions",
-                    data: {pageView: data.pageView, id: data.id}
-                });
-
+                console.log("checkUserId:"+checkUserId);
                 //通过当前用户id查询用户信息
                 $.get("/questions/"+checkUserId+"/users",function (data) {
+                    console.log(data);
                     $(".container").renderValues(data, {
                         getHref: function (item, value) {
                             var href = $(item).data("href");
@@ -72,6 +62,13 @@
                         }
                     })
                 })
+
+                //加载此页面会将浏览量加一
+                    $.ajax({
+                        type: "put",
+                        url: "/questions",
+                        data: {pageView: data.pageView, id: data.id}
+                    });
 
                 //当前登录用户
                 var currentUserId=user.id
@@ -129,40 +126,111 @@
             var travelArr = [];
             var pages = 1;
 
+            var acceptuserId;
+
             //查询所有的评论
             function query() {
+                if (questionId){
                 $.get("/questions/"+questionId+"/responses",{
                     typeId: questionId,
                     type: 4,
                     currentPage: currentPage,
-                    pageSize: 4
+                    pageSize: 4,
 
                 },function (data) {
-                    console.log(data);
-
+                    var parentId;
                     //合并数组
                     $.merge(travelArr, data.list);
                     var json = {
                         list: travelArr
                     }
+
                     $(".askComment").renderValues(json,{
+
                         getHref:function (item, value) {
                             var href = $(item).data("href");
                             $(item).attr("href", href + value);
+
+                        },
+                        getParent:function (item, value) {
+                            /*$(item).attr("data-parentId", value);*/
+                            parentId=value;
+                        },
+                        //获取到被回复方的id(二级评论)
+                        getId:function (item, value) {
+                            $(item).attr("data-id", value);
+                            $(item).attr("data-parentid", parentId);
+                        },//查询userNames
+                        getUserName: function (item, value) {
+                            var temp = "";
+                            // $.ajaxSettings.async = false;
+                            if (value) {
+                                $.ajax({
+                                    url: "/praiseCollects/praise/" + value,
+                                    method: "get",
+                                    success: function (data) {
+                                        $.each(data, function (index, ele) {
+                                            temp += ele + "、";
+                                        });
+                                        $(item).html(temp);
+                                    },
+                                    async: false
+                                });
+                            }
+                            // $.ajaxSettings.async = true;
+                        },
+                        //查询userNames
+                        getComment: function (item, value) {
+                            var temp = "";
+                            // $.ajaxSettings.async = false;
+                            if (value) {
+                                $.ajax({
+                                    url: "/CircleForFriendsComment",
+                                    method: "get",
+                                    data: {
+                                        type: 1,
+                                        typeId: value
+                                    },
+                                    success: function (data) {
+                                        $.each(data, function (index, ele) {
+                                            temp += "<span class='commentingBtn' data-parentid='" + parentId + "' data-id='" + ele.userId + "' >" + ele.userName + "</span>" + " 回复@ " + ele.acceptUserName + ":" + ele.comment + "<br>";
+                                        });
+                                        $(item).html(temp);
+                                    },
+                                    async: false
+                                });
+                            }
+                            // $.ajaxSettings.async = true;
                         }
 
                     })
                     pages=data.pages;
-
                     //回复输入框
                     $(".mdialog").click(function () {
+                        //获取到被回复方的id
+                        var acceptuserId=$(this).data("id");
+                        console.log(acceptuserId);
+                        //最外层父节点id
+                        var parentId=$(this).data("parentid");
+                        console.log(parentId);
+
                         Dialog.init('<input type="text" placeholder="请输入内容"  style="margin:8px 0;width:100%;padding:11px 8px;font-size:15px; border:1px solid #999;"/>',{
                             title : '评论',
                             button : {
                                 确定 : function(){
                                     if(this.querySelector('input').value.length >= 5){
-                                        //点击确定时保存评论内容回显
-                                        //$.post("/normalComments")
+                                       var comment = this.querySelector('input').value;
+                                        data={
+                                            'user.id':user.id,
+                                            'acceptuser.id':acceptuserId,
+                                            parentId:parentId,
+                                            comment: comment,
+                                            typeId:questionId
+                                        }
+                                        //提交数据保存
+                                        $.post("/questions/normalComments", data, function (data) {
+                                            window.location.reload()
+                                        });
 
                                     }else{
                                         Dialog.init('你输入的内容不符合要求！',1100);
@@ -177,13 +245,14 @@
 
                     })
 
-
                 })
+                }
                 currentPage = currentPage + 1;
 
             }
             query()
             //查询评论总数
+            if (questionId){
             $.get("/responses/"+questionId,function (data) {
                 console.log(data);
                 var sum={
@@ -194,6 +263,7 @@
                // $(".responseCount").find("span").attr("html")
 
             })
+            }
 
             //评论
             $("#send").click(function () {
@@ -208,11 +278,13 @@
                             type: 4,
                           "question.id": questionId
                         }, function (data) {
+                          if (data){
                             $.ajax({
                                 type: "put",
                                 url: "/questions",
                                 data: {id: question.id, commentNum: question.commentNum}
                             });
+                          }
                             $(document).dialog({
                                 type: 'notice',
                                 infoText: '评论成功',
@@ -261,11 +333,13 @@
             });
             //进入界面执行方法增加浏览次数
             //加载此页面会将浏览量加一
+            if (questionId){
             $.ajax({
                 type: "put",
                 url: "/questions/"+questionId
 
             });
+            }
 
 
         })
@@ -312,6 +386,7 @@
     <div render-loop="list" id="askComment">
         <div>
             <div class="container">
+
                 <br/>
                 <div class="row">
                     <div class="col-2 comment-head">
@@ -327,13 +402,33 @@
 
                         </div>
                     </div>
-                    <a class="mDialogs mdialog fa fa-commenting-o" href="javascript:;"></a>
+                    <input type="hidden" render-key="list.id" render-fun="getParent">
+                    <a class="mDialogs mdialog fa fa-commenting-o" href="javascript:;"
+                       render-key="list.user.id" render-fun="getId">
+                    </a>
+
+                </div>
+                <!--二级回复的div-->
+                <div class="cmt-list">
+                    <div class="container d-flex">
+                        <div class="p-2  flex-fill fa-1x">
+                            <i class="commentingBtn fa " render-fun="getId1"
+                               render-key="list.user.id">
+                            </i>
+                        </div>
+                    </div>
+                    <p><span></span><span class="commentContent" render-fun="getUserName"
+                                          render-key="list.id"></span></p>
+                    <p><span class="data-name" render-fun="getComment" render-key="list.id"></span>
+                    </p>
                 </div>
             </div>
             <div class="count d-flex justify-content-between" style="height: 2px">
             </div>
         </div>
+
     </div>
+
 </div>
 <div>
     <br/>

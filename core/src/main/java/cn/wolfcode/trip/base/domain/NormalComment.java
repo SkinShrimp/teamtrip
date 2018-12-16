@@ -15,7 +15,7 @@ public class NormalComment extends BaseDomain{
     private String comment;
     //评论时间
     private Date createTime;
-    //类型
+    //类型 问答类型为:1
     private Integer type;
     //主体id
     private Long typeId;

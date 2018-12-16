@@ -53,4 +53,13 @@
     flagId
     from normalcomment
   </select>
+  <select id="selectForInitNormalComment" resultType="map">
+    SELECT user.id userId, user.nickName userName, acceptUser.nickName acceptUserName, nc.comment comment FROM normalcomment nc
+    LEFT JOIN user user ON  user.id = nc.user_id
+    LEFT JOIN user acceptUser ON acceptUser.id = nc.acceptuser_id
+    WHERE nc.type = #{type} AND nc.parentId = #{typeId}
+    <if test="parentId!=null ">
+      AND type_id=#{parentId}
+    </if>
+  </select>
 </mapper>
