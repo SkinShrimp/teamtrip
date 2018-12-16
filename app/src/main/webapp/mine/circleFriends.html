@@ -42,7 +42,6 @@
 
             function query() {
                 $.get('/circleForFriends', {currentPage: currentPage}, function (data) {
-                    console.log(data);
 
                     $.merge(travelArr, data.list);
                     var json = {
@@ -51,12 +50,10 @@
 
                     var flag = "";
                     var temp1;
-
+                    var parentId;
                     //设置时间
                     $("#main").renderValues(json, {
                         getPraise: function (item, value) {
-                            console.log(value);
-                            flag == "";
                             if (value) {
                                 flag = 1;
                             } else {
@@ -65,15 +62,16 @@
                         },
                         getId: function (item, value) {
                             $(item).attr("data-id", value);
-
+                            parentId = value;
                             if (flag == 1) {
-                                $(item).removeClass().addClass("fa fa-heart");
+                                $(item).removeClass().addClass("likeBtn fa fa-heart");
                             } else {
-                                $(item).removeClass().addClass("fa fa-heart-o");
+                                $(item).removeClass().addClass("likeBtn fa fa-heart-o");
                             }
                         },
                         getId1: function (item, value) {
                             $(item).attr("data-id", value);
+                            $(item).attr("data-parentid", parentId);
                         },
                         //查询userNames
                         getUserName: function (item, value) {
@@ -93,9 +91,31 @@
                                 });
                             }
                             // $.ajaxSettings.async = true;
-
-
+                        },
+                        //查询userNames
+                        getComment: function (item, value) {
+                            var temp = "";
+                            // $.ajaxSettings.async = false;
+                            if (value) {
+                                $.ajax({
+                                    url: "/CircleForFriendsComment",
+                                    method: "get",
+                                    data: {
+                                        type: 2,
+                                        typeId: value
+                                    },
+                                    success: function (data) {
+                                        $.each(data, function (index, ele) {
+                                            temp += "<span class='commentingBtn' data-parentid='" + parentId + "' data-id='" + ele.userId + "' >" + ele.userName + "</span>" + " 回复@ " + ele.acceptUserName + ":" + ele.comment + "<br>";
+                                        });
+                                        $(item).html(temp);
+                                    },
+                                    async: false
+                                });
+                            }
+                            // $.ajaxSettings.async = true;
                         }
+
                     });
                     pages = data.pages;
 
@@ -113,15 +133,15 @@
 
 
                     //点赞
-                    $(".cmt-list .fa").click(function () {
+                    $(".likeBtn").click(function () {
                         //点赞标识
                         var praise;
 
                         if ($(this).hasClass("fa-heart-o")) {
                             praise = 1;
-                            $(this).removeClass().addClass("fa fa-heart");
+                            $(this).removeClass().addClass("likeBtn fa fa-heart");
                         } else {
-                            $(this).removeClass().addClass("fa fa-heart-o");
+                            $(this).removeClass().addClass("likeBtn fa fa-heart-o");
                             praise = 0;
                         }
 
@@ -131,16 +151,56 @@
                             parentId: $(this).data("id"),
                             praise: praise
                         };
-                        $.post("/praiseCollects/praise", data, "post", function (data) {
-
+                        $.post("/praiseCollects/praise", data, function (data) {
+                            window.location.href = "/mine/circleFriends.html";
                         });
                     });
+
+
                     //评论
-                    $(".fa-commenting-o").click(function () {
-                        console.log("------");
+                    $(".commentingBtn").click(function () {
+                        var userId = $(this).data("id");
+                        var parentId = $(this).data("parentid");
+                        /*渲染按钮的点击事件*/
+                        Dialog.init('<input type="text" placeholder="说点什么吧"  style="margin:8px 0;width:100%;padding:11px 8px;font-size:15px; border:1px solid #999;"/>', {
+                            title: '说点什么吧！',
+                            button: {
+                                确定: function () {
+                                    if (this.querySelector('input').value.length >= 50) {
+                                        content = this.querySelector('input').value;
+                                        Dialog.init('你输入的内容不符合格式', 500);
+                                        Dialog.close(this);
+                                        return;
+                                    } else {
+                                        comment = this.querySelector('input').value;
 
+                                        data = {
+                                            type: 2,//朋友圈评论类型
+                                            'acceptUser.id': userId,//父节点的ID
+                                            comment: comment,
+                                            parentId: parentId
+                                        }
+                                        //提交评论表单
+                                        $.ajax({
+                                            type: "post",
+                                            url: "/CircleForFriendsComment",
+                                            data: data,
+                                            success: function () {
+
+                                            }
+                                        });
+                                        Dialog.close(this);
+                                        window.location.href = "/mine/circleFriends.html";
+                                        return;
+                                    };
+                                },
+                                点击关闭: function () {
+                                    Dialog.init('您取消了评论', 1000);
+                                    Dialog.close(this);
+                                }
+                            }
+                        });
                     });
-
 
                 })
                 currentPage = currentPage + 1;
@@ -270,14 +330,14 @@
                                                render-fun="getPraise"/>
                                         <i class="fa fa-heart-o" render-fun="getId" render-key="list.id"
                                            id="likeBtn"></i>
-                                        <i class="fa  fa-commenting-o" render-fun="getId1"
-                                           render-key="list.id"> </i>
+                                        <i class="commentingBtn fa  fa-commenting-o" render-fun="getId1"
+                                           render-key="list.user.id"> </i>
                                     </div>
                                 </div>
                                 <p><span></span><span class="commentContent" render-fun="getUserName"
-                                                      render-key="list.praiseCollect.parentId"></span></p>
-                                <p><span class="data-name">某某科技~贾素杰</span>回复<span>王思聪</span><span>：</span><span
-                                        class="commentContent"> xxxxxx～</span></p>
+                                                      render-key="list.id"></span></p>
+                                <p><span class="data-name" render-fun="getComment" render-key="list.id"></span>
+                                </p>
                             </div>
                         </div>
                     </div>
