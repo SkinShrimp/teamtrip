@@ -11,15 +11,17 @@
 	<link rel="stylesheet" href="/css/reset.css" />
 	<link rel="stylesheet" href="/css/myProfiles.css" />
 	<script src="/js/plugins/jrender/jrender.min.js"></script>
-	<script src="/js/common.js"></script>
 	<script>
 		$(function () {
 			var user = JSON.parse(sessionStorage.getItem("user"));
 
 			$(".info").renderValues(user);
 
-
-
+			//获取当前用户的积分数
+			$.get("/sign/get",function (data) {
+                console.log(data);
+                $(".col").renderValues(data)
+            })
 
         })
 	</script>
@@ -67,21 +69,24 @@
 
 <div class="row link-box">
 	<div class="col">
-		<ul class="list-inline">
-			<li class="list-inline-item"> <i class="fa fa-shopping-bag fa-2x"></i> </li>
-			<li class="list-inline-item">
-				<h7>积分商城</h7>
-				<small>我的积分 <span>100</span></small></li>
-		</ul>
-
+		<a href="/points/index.html">
+			<ul class="list-inline">
+				<li class="list-inline-item"> <i class="fa fa-shopping-bag fa-2x"></i> </li>
+				<li class="list-inline-item">
+					<h7>积分商城</h7>
+					<small>我的积分 <span render-html="integral">0</span></small></li>
+			</ul>
+		</a>
 	</div>
 	<div class="col">
+		<a href="/mine/sign.html">
 		<ul class="list-inline">
 			<li class="list-inline-item"> <i class="fa fa-calendar-check-o fa-2x"></i> </li>
 			<li class="list-inline-item">
 				<h7>每日签到</h7>
 				<small>别忘了签到哦</small></li>
 		</ul>
+		</a>
 	</div>
 </div>
 <hr />
@@ -89,11 +94,13 @@
 	<li><a href="#" ><b><i class="fa fa-star fa-2x"></i></b><span>我的收藏</span></a></li>
 	<li><a href="#" ><b><i class="fa fa-commenting-o fa-2x"></i></b><span>我的评论</span></a></li>
 	<li><a href="/mine/travels.html" ><b><i class="fa fa-book fa-2x"></i></b><span>我的游记</span></a></li>
-	<li><a href="#" ><b><i class="fa fa-list-ul fa-2x"></i></b><span>我的心愿单</span></a></li>
+	<li><a href="/mine/userStrategy.html" ><b><i class="fa fa-list-ul fa-2x"></i></b><span>我的旅行单</span></a></li>
 	<li><a href="/mine/message.html" ><b><i class="fa fa-bullhorn fa-2x"></i></b><span>我的消息</span></a></li>
 	<li><a href="#" ><b><i class="fa fa-file-text fa-2x"></i></b><span>我的订单</span></a></li>
 	<li><a href="#" ><b><i class="fa fa-briefcase fa-2x"></i></b><span>我的钱包</span></a></li>
 	<li><a href="/mine/circleFriends.html" ><b><i class="fa fa-globe fa-2x"></i></b><span>我的朋友圈</span></a></li>
+	<li><a href="/mine/question.html" ><b><i class="fa fa-pencil fa-2x"></i></b><span>问达人</span></a></li>
+	<li><a href="/mine/game.html" ><b><i class="fa fa-list-alt fa-2x"></i></b><span>游戏休闲</span></a></li>
 </ul>
 
 </body>

@@ -62,6 +62,33 @@
                window.parent.location.href = url;
             })
 
+
+            //获取当前登录用户
+            var user = JSON.parse(sessionStorage.getItem("user"));
+            var currentUserId = user.id;
+
+            //发送ajax查询当前用户有多少条未读信息
+            $.get("/userchats/"+currentUserId+"/unreads",function (data) {
+                console.log("data:"+data);
+                if(data){
+                    $("#info").html(data);
+                }else{
+                    $("#info").html("&nbsp;");
+                    $("#info").css("background-color","#E8E6E8");
+                }
+            });
+
+            //向后台发请求查看当前用户有多少条未读通知
+            $.get("/notices/"+currentUserId+"/unreads",{status:0},function (data) {
+                console.log("data:"+data);
+                if(data){
+                    $("#notice").html(data);
+                }else{
+                    $("#notice").html("&nbsp;");
+                    $("#notice").css("background-color","#E8E6E8");
+                }
+            });
+
         })
 
     </script>
@@ -80,18 +107,22 @@
         <i class="fa fa-user fa-2x fa-fw"></i>
         <a class="skip" data-href="/mine/profiles.html" >
             我的</a>
+        <span class="badge badge-danger badge-pill" style="background-color: #E8E6E8">&nbsp;</span>
     </div>
     <div class="mymenu">
         <i class="fa fa-bell fa-2x fa-fw"></i>
-        <a class="skip" href="#">信息</a>
+        <a class="skip" data-href="/mine/chatHistory.html">信息</a>
+        <span class="badge badge-danger badge-pill" id="info"></span>
     </div>
     <div class="mymenu">
         <i class="fa fa-comment fa-2x fa-fw"></i>
-        <a class="skip" href="#">通知</a>
+        <a class="skip" data-href="/mine/notice.html">通知</a>
+        <span class="badge badge-danger badge-pill" id="notice"></span>
     </div>
     <div class="mymenu">
         <i class="fa fa-cog fa-2x fa-fw"></i>
         <a class="skip" data-href="/mine/info.html">设置</a>
+        <span class="badge badge-danger badge-pill" style="background-color: #E8E6E8">&nbsp;</span>
     </div>
     <hr style="margin-top: 50px;">
     <div class="mymenu">
@@ -99,8 +130,6 @@
         <label id="logoutBtn">退出登录</label>
     </div>
 </div>
-
-
 
 </body>
 

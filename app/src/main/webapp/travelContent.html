@@ -14,17 +14,91 @@
     <script src="/js/plugins/jrender/jrender.min.js"></script>
     <script src="/js/plugins/form/jquery.form.js"></script>
     <script src="/js/common.js"></script>
+    <script>
+        $(function () {
+            var params = getParams();
+            if (params.id) {
+                //获取该游记的相关信息
+                $.get('/travels/' + params.id, function (data) {
+                    $(".travels").renderValues(data);
+                })
+            }
+        });
+    </script>
+    <link rel="stylesheet" href="/js/plugins/dialog2/dialog.css">
+    <script src="/js/plugins/dialog2/dialog.min.js"></script>
     <!--弹出输入框-->
     <link href="/js/plugins/inputbox/dist/dialog.css" rel="stylesheet">
 </head>
 <script src="/js/plugins/inputbox/dist/mDialogMin.js"></script>
+
+<style>
+    .li .ul {
+        list-sytle: none
+    }
+</style>
 <script>
     $(function () {
+        var user = JSON.parse(sessionStorage.getItem("user"));
+        var currentUserId = user.id;
+
         var params = getParams();
         if (params.id) {
             //获取该游记的相关信息
             $.get('/travels/' + params.id, function (data) {
                 $(".travels").renderValues(data);
+
+                var checkUserId = data.author.id;
+                console.log(checkUserId);
+                //关注
+                //向后台发送请求判断当前用户是否已关注
+                $.get("/users/"+currentUserId+"/"+checkUserId,function (data) {
+                    if(data){
+                        changeFocusState(1);
+                    }else{
+                        changeFocusState(0);
+                    }
+
+                })
+                //向后台发送请求判断当前被查看用户的关注数
+                $.get("/users/"+checkUserId+"/focuses",function (data) {
+                    if(data){
+                        $(".followNum").html(data);
+                    }
+                })
+
+                //关注/取消关注改变样式
+                function changeFocusState(flag){
+                    if(flag){
+                        $(".followNum").html(parseInt($(".followNum").html())+1);
+                        $("#followBtn").html("取消关注");
+                        $("#followBtn").css("background-color","blue");
+                    }else{
+                        $(".followNum").html(parseInt($(".followNum").html())-1);
+                        $("#followBtn").html("关注");
+                        $("#followBtn").css("background-color","green");
+                    }
+                }
+
+                $("#followBtn").click(function () {
+                    if($("#followBtn").html()=='关注'){
+                        changeFocusState(1);
+                        //发送请求，关注该用户
+                        $.post("/users/"+currentUserId+"/"+checkUserId,{flag:1},function (data) {
+                            $(document).dialog({
+                                content: "关注成功!"
+                            });
+                        });
+                    }else{
+                        changeFocusState(0);
+                        //发送请求，取消关注该用户
+                        $.post("/users/"+currentUserId+"/"+checkUserId,{flag:0},function (data) {
+                            $(document).dialog({
+                                content: "取消关注!"
+                            });
+                        });
+                    }
+                })
             })
         }
 
@@ -37,6 +111,100 @@
                 $("#collectBtn").removeClass().addClass("fa fa-star");
             }
         });
+
+
+        var commentArr = [];
+        //评论相关拼接
+        $.get("/comments", {type: 1, typeId: params.id}, function (data) {
+            console.log(data);
+            // console.log($("#template")[0]);
+            if (data.list) {
+                $.each(data.list, function (index, ele) {
+                    //合并
+                    var div = $("#template").clone();//把事件也克隆过去
+
+                    $(div).find("#headImgUrl").attr("src", ele.user.headImgUrl);
+                    $(div).find("#nickName").text(ele.user.nickName);
+                    $(div).find(".comment-date").text(ele.createTime);
+                    $(div).find(".commentClass").text(ele.comment);
+
+                    /*插入节点的ID*/
+                    $(div).find(".authorName .fa-commenting-o").attr("data-id", ele.flagId);
+
+                    $(div).find(".authorName .fa-commenting-o").attr("data-collect", ele.collect);
+
+
+                    var comment = [{
+                        id: ele.flagId,
+                        pId: ele.parentId,
+                        comment: div.html(),
+                    }];
+                    $.merge(commentArr, comment);
+
+
+                });
+
+                //渲染评论信息
+                var html = new treeMenu(commentArr).init(0);
+
+                $(".travels").append(html);
+
+                //为每一个按钮都添加点击事件
+                $("ul .fa-commenting-o").click(function () {
+                    var pId = $(this).data("id");
+                    console.log($(this).data("collect"));
+                    var collect = $(this).data("collect");
+                    //判断用户是否登陆
+                    var item = sessionStorage.getItem("user");
+                    if (!item) {
+                        window.location.href = "/login.html";
+                        return;
+                    }
+
+                    /*渲染按钮的点击事件*/
+                    Dialog.init('<input type="text" placeholder="说点什么吧"  style="margin:8px 0;width:100%;padding:11px 8px;font-size:15px; border:1px solid #999;"/>', {
+                        title: '说点什么吧！',
+                        button: {
+                            确定: function () {
+                                if (this.querySelector('input').value.length >= 50) {
+                                    content = this.querySelector('input').value;
+                                    Dialog.init('你输入的内容不符合格式', 500);
+                                    Dialog.close(this);
+                                    return;
+                                } else {
+                                    content = this.querySelector('input').value;
+
+                                    data = {
+                                        typeId: params.id,
+                                        type: 1,//游记评论类型
+                                        parentId: pId,
+                                        comment: content,
+                                        collect: collect
+                                    }
+                                    //提交评论表单
+                                    $.ajax({
+                                        type: "post",
+                                        url: "/comments/comment",
+                                        data: data,
+                                        success: function () {
+
+                                        }
+                                    });
+                                    Dialog.close(this);
+                                    return;
+                                }
+                                ;
+                            },
+                            点击关闭: function () {
+                                Dialog.init('您取消了评论', 1000);
+                                Dialog.close(this);
+                            }
+                        }
+                    });
+                });
+            }
+        });
+
         //点赞、收藏评论
         $(".d-flex i").click(function () {
 
@@ -62,17 +230,40 @@
                     window.location.href = "/login.html";
                     return;
                 }
-
+                //评论内容
+                var content;
+                //父节点的Id
+                var parentId;
                 /*评论弹出框*/
                 Dialog.init('<input type="text" placeholder="说点什么吧"  style="margin:8px 0;width:100%;padding:11px 8px;font-size:15px; border:1px solid #999;"/>', {
                     title: '说点什么吧！',
                     button: {
                         确定: function () {
                             if (this.querySelector('input').value.length >= 50) {
-                                Dialog.init('你输入的内容是：' + this.querySelector('input').value);
+                                content = this.querySelector('input').value;
+                                Dialog.init('你输入的内容不符合格式', 500);
                                 Dialog.close(this);
+                                return;
                             } else {
-                                Dialog.init('你输入的内容不符合要求！', 50);
+                                content = this.querySelector('input').value;
+
+                                data = {
+                                    typeId: params.id,
+                                    type: 1,//游记评论类型
+                                    parentId: 0,//暂定
+                                    comment: content,
+                                }
+                                //提交评论表单
+                                $.ajax({
+                                    type: "post",
+                                    url: "/comments/comment",
+                                    data: data,
+                                    success: function () {
+
+                                    }
+                                });
+                                Dialog.close(this);
+                                return;
                             }
                             ;
                         },
@@ -82,12 +273,8 @@
                         }
                     }
                 });
-
-                data = {
-                    typeId: params.id,
-                    praise: 1
-                }
                 return;
+
             } else {//收藏
                 //判断用户是否登陆
                 var item = sessionStorage.getItem("user");
@@ -113,31 +300,42 @@
             });
         });
 
-        //禁用手机自带的键盘输入框
-        function forbidFocus(i) {
-            $('#txt' + i).focus(function () {
-                document.activeElement.blur();
-            });
-        }
-
-        //其次，显示与关闭自定义的输入键盘。
-        // 打开自定义输入键盘
-        function showDialog(i) {
-            $('#txt' + i).on('click', function () {
-                $('#num' + i).animate({bottom: "0"}, 'fast');
-                // 若多种文本输入框时，需隐藏其他的输入键盘
-                hideDialog(i);
-            });
-        }
-
-        // 关闭自定义输入键盘
-        function hideDialog(i) {
-            $('.popup-list').not('#num' + i).animate({bottom: -h + 'px'}, 'fast');
-        }
     })
 </script>
 </head>
 <body>
+
+<!--模板-->
+<div id="template" style="display: none">
+    <div class="container row comment">
+        <div class="col-2 comment-head">
+            <a href="userProfiles.html">
+                <img class="rounded-circle"
+                     id="headImgUrl">
+            </a>
+        </div>
+        <div class="col comment-right">
+            <p class="authorName"><span id="nickName"></span>
+                <span class="comment-date"></span>
+
+                <i class="fa  fa-commenting-o"> 评论 </i>
+                <!--<i class="fa fa-thumbs-o-up"> <span>0</span></i>-->
+            </p>
+
+
+            <div class="comment-content">
+                <a href="strategyComment.html">
+                    <p class="commentClass"></p>
+                </a>
+            </div>
+            <div class="d-flex icon">
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <div class="search-head">
     <div class="row nav-search">
         <div class="col">
@@ -161,12 +359,12 @@
         </small>
         <div class="row">
             <div class="col-2 img">
-                <img class="rounded-circle" render-src="author.headImgUrl">
-            </div>
+            <img class="rounded-circle" render-src="author.headImgUrl">
+        </div>
             <div class="col-6 mine">
                 <small>
                     <span render-html="author.nickName"></span>
-                    <button class="btn" id="followBtn">关注</button>
+                    <button class="btn btn-success" id="followBtn">关注</button>
                     <br>
                     <span>0 </span>篇游记
                     <span>0 </span>粉丝
@@ -218,8 +416,6 @@
         </div>
     </div>
 </div>
-<div id="comment"></div>
-
 
 </body>
 

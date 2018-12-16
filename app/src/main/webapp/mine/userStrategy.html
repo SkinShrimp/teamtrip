@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我的旅行单</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/js/bootstrap-4.1.1-dist/css/bootstrap.min.css">
+    <script src="/js/jquery/jquery.min.js"></script>
+    <script src="/js/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/font/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/css/reset.css"/>
+    <link rel="stylesheet" href="/css/message.css" />
+    <script src="/js/plugins/jrender/jrender.min.js"></script>
+    <link rel="stylesheet" href="/js/plugins/dialog2/dialog.css"/>
+    <script src="/js/plugins/dialog2/dialog.min.js"></script>
+    <script>
+        //格式化时间
+        function CurentTimeWithSeconds(date) {
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+            var hh = date.getHours();
+            var mm = date.getMinutes();
+            var ss = date.getSeconds();
+            var clock = year + "-";
+            if (month < 10)
+                clock += "0";
+            clock += month + "-";
+            if (day < 10)
+                clock += "0";
+            clock += day + " ";
+            if (hh < 10)
+                clock += "0";
+            clock += hh + ":";
+            if (mm < 10) clock += '0';
+            clock += mm + ":";
+            if (ss < 10) clock += "0";
+            clock += ss;
+            return clock;
+        }
+        $(function () {
+            var userId = JSON.parse(sessionStorage.getItem("user")).id;
+
+            var currentPage = 1;//当前页
+            var pages;//总页数
+            var strategyData=[];//定义一个数组用来接收每次分页时的数据
+            function query() {
+                $.get("/users/"+userId+"/strategies",{currentPage:currentPage,pageSize:10},function (data) {
+                    console.log(data);
+                    $("#userStrategy").renderValues(data,{
+                        getHref: function (item, value) {
+                            var url  = $(item).data("href");
+                            $(item).attr("href",url+value);
+                        },
+                        setTime:function (item,value) {
+                            $(item).html(CurentTimeWithSeconds(new Date(value)));
+                        }
+                    })
+
+                    //点击删除
+                    $(".delete_btn").click(function () {
+                        var id = $(this).find("div").html();
+                        console.log("id:"+id);
+                        $(document).dialog({
+                            type: 'confirm',
+                            closeBtnShow: true,
+                            content: '您确定要删除当前通知吗?',
+                            onClickConfirmBtn: function () {
+                                $.ajax({
+                                    url :"/users/"+id+"/strategies",
+                                    type:"delete",
+                                    success:function (data) {
+                                        if (data.success){
+                                            window.location.reload();
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    });
+                });
+            }
+
+            query();
+            //监听滚动事件,当滚动条发生变化时触发
+            $(window).scroll(function(){
+                //document滚上去的高度+手机窗口的高度 >= 整个文档的高度
+                if (($(document).scrollTop()+$(window).height()) >= $(document).height()-1){
+                    if (currentPage <= pages){//如果当前页数小于等于总页数
+                        //query();
+                    }else {
+                        $(document).dialog({
+                            type : 'notice',
+                            content: '<span class="info-text">我是有底线的!</span>',
+                            autoClose: 1000,
+                            position: 'bottom'
+                        });
+                    }
+                }
+            });
+
+
+
+        });
+    </script>
+</head>
+<body>
+<div class="search-head">
+    <div class="row nav-search">
+        <div class="col">
+            <a href="/mine/profiles.html">
+                <span><i class="fa fa-chevron-left" ></i></span>
+            </a>
+        </div>
+        <div class="col">
+            <span>我的旅行单</span>
+        </div>
+        <div class="col"></div>
+    </div>
+</div>
+<div id="userStrategy">
+    <div render-loop="list">
+        <ul class="list-group">
+            <a data-href="/strategyCatalogs.html?id=" render-key="list.strategyId" render-fun="getHref">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="item">
+                        <img render-src="list.strategyCoverUrl" width="30px"/>
+                        <span render-html="list.strategyTitle"></span>
+                    </div>
+                    <div class="item">
+                        <span style="font-size: 5px;" class="aui-flex-add" render-fun="setTime" render-key="list.joinTime"></span>
+                    </div>
+                    <a class="delete_btn">
+                        <div style="display: none" render-html="list.id"></div>
+                        <img  width="20px;" height="20px;" src="/img/icon/delete.png">
+                    </a>
+                </li>
+            </a>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

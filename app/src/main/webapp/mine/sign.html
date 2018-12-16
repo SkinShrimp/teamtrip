@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no">
+		<title>签到</title>
+		<link rel="stylesheet" href="/css/sign/public.css" />
+		<link rel="stylesheet" href="/css/sign/signin.css" />
+		<script src="/js/jquery/jquery.min.js"></script>
+        <link rel="stylesheet" href="/js/plugins/dialog2/dialog.css" />
+		<link rel="stylesheet" href="/css/font/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="/css/myProfiles.css" />
+        <script src="/js/plugins/dialog2/dialog.min.js"></script>
+	</head>
+	<body>
+
+
+		<div class="nav-search">
+			<a href="/mine/profiles.html">
+				<span><i class="fa fa-angle-left fa-2x" ></i></span>
+			</a>
+		</div>
+
+
+		<div class="top flex flex-align-end flex-pack-center flex-warp">
+			<div class="out-1 flex flex-align-center flex-pack-center" id="signIn">
+				<div class="out-2 flex flex-align-center flex-pack-center">
+					<div class="signBtn">
+						<strong id="sign-txt">签到</strong>
+						<span>连续<em id="sign-count">0</em>天</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="tips">今天已签到，获得1个积分</div>
+		<div class="Calendar">
+			<div id="toyear" class="flex flex-pack-center">
+				<div id="idCalendarPre">&lt;</div>
+				<div class="year-month">
+					<span id="idCalendarYear">2018</span>年<span id="idCalendarMonth">6</span>月
+				</div>
+				<div id="idCalendarNext">&gt;</div>
+			</div>
+			<table border="1px" cellpadding="0" cellspacing="0">
+				<thead>
+					<tr class="tou">
+						<td>日</td>
+						<td>一</td>
+						<td>二</td>
+						<td>三</td>
+						<td>四</td>
+						<td>五</td>
+						<td>六</td>
+					</tr>
+				</thead>
+				<tbody id="idCalendar">
+				</tbody>
+			</table>
+		</div>
+		<script type="text/javascript" src="/js/sign/rili.js"></script>
+		<script language="JavaScript">
+
+
+			$(function () {
+
+
+			var isSign = false;
+
+
+			var myday = []; //已签到的数组
+
+			var continuous;
+
+				//获取当前用户的签到信息
+				$.get("/sign/get",function (data) {
+
+                    continuous=data.continuous;
+
+
+                $.get("/sign/signInTime",function (data) {
+                    myday=data;
+				sessionStorage.setItem("myday",myday);
+
+                var cale = new Calendar("idCalendar", {
+				qdDay: myday,
+				onToday: function(o) {
+					o.className = "onToday";
+				},
+
+				onSignIn: function (){
+					$$("sign-txt").innerHTML = '已签到';
+				},
+				onFinish: function() {
+					$$("sign-count").innerHTML = continuous //已连续签到次数
+					$$("idCalendarYear").innerHTML = this.Year;
+					$$("idCalendarMonth").innerHTML = this.Month; //表头年份
+
+				}
+			});
+			// $$("idCalendarPre").onclick = function() {
+			// 	cale.PreMonth();
+			// }
+			// $$("idCalendarNext").onclick = function() {
+			// 	cale.NextMonth();
+			// }
+            $.get("/sign/getTodaySign",function (data) {
+
+                console.log(data);
+
+                if(data.length!=0){
+
+                    $$("sign-txt").innerHTML = '已签到';
+                }
+
+			$$("signIn").onclick = function() {
+                if(isSign == false) {
+					var res = cale.Isweiwei();
+
+					//发送ajax插入数据到sign_in_time,更新sign_in表
+					$.get("/sign/savaOrUpdate")
+
+					if(res == '1') {
+						$$("sign-txt").innerHTML = '已签到';
+
+                        $.get("/sign/get",function (data) {
+                            continuous = data.continuous;
+                            window.location.reload();
+                            $$("sign-count").innerHTML = continuous;
+                        })
+						isSign = true;
+					} else if (res == '2'){
+						$$("sign-txt").innerHTML = '已签到';
+                        $(document).dialog({
+                            content: '亲,今天已经签到咯,可不能太担心哦',
+                        });
+					}
+				} else {
+					alert('今天已经签到了')
+				}
+
+			}
+
+
+                var res = cale.SignIn();
+            })
+                })
+                });
+            })
+		</script>
+
+	</body>
+
+</html>

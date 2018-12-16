@@ -29,6 +29,7 @@
 					$.get('/users/'+user.id+"/travels",{currentPage:currentPage},function (data) {
 					    //把第二个数组合并第一个数组中
 						$.merge(travelArr,data.list);
+
                         var json = {
                             list:travelArr
                         };

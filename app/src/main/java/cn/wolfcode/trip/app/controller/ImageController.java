@@ -20,6 +20,7 @@ import java.util.Map;
 @Api(value = "图片资源",description = "图片资源控制器")
 public class ImageController {
 
+    //
     @PostMapping
     @ApiOperation(value = "上传图片",notes = "上传图片")
     public Map upload(MultipartFile file){

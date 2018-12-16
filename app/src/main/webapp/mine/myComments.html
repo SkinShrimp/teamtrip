@@ -19,7 +19,7 @@
     <script src="/js/common.js"></script>
     <link rel="stylesheet" href="/js/jqueryAlert/common.css"/>
     <script type="text/javascript">
-        /*$(function () {
+        $(function () {
             var usern = JSON.parse(sessionStorage.getItem('user'));
             var currentPage = 1;//当前页
             var pages;//总页数
@@ -34,72 +34,7 @@
                     var json = {
                         list: commentData
                     };
-                    $(".comment").renderValues(json, {
-                        getHref: function (item, value) {
-                            var url = $(item).data("href");
-                            $(item).attr("href", url + value);
-                        },
-                        getModelState: function (item, value) {
-                            $(item).attr("data-mdId", value)
-                        },
-                        getArticleId: function (item, value) {
-                            $(item).attr("data-acId", value)
-                        },
-                        getStrategyId: function (item, value) {
-                            $(item).attr("data-stId", value)
-                        }
-
-                    });
-                    var mdId
-                    var stId
-                    $(".userInfBtn").click(function () {
-                        window.location.href = "/userProfiles.html?id=" + usern.id
-                    })
-                    $(".strategyChooseBtn").click(function () {
-                        stId = $(this).data("stid")
-                    });
-                    $(".articleSkipBtnHidden").click(function () {
-                        mdId = $(this).data("mdid")
-                        $(this).next().click();
-                    });
-
-                    $(".articleSkipBtn").click(function () {
-                        $(this).next().click();
-                        var acId = $(this).data("acid")
-                        if (mdId == 0) {
-                            window.location.href = "/travelContent.html?id=" + acId;
-                        }
-                        if (mdId == 1) {
-                            $(this).prev().click();
-                            window.location.href = "/mine/strategyComment.html?id=" + acId + "&hid=" + stId;
-                        }
-                        if (mdId == 2) {
-                            window.location.href = "/mine/dailyNewsComment.html?id=" + acId;
-                        }
-                        if (mdId == 3) {
-                            window.location.href = "/strategyDetails.html?id=" + acId;
-                        }
-                    })
-                    $(".articleFormBtn").click(function () {
-                        mdId = $(this).data("mdid")
-                        if (mdId == 0) {
-                            window.location.href = "/travelPage.html";
-                        }
-                        if (mdId == 1) {
-                            $(this).prev().click();
-                            window.location.href = "/strategyPage.html";
-                        }
-                        if (mdId == 2) {
-                            window.location.href = "/newsPage.html";
-                        }
-                        if (mdId == 3) {
-                            window.location.href = "/strategyPage.html";
-                        }
-                    })
-                    pages = data.pages;
-                })
-                currentPage++;
-            }
+                    $(".comment").renderValues(json);
 
             query();
             //监听滚动事件,当滚动条发生变化时触发
@@ -118,7 +53,7 @@
                     }
                 }
             });
-        })*/
+        })
     </script>
 </head>
 

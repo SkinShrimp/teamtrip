@@ -1,0 +1,103 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>消息</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <script src="/js/jquery/jquery.min.js"></script>
+    <script src="/js/plugins/jrender/jrender.min.js"></script>
+    <link href="/css/likeHistory.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/js/plugins/dialog2/dialog.css">
+    <script src="/js/plugins/dialog2/dialog.min.js"></script>
+    <script src="/js/common.js"></script>
+    <script>
+        $(function () {
+            //获取当前用户的id
+            var user = JSON.parse(sessionStorage.getItem("user"));
+            var userId = user.id;
+
+            //进入notice先将该用户的通知变为已读
+            $.ajax({
+                url :"/notices/"+userId,
+                type:"put",
+                data:{status:1,"user.id":userId},
+            });
+
+            //查询数据渲染页面
+            $.get("/notices/"+userId,function (data) {
+                if(data){
+                    $(".aui-scrollView").renderValues(data, {
+                        getHref: getHref
+                    });
+                }
+
+                //点击删除
+                console.log($(".delete"));
+                $(".delete_btn").click(function () {
+                    var id = $(this).find("div").html();
+                    console.log("id:"+id);
+                    $(document).dialog({
+                        type: 'confirm',
+                        closeBtnShow: true,
+                        content: '您确定要删除当前通知吗?',
+                        onClickConfirmBtn: function () {
+                            $.ajax({
+                                url :"/notices/"+id,
+                                type:"delete",
+                                success:function (data) {
+                                    if (data.success){
+                                        window.location.reload();
+                                    }
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+
+<section class="aui-flexView">
+    <header class="aui-navBar aui-navBar-fixed b-line">
+        <a href="/mine/message.html" class="aui-navBar-item">
+            <i class="icon icon-return"></i>
+        </a>
+        <div class="aui-center">
+            <span class="aui-center-title">我的系统消息</span>
+        </div>
+        <a href="javascript:;" class="aui-navBar-item">
+        </a>
+    </header>
+
+    <section class="aui-scrollView">
+        <div class="aui-list-box" render-loop="list">
+            <div class="aui-flex">
+                <div class="aui-flex-logo">
+                    <img src="/img/icon/notice1.png">
+                </div>
+                <div class="aui-flex-box">
+                    <h2>
+                        <span style="font-size: 12px"><strong render-html="list.title"></strong></span>
+                    </h2>
+                    <h3 render-html="list.travel.title" class="notices" data-id="4"></h3>
+                    <a render-key="list.travel.id" render-fun="getHref"
+                       data-href="/travelContent.html?id=">
+                        点击查看
+                    </a>
+                </div>
+                <span class="aui-flex-add" render-html="list.noticeTime"></span>
+                <a class="delete_btn">
+                    <div style="display: none" render-html="list.id"></div>
+                    <img  width="20px;" height="20px;" src="/img/icon/delete.png">
+                </a>
+            </div>
+        </div>
+    </section>
+</section>
+
+</body>
+</html>

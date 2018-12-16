@@ -1,0 +1,269 @@
+
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <title>提问详情</title>
+    <meta charset="utf-8"/>
+    <link href="/css/wd.css" rel="stylesheet" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/js/bootstrap-4.1.1-dist/css/bootstrap.min.css">
+    <script src="/js/jquery/jquery.min.js"></script>
+    <script src="/js/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/font/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/css/reset.css"/>
+    <link rel="stylesheet" href="/css/strategyComment.css"/>
+    <script src="/js/plugins/jrender/jrender.min.js"></script>
+    <link rel="stylesheet" href="/js/plugins/dialog2/dialog.css"/>
+    <script src="/js/plugins/dialog2/dialog.min.js"></script>
+    <script src="/js/plugins/form/jquery.form.js"></script>
+    <script src="/js/common.js"></script>
+    <script>
+        $(function () {
+
+
+            var user = JSON.parse(sessionStorage.getItem("user"));
+            console.log(user.id);
+            if (!user) {
+                $("#userQuestion").html(
+                    "<a href=\"/login.html\" role=\"button\" >点击此处登录回复</a>"
+                );
+
+            }
+            //通过当前用户id查询用户信息
+            $.get("/questions/"+user.id+"/users",function (data) {
+                $(".container").renderValues(data, {
+                    getHref: function (item, value) {
+                        var href = $(item).data("href");
+                        $(item).attr("href", href + value);
+                    }
+                })
+            })
+
+            //拿到传过来的id查询提问的内容
+            var questionId = getParams().id;
+            console.log(questionId);
+            var question;
+            //默认查询一次当前的信息
+            $.get("/questions/" + questionId, function (data) {
+                console.log(data);
+                question = data;
+                $("#askQuestion").renderValues(data, {
+                    getHref: function (item, value) {
+                        var href = $(item).data("href");
+                        $(item).attr("href", href + value);
+                    }
+                });
+                //加载此页面会将浏览量加一
+                $.ajax({
+                    type: "put",
+                    url: "/questions",
+                    data: {pageView: data.pageView, id: data.id}
+                });
+            });
+            var currentPage = 1;
+
+            var travelArr = [];
+            var pages = 1;
+
+            //查询所有的评论
+            function query() {
+                $.get("/questions/"+questionId+"/responses",{
+                    typeId: questionId,
+                    type: 4,
+                    currentPage: currentPage,
+                    pageSize: 4
+
+                },function (data) {
+                    console.log(data);
+
+                    //合并数组
+                    $.merge(travelArr, data.list);
+                    var json = {
+                        list: travelArr
+                    }
+                    $(".askComment").renderValues(json,{
+                        getHref:function (item, value) {
+                            var href = $(item).data("href");
+                            $(item).attr("href", href + value);
+                        }
+
+                    })
+                    pages=data.pages;
+
+                })
+                currentPage = currentPage + 1;
+            }
+            query()
+            //查询评论总数
+            $.get("/responses/"+questionId,function (data) {
+                console.log(data);
+                var sum={
+                    num:data
+                }
+                console.log(sum);
+                $(".count").renderValues(sum)
+               // $(".responseCount").find("span").attr("html")
+
+            })
+
+            //评论
+            $("#send").click(function () {
+                //若用户没有登录,则跳转到登录的界面
+                if (user) {
+                    //若用户没有输入内容,提示输入内容
+                    if (!($("#content").val() == "" && $.trim($("#content").val()).length == 0)) {
+                        var content = $("#content").val();
+                        //发生请求保存回答的信息
+                      $.post("/responses", {
+                            content: content,
+                            type: 4,
+                          "question.id": questionId
+                        }, function (data) {
+                            $.ajax({
+                                type: "put",
+                                url: "/questions",
+                                data: {id: question.id, commentNum: question.commentNum}
+                            });
+                            $(document).dialog({
+                                type: 'notice',
+                                infoText: '评论成功',
+                                autoClose: 1500,//自动关闭时间
+                                position: 'center'
+                            });
+                            window.location.reload();
+                        });
+                    } else {
+                        $(document).dialog({
+                            type: 'notice',
+                            infoText: '请输入内容',
+                            autoClose: 1000,//自动关闭时间
+                            position: 'center'
+                        });
+                    }
+                } else {
+                    $(document).dialog({
+                        type: 'notice',
+                        infoText: '请登录',
+                        autoClose: 1500,//自动关闭时间
+                        position: 'center'
+                    });
+                    window.location.href = "/login.html";
+                }
+            });
+
+            $(window).scroll(function () {
+                /*判断当我们滑动页面的时候是否滑到当前文档最底层三个方法一词代表
+                * 1.窗口的高度，2.文档高度相对于窗口的偏移量3.文档的偏移量*/
+                if ($(window).height() + $(document).scrollTop() >= $(document).height() - 1) {
+                        /*判断当前页是否小于最大的页数*/
+                        if (currentPage <= pages) {
+                            query()
+                        } else {
+                            $(document).dialog({
+                                type: 'notice',
+                                infoText: '已经到底部了',
+                                autoClose: 1000,
+                                position: 'bottom'  // center: 居中; bottom: 底部
+                            });
+                        }
+                }
+            });
+            //进入界面执行方法增加浏览次数
+            //加载此页面会将浏览量加一
+            $.ajax({
+                type: "put",
+                url: "/questions/"+questionId
+
+            });
+        })
+    </script>
+
+</head>
+
+<body>
+<div id="pos38"></div>
+<header class="MfwHead">
+    <div class="LBtn">
+        <a class="btn back"
+           href="javascript:void(window.history.length > 1 ? window.history.back() : document.location.href='index.html')"
+           id="_j_top_history_back"><img src="/img/jt.png" height="20px" width="20px"></a>
+    </div>
+    <div class="CBtn"><h1>提问详情</h1></div>
+    <div class="RBtn">
+    </div>
+</header>
+
+<div class="comment" id="askQuestion">
+    <div class="container">
+        <div class="row">
+            <div class="col-2 comment-head">
+                <a data-href="userProfiles.html?id=" render-key="id" render-fun="getHref">
+                    <img class="rounded-circle imgPlace" render-src="headImgUrl" style="width: 80%">
+                </a>
+                <button class="btn" id="followBtn"><i class="fa fa-hand-o-right"> </i> 关注</button>
+            </div>
+            <div class="col">
+                <span class="comment-star" render-html="nickName"></span>
+                <span class="comment-date" render-html="releaseTime"></span>
+                <div class="comment-content">
+                    <h5 render-html="title"></h5>
+                    <img render-src="imgUrls" style="width: 40%">
+                    <p render-html="content"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="count d-flex justify-content-between count">
+    <div class="p-2 responseCount">评论<span render-html="num"></span></div>
+</div>
+
+<div class="askComment">
+    <div render-loop="list" id="askComment">
+        <div>
+            <div class="container">
+                <br/>
+                <div class="row">
+                    <div class="col-2 comment-head">
+                        <a data-href="userProfiles.html?id=" render-key="list.user.id" render-fun="getHref">
+                            <img class="rounded-circle" render-src="list.user.headImgUrl">
+                        </a>
+                    </div>
+                    <div class="col">
+                        <span class="comment-star" render-html="list.user.nickName"></span>
+                        <span class="comment-date" render-html="list.releaseTime"></span>
+                        <div class="comment-content">
+                            <p render-html="list.content"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="count d-flex justify-content-between" style="height: 2px">
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <br/>
+    <br/>
+</div>
+
+<div class="operation">
+    <div class="d-flex justify-content-between ">
+        <div class="p-2 commenting" style="text-align: center;width: 100%;position: relative;background:#fdb92c">
+            <i class="fa fa-commenting-o" style="width: 20px;position: absolute;left:3%;top: 30%;color: white"></i>
+            <div id="userQuestion">
+            <textarea style="width: 80%;height: 30px;font-size: 10px;text-align: left"
+                      class="form-control-lg" placeholder="说出你的建议" id="content"></textarea>
+                <i style="position: absolute;top:27%;left:90%;color:white" id="send">回复</i>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+<style>
+</style>
+</html>

@@ -78,4 +78,10 @@ public class StrategyController {
         return  tagService.query(qo);
     }
 
+
+    @GetMapping("/users/{userId}/comments")
+    public PageInfo queryCommentsByUserId(StrategyCommentQueryObject qo){
+        qo.setOrderBy("sc.createTime desc");
+        return commentService.query(qo);
+    }
 }
