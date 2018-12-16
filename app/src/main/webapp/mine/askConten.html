@@ -174,8 +174,8 @@
             $.ajax({
                 type: "put",
                 url: "/questions/"+questionId
-
             });
+
         })
     </script>
 
@@ -199,9 +199,9 @@
         <div class="row">
             <div class="col-2 comment-head">
                 <a data-href="userProfiles.html?id=" render-key="id" render-fun="getHref">
-                    <img class="rounded-circle imgPlace" render-src="headImgUrl" style="width: 80%">
+                    <img class="rounded-circle imgPlace" render-src="headImgUrl" style="width: 100%">
                 </a>
-                <button class="btn" id="followBtn"><i class="fa fa-hand-o-right"> </i> 关注</button>
+                <a class="btn btn-success ibtn" id="followBtn" style="width: 40px;height: 20px;">关注</a>
             </div>
             <div class="col">
                 <span class="comment-star" render-html="nickName"></span>
