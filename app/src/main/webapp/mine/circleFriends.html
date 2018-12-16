@@ -54,6 +54,8 @@
                     //设置时间
                     $("#main").renderValues(json, {
                         getPraise: function (item, value) {
+                            console.log(value);
+                            flag == "";
                             if (value) {
                                 flag = 1;
                             } else {
@@ -133,15 +135,15 @@
 
 
                     //点赞
-                    $(".likeBtn").click(function () {
+                    $(".cmt-list .fa").click(function () {
                         //点赞标识
                         var praise;
 
                         if ($(this).hasClass("fa-heart-o")) {
                             praise = 1;
-                            $(this).removeClass().addClass("likeBtn fa fa-heart");
+                            $(this).removeClass().addClass("fa fa-heart");
                         } else {
-                            $(this).removeClass().addClass("likeBtn fa fa-heart-o");
+                            $(this).removeClass().addClass("fa fa-heart-o");
                             praise = 0;
                         }
 
@@ -155,8 +157,6 @@
                             window.location.href = "/mine/circleFriends.html";
                         });
                     });
-
-
                     //评论
                     $(".commentingBtn").click(function () {
                         var userId = $(this).data("id");
@@ -180,7 +180,15 @@
                                             comment: comment,
                                             parentId: parentId
                                         }
+                                        //提交评论表单
+                                        $.ajax({
+                                            type: "post",
+                                            url: "/CircleForFriendsComment",
+                                            data: data,
+                                            success: function () {
 
+                                            }
+                                        });
                                         Dialog.close(this);
                                         window.location.href = "/mine/circleFriends.html";
                                         return;
@@ -322,14 +330,14 @@
                                                render-fun="getPraise"/>
                                         <i class="fa fa-heart-o" render-fun="getId" render-key="list.id"
                                            id="likeBtn"></i>
-                                        <i class="commentingBtn fa  fa-commenting-o" render-fun="getId1"
-                                           render-key="list.user.id"> </i>
+                                        <i class="fa  fa-commenting-o" render-fun="getId1"
+                                           render-key="list.id"> </i>
                                     </div>
                                 </div>
                                 <p><span></span><span class="commentContent" render-fun="getUserName"
-                                                      render-key="list.id"></span></p>
-                                <p><span class="data-name" render-fun="getComment" render-key="list.id"></span>
-                                </p>
+                                                      render-key="list.praiseCollect.parentId"></span></p>
+                                <p><span class="data-name">某某科技~贾素杰</span>回复<span>王思聪</span><span>：</span><span
+                                        class="commentContent"> xxxxxx～</span></p>
                             </div>
                         </div>
                     </div>
