@@ -17,6 +17,12 @@
 
 			$(".info").renderValues(user);
 
+			//获取当前用户的积分数
+			$.get("/sign/get",function (data) {
+                console.log(data);
+                $(".col").renderValues(data)
+            })
+
         })
 	</script>
 </head>
@@ -63,13 +69,14 @@
 
 <div class="row link-box">
 	<div class="col">
-		<ul class="list-inline">
-			<li class="list-inline-item"> <i class="fa fa-shopping-bag fa-2x"></i> </li>
-			<li class="list-inline-item">
-				<h7>积分商城</h7>
-				<small>我的积分 <span>100</span></small></li>
-		</ul>
-
+		<a href="/points/index.html">
+			<ul class="list-inline">
+				<li class="list-inline-item"> <i class="fa fa-shopping-bag fa-2x"></i> </li>
+				<li class="list-inline-item">
+					<h7>积分商城</h7>
+					<small>我的积分 <span render-html="integral">0</span></small></li>
+			</ul>
+		</a>
 	</div>
 	<div class="col">
 		<a href="/mine/sign.html">
@@ -93,6 +100,7 @@
 	<li><a href="#" ><b><i class="fa fa-briefcase fa-2x"></i></b><span>我的钱包</span></a></li>
 	<li><a href="/mine/circleFriends.html" ><b><i class="fa fa-globe fa-2x"></i></b><span>我的朋友圈</span></a></li>
 	<li><a href="/mine/question.html" ><b><i class="fa fa-pencil fa-2x"></i></b><span>问达人</span></a></li>
+	<li><a href="/mine/game.html" ><b><i class="fa fa-list-alt fa-2x"></i></b><span>游戏休闲</span></a></li>
 </ul>
 
 </body>

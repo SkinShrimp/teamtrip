@@ -1,0 +1,110 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>消息</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <script src="/js/jquery/jquery.min.js"></script>
+    <script src="/js/plugins/jrender/jrender.min.js"></script>
+    <link href="/css/likeHistory.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/js/plugins/dialog2/dialog.css">
+    <script src="/js/plugins/dialog2/dialog.min.js"></script>
+    <script src="/js/common.js"></script>
+    <script>
+        $(function () {
+            $(".game").click(function () {
+                var url = $(this).data("href");
+                var num = $(this).data("num");
+                //点击游戏，向后台发请求判断积分是否足够
+                $(document).dialog({
+                    type: 'confirm',
+                    closeBtnShow: true,
+                    content: '当前游戏需要消耗您'+num+'个积分，您确定要继续吗?',
+                    onClickConfirmBtn: function () {
+                        window.location.href = url;
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+
+<section class="aui-flexView">
+    <header class="aui-navBar aui-navBar-fixed b-line">
+        <a href="/mine/message.html" class="aui-navBar-item">
+            <i class="icon icon-return"></i>
+        </a>
+        <div class="aui-center">
+            <span class="aui-center-title">游戏大厅</span>
+        </div>
+        <a href="javascript:;" class="aui-navBar-item">
+        </a>
+    </header>
+
+    <section class="aui-scrollView">
+        <div class="aui-list-box">
+            <div class="aui-flex">
+                <div class="aui-flex-logo">
+                    <img src="/img/game/飞机.png">
+                </div>
+                <div class="aui-flex-box">
+                    <a class="game" data-href="/js/game/plane/index.html" data-num="1">
+                        <strong>打飞机</strong>
+                    </a>
+                </div>
+                <div class="aui-flex-box">
+                    本次消耗积分: 1
+                </div>
+            </div>
+            <div class="aui-flex">
+                <div class="aui-flex-logo">
+                    <img src="/img/game/扑克.png">
+                </div>
+                <div class="aui-flex-box">
+                    <a class="game" data-href="/js/game/fight/index.html" data-num="2">
+                        <strong>斗地主</strong>
+                    </a>
+                </div>
+                <div class="aui-flex-box">
+                    本次消耗积分: 2
+                </div>
+            </div>
+            <div class="aui-flex">
+                <div class="aui-flex-logo">
+                    <img src="/img/game/针对性练习.png">
+                </div>
+                <div class="aui-flex-box">
+                    <a class="game" data-href="/js/game/pin/index.html" data-num="3">
+                        <strong>见缝插针</strong>
+                    </a>
+                </div>
+                <div class="aui-flex-box">
+                    本次消耗积分: 3
+                </div>
+            </div>
+            <div class="aui-flex">
+                <div class="aui-flex-logo">
+                    <img src="/img/game/金钱.png">
+                </div>
+                <div class="aui-flex-box">
+                    <a class="game" data-href="/js/game/21point/index.html" data-num="4">
+                        <strong>21点</strong>
+                    </a>
+                </div>
+                <div class="aui-flex-box">
+                    本次消耗积分: 4
+                </div>
+            </div>
+        </div>
+        <div style="">
+            <br/>
+            更多精彩内容，请期待下次更新.....
+        </div>
+    </section>
+</section>
+
+</body>
+</html>

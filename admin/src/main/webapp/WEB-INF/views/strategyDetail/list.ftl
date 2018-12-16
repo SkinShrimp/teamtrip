@@ -8,7 +8,7 @@
     <script type="text/javascript" src="/js/ckeditor/ckeditor.js"></script>
     <script>
         $(function () {
-            //推荐按钮
+            //
             $(".btn-input").click(function () {
                 //清除表单数据
                 $("#editForm input,select").val("");
