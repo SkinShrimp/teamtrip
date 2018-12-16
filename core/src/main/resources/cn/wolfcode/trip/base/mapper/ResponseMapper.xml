@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.trip.base.mapper.ResponseMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.Response">
+    <id column="id" property="id" />
+    <result column="content" property="content" />
+    <result column="releaseTime" property="releaseTime" />
+    <association property="question" javaType="question" columnPrefix="q_">
+      <id column="id" property="id" />
+    </association>
+    <association property="user" javaType="user" columnPrefix="u_">
+      <id column="id" property="id" />
+      <result column="nickName" property="nickName" />
+      <result column="headImgUrl" property="headImgUrl" />
+      <result column="coverImgUrl" property="coverImgUrl" />
+    </association>
+  </resultMap>
+  <delete id="deleteByPrimaryKey">
+    delete from response
+    where id = #{id}
+  </delete>
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into response (content, releaseTime, question_id,user_id)
+    values (#{content}, #{releaseTime}, #{question.id},#{user.id})
+  </insert>
+  <update id="updateByPrimaryKey">
+    update response
+    set content = #{content},
+      releaseTime = #{releaseTime},
+      question_id = #{question.id},
+      user_id = #{user.id}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select id, content, releaseTime, question_id,user_id
+    from response
+    where id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, content, releaseTime, question_id,user_id
+    from response
+  </select>
+    <select id="selectForList" resultMap="BaseResultMap">
+       select r.id, r.content, r.releaseTime, r.question_id,r.user_id,
+         q.id q_id,
+         u.id u_id, u.nickName u_nickName,u.headImgUrl u_headImgUrl
+        from response r
+        JOIN question q ON r.question_id=q.id
+        JOIN user u ON r.user_id=u.id
+        <where>
+          <if test="questionId!=null ">
+            AND   r.question_id=#{questionId}
+          </if>
+        </where>
+    </select>
+  <select id="ResponseCount" resultType="int">
+     select count(id) responseCount, question_id
+    from response
+    WHERE  question_id=#{questionId}
+  </select>
+</mapper>

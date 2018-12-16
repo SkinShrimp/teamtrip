@@ -23,19 +23,30 @@
 
 
             var user = JSON.parse(sessionStorage.getItem("user"));
-            // console.log(data.id);
+            console.log(user.id);
             if (!user) {
                 $("#userQuestion").html(
                     "<a href=\"/login.html\" role=\"button\" >点击此处登录回复</a>"
                 );
 
             }
-            //拿到传过来的id
+            //通过当前用户id查询用户信息
+            $.get("/questions/"+user.id+"/users",function (data) {
+                $(".container").renderValues(data, {
+                    getHref: function (item, value) {
+                        var href = $(item).data("href");
+                        $(item).attr("href", href + value);
+                    }
+                })
+            })
+
+            //拿到传过来的id查询提问的内容
             var questionId = getParams().id;
             console.log(questionId);
             var question;
             //默认查询一次当前的信息
             $.get("/questions/" + questionId, function (data) {
+                console.log(data);
                 question = data;
                 $("#askQuestion").renderValues(data, {
                     getHref: function (item, value) {
@@ -51,31 +62,50 @@
                 });
             });
             var currentPage = 1;
-            getComment();
-            var merge = [];
+
+            var travelArr = [];
             var pages = 1;
 
             //查询所有的评论
-            function getComment() {
-                isQuery = 1;
-                $.get("/comments", {
+            function query() {
+                $.get("/questions/"+questionId+"/responses",{
                     typeId: questionId,
                     type: 4,
                     currentPage: currentPage,
-                    pageSize: 6
-                }, function (data) {
-                    pages = data.pages;
-                    data.list = $.merge(merge, data.list);
-                    $(".askComment").renderValues(data, {
-                        getHref: function (item, value) {
+                    pageSize: 4
+
+                },function (data) {
+                    console.log(data);
+
+                    //合并数组
+                    $.merge(travelArr, data.list);
+                    var json = {
+                        list: travelArr
+                    }
+                    $(".askComment").renderValues(json,{
+                        getHref:function (item, value) {
                             var href = $(item).data("href");
                             $(item).attr("href", href + value);
                         }
-                    });
-                    currentPage++;
-                    isQuery = 0;
+
+                    })
+                    pages=data.pages;
+
                 })
+                currentPage = currentPage + 1;
             }
+            query()
+            //查询评论总数
+            $.get("/responses/"+questionId,function (data) {
+                console.log(data);
+                var sum={
+                    num:data
+                }
+                console.log(sum);
+                $(".count").renderValues(sum)
+               // $(".responseCount").find("span").attr("html")
+
+            })
 
             //评论
             $("#send").click(function () {
@@ -85,10 +115,10 @@
                     if (!($("#content").val() == "" && $.trim($("#content").val()).length == 0)) {
                         var content = $("#content").val();
                         //发生请求保存回答的信息
-                      $.post("/questions/" + questionId+ "/comments", {
+                      $.post("/responses", {
                             content: content,
                             type: 4,
-                            type_id: questionId
+                          "question.id": questionId
                         }, function (data) {
                             $.ajax({
                                 type: "put",
@@ -122,15 +152,13 @@
                 }
             });
 
-            var isQuery = 0;
             $(window).scroll(function () {
                 /*判断当我们滑动页面的时候是否滑到当前文档最底层三个方法一词代表
                 * 1.窗口的高度，2.文档高度相对于窗口的偏移量3.文档的偏移量*/
                 if ($(window).height() + $(document).scrollTop() >= $(document).height() - 1) {
-                    if (isQuery == 0) {
                         /*判断当前页是否小于最大的页数*/
                         if (currentPage <= pages) {
-                            getComment();
+                            query()
                         } else {
                             $(document).dialog({
                                 type: 'notice',
@@ -139,8 +167,14 @@
                                 position: 'bottom'  // center: 居中; bottom: 底部
                             });
                         }
-                    }
                 }
+            });
+            //进入界面执行方法增加浏览次数
+            //加载此页面会将浏览量加一
+            $.ajax({
+                type: "put",
+                url: "/questions/"+questionId
+
             });
         })
     </script>
@@ -164,26 +198,25 @@
     <div class="container">
         <div class="row">
             <div class="col-2 comment-head">
-                <a data-href="userProfiles.html?id=" render-key="user.id" render-fun="getHref">
-                    <img class="rounded-circle" render-src="user.headImgUrl">
+                <a data-href="userProfiles.html?id=" render-key="id" render-fun="getHref">
+                    <img class="rounded-circle imgPlace" render-src="headImgUrl" style="width: 80%">
                 </a>
                 <button class="btn" id="followBtn"><i class="fa fa-hand-o-right"> </i> 关注</button>
             </div>
             <div class="col">
-                <span class="comment-star" render-html="user.nickName"></span>
+                <span class="comment-star" render-html="nickName"></span>
                 <span class="comment-date" render-html="releaseTime"></span>
                 <div class="comment-content">
                     <h5 render-html="title"></h5>
-                    <img render-src="imgUrls" style="width: 80%">
+                    <img render-src="imgUrls" style="width: 40%">
                     <p render-html="content"></p>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="count d-flex justify-content-between">
-        <div class="p-2">评论<span render-html="commentNum">0</span></div>
-    </div>
+</div>
+<div class="count d-flex justify-content-between count">
+    <div class="p-2 responseCount">评论<span render-html="num"></span></div>
 </div>
 
 <div class="askComment">
@@ -193,13 +226,13 @@
                 <br/>
                 <div class="row">
                     <div class="col-2 comment-head">
-                        <a data-href="userProfiles.html?id=" render-key="list.commentUser.id" render-fun="getHref">
-                            <img class="rounded-circle" render-src="list.commentUser.headImgUrl">
+                        <a data-href="userProfiles.html?id=" render-key="list.user.id" render-fun="getHref">
+                            <img class="rounded-circle" render-src="list.user.headImgUrl">
                         </a>
                     </div>
                     <div class="col">
-                        <span class="comment-star" render-html="list.commentUser.nickName"></span>
-                        <span class="comment-date" render-html="list.commentTime"></span>
+                        <span class="comment-star" render-html="list.user.nickName"></span>
+                        <span class="comment-date" render-html="list.releaseTime"></span>
                         <div class="comment-content">
                             <p render-html="list.content"></p>
                         </div>
@@ -217,7 +250,7 @@
 </div>
 
 <div class="operation">
-    <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-between ">
         <div class="p-2 commenting" style="text-align: center;width: 100%;position: relative;background:#fdb92c">
             <i class="fa fa-commenting-o" style="width: 20px;position: absolute;left:3%;top: 30%;color: white"></i>
             <div id="userQuestion">
