@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.trip.base.mapper.NormalCommentMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.NormalComment">
+    <id column="id" property="id" />
+    <result column="comment" property="comment" />
+    <result column="createTime" property="createTime" />
+    <result column="type" property="type" />
+    <result column="type_id" property="typeId" />
+    <result column="parentId" property="parentId" />
+    <result column="flagId" property="flagId" />
+    <association property="user" javaType="user" columnPrefix="u_">
+      <result property="id" column="id"/>
+      <result property="nickName" column="nickName"/>
+      <result property="headImgUrl" column="headImgUrl"/>
+    </association>
+    <association property="acceptuser" javaType="user" columnPrefix="a_">
+      <result property="id" column="id"/>
+      <result property="nickName" column="nickName"/>
+      <result property="headImgUrl" column="headImgUrl"/>
+    </association>
+  </resultMap>
+  <delete id="deleteByPrimaryKey">
+    delete from normalcomment
+    where id = #{id}
+  </delete>
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into normalcomment (user_id, acceptuser_id, comment, createTime, type, type_id, 
+      parentId, flagId)
+    values (#{user.id}, #{acceptuser.id}, #{comment}, #{createTime}, #{type}, #{typeId}, 
+      #{parentId}, #{flagId})
+  </insert>
+  <update id="updateByPrimaryKey">
+    update normalcomment
+    set user_id = #{user.id},
+      acceptuser_id = #{acceptuser.id},
+      comment = #{comment},
+      createTime = #{createTime},
+      type = #{type},
+      type_id = #{typeId},
+      parentId = #{parentId},
+      flagId = #{flagId}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select id, user_id, acceptuser_id, comment, createTime, type, type_id, parentId, 
+    flagId
+    from normalcomment
+    where id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, user_id, acceptuser_id, comment, createTime, type, type_id, parentId, 
+    flagId
+    from normalcomment
+  </select>
+</mapper>

@@ -1,5 +1,6 @@
 package cn.wolfcode.trip.base.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,20 +20,23 @@ public class Comment extends BaseDomain {
     public static final Integer STRATEGY_TYPE = 2;//攻略评论
 
     //父节点ID
-    private Integer parentId;
+    private Long parentId = 0L;
     //评论内容
     private String comment;
     //创建时间
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date createTime;
-    //评论类型
+    //评论类型(游记？攻略)
     private Integer type = NORMAL_TYPE;
-    //实体ID
-    private Integer typeId;
+    //实体ID（游记或者评论的ID）
+    private Long typeId;
     //用户
     private User user;
     //收藏
     private Integer collect;
     //点赞
     private Integer praise;
+    //ID节点
+    private Long flagId;
 
 }

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.trip.base.mapper.PraiseCollectMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.PraiseCollect">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="praise" jdbcType="INTEGER" property="praise" />
+    <result column="collect" jdbcType="INTEGER" property="collect" />
+    <result column="typeflag" jdbcType="INTEGER" property="typeFlag" />
+    <result column="type_id" jdbcType="BIGINT" property="typeId" />
+    <result column="parentId" jdbcType="BIGINT" property="parentId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    DELETE FROM praisecollect
+    WHERE id = #{id}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.wolfcode.trip.base.domain.PraiseCollect" useGeneratedKeys="true">
+    INSERT INTO praisecollect (praise, collect, typeflag,
+    type_id, parentId)
+    VALUES (#{praise}, #{collect}, #{typeFlag},
+    #{typeId}, #{parentId})
+  </insert>
+
+  <!--更新表中的状态-->
+  <update id="updateByPrimaryKey" parameterType="cn.wolfcode.trip.base.domain.PraiseCollect">
+    UPDATE praisecollect
+    <set>
+      <if test="praise != null">
+        praise = #{praise},
+      </if>
+      <if test="collect != null">
+        collect = #{collect}
+      </if>
+    </set>
+    WHERE id = #{id}
+  </update>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    SELECT id, praise, collect, typeflag, type_id, parentId
+    FROM praisecollect
+    WHERE id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    SELECT id, praise, collect, typeflag, type_id, parentId
+    FROM praisecollect
+  </select>
+
+  <!--分页查询-->
+  <select id="selectForList" resultType="praiseCollect">
+    SELECT id, praise, collect, typeflag, type_id, parentId
+    FROM praisecollect
+  </select>
+
+  <!--根据 type typeId parentId 查询单个对象-->
+  <select id="selectByQueryObject" resultType="praiseCollect">
+    SELECT id, praise, collect, typeflag, type_id, parentId
+    FROM praisecollect
+    WHERE typeflag = #{typeFlag} AND type_id = #{typeId} AND parentId = #{parentId}
+  </select>
+
+  <!--根据(typeId用户名 查询点赞)-->
+  <select id="selectPraiseByTypeId">
+    SELECT id, praise, collect, typeflag, type_id, parentId
+    FROM praisecollect
+    WHERE type_id = #{typeId}
+  </select>
+
+  <!--查询所有点赞用户名-->
+  <select id="selectPraiseNameByParentId" resultType="string">
+    SELECT  u.nickName from praisecollect pc left join user u on u.id = pc.type_id
+    WHERE pc.parentId = #{parentId}
+  </select>
+</mapper>

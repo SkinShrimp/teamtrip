@@ -1,0 +1,182 @@
+
+<!-- saved from url=(0026)http://localhost/test.html -->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>骡窝窝问答</title>
+    <meta name="viewport"
+          content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,minimal-ui,viewport-fit=cover">
+    <meta name="copyright" content="Copyright (c) 2006-2018 Mafengwo.">
+    <meta name="format-detection" content="telephone=no,address=no">
+    <meta name="referrer" content="always">
+    <meta name="apple-mobile-web-app-capable" content="no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="no">
+    <link href="/css/wd.css" rel="stylesheet" type="text/css">
+    <link href="/css/ask.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/css/myStrategyComment.css"/>
+    <script src="/js/jquery/jquery.min.js"></script>
+    <script src="/js/plugins/form/jquery.form.js"></script>
+    <script src="/js/plugins/jrender/jrender.min.js"></script>
+    <link rel="stylesheet" href="/js/plugins/dialog2/dialog.css"/>
+    <script src="/js/plugins/dialog2/dialog.min.js"></script>
+
+
+    <script>
+        $(function () {
+            var data = JSON.parse(sessionStorage.getItem("user"));
+            // console.log(data);
+            $("#userId").val(data.id)
+
+            //点击触发表单的提交
+            $("#askBtn").click(function () {
+                if (($("#pnl_textarea").val() == "" || $.trim($("#pnl_textarea").val()).length == 0) || ($(".title").val() == "" || $.trim($(".title").val()).length == 0)) {
+                    $(document).dialog({
+                        type: 'notice',
+                        infoText: '标题和内容都不能为空',
+                        autoClose: 1500,//自动关闭时间
+                        position: 'center'
+                    });
+                    //throw SyntaxError(); //如果验证不通过，则不执行后面
+                } else {
+                    //这里判断的是标题和内容分别最小输入多少个字符
+                    if ($(".title").val().length < 5) {
+                        $(document).dialog({
+                            type: 'notice',
+                            infoText: '标题至少要输入5个字符哟~',
+                            autoClose: 1000,//自动关闭时间
+                            position: 'center'
+                        });
+                    } else if ($("#pnl_textarea").val().length < 10) {
+                        $(document).dialog({
+                            type: 'notice',
+                            infoText: '内容至少要输入10个字符哟~',
+                            autoClose: 1000,//自动关闭时间
+                            position: 'center'
+                        });
+                    }else{
+                        $("#askForm").ajaxSubmit(function (data) {
+                            if (data.success) {
+                                $(document).dialog({
+                                    type: 'notice',
+                                    infoText: '发布成功',
+                                    autoClose: 1000,//自动关闭时间
+                                    position: 'center'
+                                });
+                                window.location.href = "/mine/question.html";
+                            }
+                        });
+
+                    }
+                }
+
+
+            });
+
+
+            //点击触发图片的提交
+            $(".imgs").click(function () {
+                $("#file").click();
+            });
+            //值改变事件
+            $("#file").change(function () {
+                $("#imgForm").ajaxSubmit(function (data) {
+                    // console.log(data);
+                    //接受到返回的url,进行数据回显
+                    //触发了值改变事件就将值回显到img中
+                    $("#imgUpload").attr("src", data.url);
+                    $("#imgUrl").val(data.url);
+                });
+
+            });
+            //加载此页面会将浏览量加一
+            console.log(data.browse);
+            $.ajax({
+                type: "put",
+                url: "/questions",
+                data: {browse: data.browse, id: data.id}
+            });
+        });
+    </script>
+
+</head>
+<body>
+<div id="pos38"></div>
+<header class="MfwHead">
+    <div class="LBtn">
+        <a class="btn back"
+           href="javascript:void(window.history.length > 1 ? window.history.back() : document.location.href='index.html')"
+           id="_j_top_history_back"><img src="/img/jt.png" height="20px" width="20px"></a>
+    </div>
+    <div class="CBtn"><h1>提问题</h1></div>
+    <div class="RBtn">
+    </div>
+</header>
+
+
+<section class="Addnew">
+    <form action="/questions" method="post" id="askForm">
+        <input type="hidden" name="user.id" id="userId">
+        <div id="_j_publish_box" class="ask_tan_con">
+            <dl>
+                <dt>问题标题</dt>
+                <dd class="_j_word">
+                    <input class="_j_q_title _j_word_check title" placeholder="请输入你的问题，不少于5个字哟~" name="title">
+                    <input value="0" type="hidden" class="_j_q_qid">
+
+                    <div class="wordsnum">
+                        <span class="_j_word_num">0</span>/<span class="_j_max_num">80</span>
+                        <span class="_j_min_num" style="display:none;">10</span>
+                    </div>
+                    <div class="err-tips" style="display: none;"></div>
+                </dd>
+            </dl>
+            <dl>
+                <dt>问题说明</dt>
+                <dd class="con_textarea _j_word" id="con_textarea">
+                    <textarea rows="1" id="pnl_textarea" class="_j_q_content _j_word_check content"
+                              name="content" placeholder="请输入你的问题，不少于10个字哟~"></textarea>
+                    <div class="wordsnum"><span class="_j_word_num">0</span>/<span class="_j_max_num">1000</span></div>
+                    <div class="err-tips" style="display: none;"></div>
+                </dd>
+            </dl>
+
+
+
+
+            <dl>
+                <dt>提问地区</dt>
+                <dd class="_j_word">
+                    <input class="_j_q_title _j_word_check region" placeholder="请说出你要提问的地区" name="region">
+                </dd>
+            </dl>
+            <dl>
+
+            <dl>
+                <div class="container imgs">
+                    <p>上传图片</p>
+                    <div class="row">
+                        <div class="col-2 rect" style="width: 37%;height: 10%;text-align: center">
+                            <img id="imgUpload">
+                            <span>上传</span>
+                        </div>
+                    </div>
+                </div>
+            </dl>
+
+            <dl>
+                <dd>
+                    <a role="button" id="askBtn" class="_j_publish_question ">发布问题</a>
+                </dd>
+            </dl>
+            </dl>
+        </div>
+        <input type="hidden" id="imgUrl" name="imgUrls"/>
+    </form>
+    <form id="imgForm" method="post" enctype="multipart/form-data" action="/images">
+        <input type="file" id="file" style="display: none" name="file"/>
+    </form>
+</section>
+
+
+</body>
+</html>

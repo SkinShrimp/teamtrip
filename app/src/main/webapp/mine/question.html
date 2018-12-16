@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>骡窝窝问答</title>
+    <meta name="viewport"
+          content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,minimal-ui,viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no,address=no">
+
+    <link href="/css/wd.css" rel="stylesheet" type="text/css">
+
+    <link href="/css/new_wd.css" rel="stylesheet" type="text/css">
+    <script src="/js/jquery/jquery.min.js"></script>
+    <script src="/js/plugins/form/jquery.form.js"></script>
+    <script src="/js/plugins/jrender/jrender.min.js"></script>
+    <link rel="stylesheet" href="/js/plugins/dialog2/dialog.css"/>
+    <script src="/js/plugins/dialog2/dialog.min.js"></script>
+    <script>
+        $(function () {
+            //分页查询
+            var currentPage = 1;
+            var pages = 1;
+            var merge = [];
+            merge = [];
+            getMessage();
+
+            //从后台查询数据
+            function getMessage() {
+                isQuery = 1;
+                $.get("/questions/", {currentPage: currentPage, pageSize: 4}, function (data) {
+                    pages = data.pages;
+                    console.log(data);
+                    data.list = $.merge(merge, data.list);
+                    //将页面取值然后赋值
+                    console.log(data);
+                    $(".ans-list").renderValues(data, {
+                        getHref: function (item, value) {
+                            var href = $(item).data("href");
+                            $(item).attr("href", href + value);
+                        }
+                    });
+                    isQuery = 0;
+                    currentPage++;
+                });
+
+            }
+
+
+            var isQuery = 0;
+            $(window).scroll(function () {
+                /*判断当我们滑动页面的时候是否滑到当前文档最底层三个方法一词代表
+                * 1.窗口的高度，2.文档高度相对于窗口的偏移量3.文档的偏移量*/
+                if ($(window).height() + $(document).scrollTop() >= $(document).height() - 1) {
+                    /*判断当前页是否小于最大的页数*/
+                    if (isQuery == 0) {
+                        if (currentPage <= pages) {
+                            getMessage();
+                        } else {
+                            $(document).dialog({
+                                type: 'notice',
+                                infoText: '已经到底部了',
+                                autoClose: 1000,
+                                position: 'bottom'  // center: 居中; bottom: 底部
+                            });
+                        }
+                    }
+                }
+            });
+        })
+
+    </script>
+</head>
+<body>
+<div id="pos38"></div>
+<header class="MfwHead">
+    <div class="LBtn">
+        <a class="btn back"
+           href="/index.html"
+           id="_j_top_history_back"><img src="/img/jt.png" height="40px" width="40px"></a>
+    </div>
+    <div class="CBtn"><h1>骡窝窝问答</h1></div>
+    <div class="RBtn">
+    </div>
+</header>
+
+<section class="ans-list a-list">
+    <ul class="_j_pager_box" render-loop="list">
+        <li>
+            <a id="pageView" data-href="askConten.html?id=" render-key="list.id" render-fun="getHref">
+                <h2 render-html="list.title"></h2>
+                <div class="clearfix">
+                    <div class="user-img clearfix" data-uid="46376914">
+                        <p>
+                            <img render-src="list.user.headImgUrl">
+                        </p>
+                        <span render-html="list.user.nickName"></span>
+                        <span class="comment-date" render-html="list.releaseTime"></span>
+
+                    </div>
+                    <div class="ans-nr">
+                        <div class="clearfix">
+                            <div class="pic"><img render-src="list.imgUrls">
+                            </div>
+                            <p render-html="list.content">
+                            </p>
+                        </div>
+                        <div class="clearfix">
+                            <span class="fl-l" render-html="list.region"></span>
+                            <span class="fl-r">
+                                <b id="browse" render-html="list.browse"></b>浏览
+                            </span>
+
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </li>
+    </ul>
+</section>
+<br/>
+<br/>
+<br/>
+
+<section class="askfoot">
+    <a href="/mine/ask.html" class="btn-que"><i></i>
+        我要提问
+    </a>
+</section>
+
+
+</body>
+</html>

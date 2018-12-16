@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.trip.base.mapper.QuestionMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.Question">
+    <id column="id" property="id" />
+    <result column="content" property="content" />
+    <result column="browse" property="browse" />
+    <result column="title" property="title" />
+    <result column="region" property="region" />
+    <result column="releaseTime" property="releaseTime" />
+    <result column="imgUrls" property="imgUrls" />
+    <association property="user" javaType="user" columnPrefix="u_">
+      <id column="id" property="id" />
+      <result column="nickName" property="nickName" />
+      <result column="headImgUrl" property="headImgUrl" />
+    </association>
+  </resultMap>
+  <delete id="deleteByPrimaryKey">
+    delete from question
+    where id = #{id}
+  </delete>
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into question (content, browse, title, user_id, region, releaseTime, imgUrls
+      )
+    values (#{content}, #{browse}, #{title}, #{user.id}, #{region}, #{releaseTime}, #{imgUrls}
+      )
+  </insert>
+
+  <update id="updateByPrimaryKey">
+    update question
+    set content = #{content},
+      browse = #{browse},
+      title = #{title},
+      user_id = #{user.id},
+      region = #{region},
+      releaseTime = #{releaseTime},
+      imgUrls = #{imgUrls}
+    where id = #{id}
+  </update>
+  <update id="updateBrowse" parameterType="question">
+    UPDATE question SET browse = #{browse}
+    WHERE id=#{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+      select id,content,browse,title,user_id,region,releaseTime,imgUrls
+    from question
+    WHERE id=#{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, content, browse, title, user_id, region, releaseTime, imgUrls
+    from question
+  </select>
+  <select id="selectForList" resultMap="BaseResultMap">
+     select q.id,q.content,q.browse,q.title,q.user_id,q.region,q.releaseTime,q.imgUrls,
+     u.id u_id, u.nickName u_nickName,u.headImgUrl u_headImgUrl
+    from question q
+    JOIN user u ON q.user_id=u.id
+    <where>
+      <if test="userId!=null ">
+        AND u.id=#{userId}
+      </if>
+    </where>
+  </select>
+  <select id="selectBrowse" resultMap="BaseResultMap">
+    SELECT id, browse FROM question
+    <where>
+      <if test="id!=null ">
+        and id=#{id}
+      </if>
+    </where>
+
+  </select>
+</mapper>

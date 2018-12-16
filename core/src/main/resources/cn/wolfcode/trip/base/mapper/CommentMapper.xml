@@ -3,11 +3,12 @@
 <mapper namespace="cn.wolfcode.trip.base.mapper.CommentMapper">
     <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.Comment">
         <result column="id" jdbcType="INTEGER" property="id" />
-        <result column="parentId" jdbcType="INTEGER" property="parentId" />
+        <result column="flagId" property="flagId" />
+        <result column="parentId" property="parentId" />
         <result column="comment" jdbcType="VARCHAR" property="comment" />
         <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
         <result column="type" jdbcType="INTEGER" property="type" />
-        <result column="type_id" jdbcType="INTEGER" property="typeId" />
+        <result column="type_id"  property="typeId" />
         <result column="collect" jdbcType="INTEGER" property="collect" />
         <result column="praise" jdbcType="INTEGER" property="praise" />
         <association property="user" javaType="user" columnPrefix="user_">
@@ -17,22 +18,34 @@
         </association>
     </resultMap>
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.wolfcode.trip.base.domain.Comment" useGeneratedKeys="true">
-        INSERT INTO comment (parentId, comment, createTime,
+        INSERT INTO comment (parentId, flagId, comment, createTime,
         type, type_id, user_id,
         collect, praise)
-        VALUES (#{parentId}, #{comment}, #{createTime},
+        VALUES (#{parentId}, #{flagId}, #{comment}, #{createTime},
         #{type}, #{typeId}, #{user.id},
         #{collect}, #{praise})
     </insert>
     <update id="updateByPrimaryKey" parameterType="comment">
         UPDATE COMMENT SET
         <if test="collect != null">
-          collect = #{collect}
+            collect = #{collect}
         </if>
         <if test="praise != null">
-          praise = #{praise}
+            praise = #{praise}
         </if> WHERE id = #{id}
     </update>
+
+    <!--更新第一次插入评论内容-->
+    <update id="updateCommentById" parameterType="comment">
+        UPDATE COMMENT SET
+        <if test="parentId != null">
+            parentId = #{parentId},
+        </if>
+        <if test="content != null">
+            comment = #{comment}
+        </if> WHERE id = #{id}
+    </update>
+
     <delete id="deleteByPrimaryKey">
         DELETE FROM COMMENT WHERE id = #{id}
     </delete>
@@ -46,6 +59,7 @@
         c.type_id,
         c.collect,
         c.praise,
+        c.flagId,
         u.id user_id,
         u.nickName user_nickName,
         u.headImgUrl user_headImgUrl
@@ -63,15 +77,17 @@
         c.type_id,
         c.collect,
         c.praise,
+        c.flagId,
         u.id user_id,
         u.nickName user_nickName,
         u.headImgUrl user_headImgUrl
         FROM
         COMMENT c
-        LEFT JOIN user u ON c.user_id = u.id
+        LEFT JOIN user u ON c.user_id = u.id WHERE c.type_id=#{typeId} AND c.type=#{type}
     </select>
+
     <select id="selectByTypeIdAndType"  resultMap="BaseResultMap">
-      SELECT
+        SELECT
         c.id,
         c.parentId,
         c. COMMENT,
@@ -80,11 +96,34 @@
         c.type_id,
         c.collect,
         c.praise,
+        c.flagId,
         u.id user_id,
         u.nickName user_nickName,
         u.headImgUrl user_headImgUrl
         FROM
         COMMENT c
         LEFT JOIN user u ON c.user_id = u.id WHERE c.type_id=#{typeId} AND c.type=#{type}
+        <if test="parentId != null">
+            AND c.parentId = 0
+        </if>
+        <if test="parentId == null">
+            AND c.parentId IS NULL
+        </if>
+        <if test="user != null and user.id != null">
+            AND c.user_id = #{user.id}
+        </if>
+    </select>
+
+    <!--获取NODE节点中最大树  防止出现死循环-->
+    <select id="selectMaxFlagId" resultType="long" parameterType="comment">
+        SELECT max(flagId) FROM  COMMENT WHERE type_id=#{typeId} AND type=#{type}
+            <if test="user != null and user.id != null">
+                AND user_id = #{user.id}
+            </if>
+    </select>
+
+
+    <select id="selectByCollect" resultType="long"  parameterType="comment">
+        SELECT  max(flagId) FROM COMMENT WHERE type_id=#{typeId} AND type=#{type} AND collect = #{collect} GROUP BY collect
     </select>
 </mapper>
