@@ -18,7 +18,11 @@
     <script src="/js/plugins/dialog2/dialog.min.js"></script>
     <script src="/js/plugins/form/jquery.form.js"></script>
     <script src="/js/common.js"></script>
-    <script>
+    <script src="/js/plugins/inputbox/dist/mDialogMin.js"></script>
+    <link rel="stylesheet" href="/js/plugins/inputbox/dist/dialog.css">
+</head>
+
+<script>
         $(function () {
 
 
@@ -91,8 +95,36 @@
                     })
                     pages=data.pages;
 
+                    //回复输入框
+                    $(".mdialog").click(function () {
+                        Dialog.init('<input type="text" placeholder="请输入内容"  style="margin:8px 0;width:100%;padding:11px 8px;font-size:15px; border:1px solid #999;"/>',{
+                            title : '评论',
+                            button : {
+                                确定 : function(){
+                                    if(this.querySelector('input').value.length >= 5){
+                                        //点击确定时保存评论内容回显
+                                        //$.post("/normalComments")
+
+
+
+
+                                    }else{
+                                        Dialog.init('你输入的内容不符合要求！',1100);
+                                    };
+                                },
+                                取消 : function(){
+                                    Dialog.init('取消评论',1000);
+                                    Dialog.close(this);
+                                }
+                            }
+                        });
+
+                    })
+
+
                 })
                 currentPage = currentPage + 1;
+
             }
             query()
             //查询评论总数
@@ -152,6 +184,8 @@
                 }
             });
 
+
+
             $(window).scroll(function () {
                 /*判断当我们滑动页面的时候是否滑到当前文档最底层三个方法一词代表
                 * 1.窗口的高度，2.文档高度相对于窗口的偏移量3.文档的偏移量*/
@@ -176,11 +210,13 @@
                 url: "/questions/"+questionId
 
             });
+
+
+
+
+
         })
     </script>
-
-</head>
-
 <body>
 <div id="pos38"></div>
 <header class="MfwHead">
@@ -235,8 +271,10 @@
                         <span class="comment-date" render-html="list.releaseTime"></span>
                         <div class="comment-content">
                             <p render-html="list.content"></p>
+
                         </div>
                     </div>
+                    <a class="mDialogs mdialog fa fa-commenting-o" href="javascript:;"></a>
                 </div>
             </div>
             <div class="count d-flex justify-content-between" style="height: 2px">
