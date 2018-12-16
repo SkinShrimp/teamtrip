@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        $(function () {
+            //获取当前登录用户
+            var user = JSON.parse(sessionStorage.getItem("user"));
+            var currentUserId = user.id;
+            //获取当前查看用户
+            var checkUserId = getParams().id;
+
+            //查询当前用户的基本信息
+            $.get("/users/"+checkUserId,function (data) {
+                console.log(data);
+                $("#private").renderValues(data,{
+                    getHref:getHref,
+                    setImages:function (item,value) {
+                        $(item).css('background-image',"url('"+value+"')");
+                    }
+                });
+            });
+
+            //分页查询
+            var currentPage = 1;
+            var pages;
+            var travelData = [];
+            var flag = true;
+            if (checkUserId) {
+                function query() {
+                    //获取我的游记
+                    $.get('/users/'+checkUserId+"/travels",{currentPage:currentPage},function (data) {
+                        //把第二个数组合并第一个数组中
+                        $.merge(travelData,data.list);
+
+                        var json = {
+                            list:travelData
+                        };
+                        //渲染数据
+                        $("#pills-tabContent").renderValues(json,{
+                            getHref:getHref
+                        });
+                        //获取总页数
+                        pages = data.pages;
+                    })
+                    currentPage = currentPage + 1;
+                }
+
+                //默认查询第一页
+                query();
+
+                $("#comments-tab").click(function () {
+                    var currentPage = 1;
+                    var comments = [];
+                    var page;
+
+                    function queryComments() {
+                        flag = false;
+                        $.get('/strategies/users/' + checkUserId + '/comments',{currentPage:currentPage}, function (data) {
+                            $.merge(comments, data.list);
+                            var json = {
+                                list: comments
+                            }
+                            $("#comments").renderValues(json, {
+                                getHref:getHref,
+                                getStar: function (item, value) {
+                                    var temp = "";
+                                    for (var i = 0; i < value; i++) {
+                                        temp += '<i class="fa fa-star"></i>';
+                                    }
+                                    for (var i = 0; i < 5 - value; i++) {
+                                        temp += '<i class="fa fa-star-o"></i>';
+                                    }
+                                    $(item).html(temp);
+                                }
+                            });
+                            page = data.pages;
+                        });
+                        currentPage++;
+                    }
+
+                    queryComments();
+                    $(window).scroll(function () {
+                        if (($(document).scrollTop() + $(window).height()) >= $(document).height() - 1) {
+                            if (currentPage <= page) {
+                                queryComments();
+                            } else {
+                                $(document).dialog({
+                                    type: 'notice',
+                                    content: '<span class="info-text">我是有底线的!</span>',
+                                    autoClose: 1000,
+                                    position: 'bottom'
+                                });
+                            }
+                        }
+                    });
+                });
+                $(window).scroll(function () {
+                    if (($(document).scrollTop() + $(window).height()) >= $(document).height() - 1) {
+                        if (currentPage <= pages) {
+                            query();
+                        } else {
+                            $(document).dialog({
+                                type: 'notice',
+                                content: '<span class="info-text">我是有底线的!</span>',
+                                autoClose: 1000,
+                                position: 'bottom'
+                            });
+                        }
+                    }
+                });
+            }
+
+            $.get("/users/"+checkUserId+"/strategies",{currentPage:currentPage},function (data) {
+                $("#pills-contact").renderValues(data,{
+                    getHref: getHref
+                });
+                $("#pills-contact-tab span").html(data.list.length);
+            });
+
+        });
+    </script>
+</head>
+<body>
+
+</body>
+</html>

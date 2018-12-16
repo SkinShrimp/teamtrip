@@ -17,6 +17,10 @@
 
     <script>
         $(function () {
+            //获取当前登录用户
+            var user = JSON.parse(sessionStorage.getItem("user"));
+            var currentUserId = user.id;
+
             //获取攻略的id参数
             var params = getParams();
             if (params.id) {
@@ -98,10 +102,16 @@
                     window.location.href = "/mine/addComment.html?id="+params.id;
                 })
 
+
+                //加入旅行
+                $("#joinBtn").click(function () {
+                    $.post("/users/"+currentUserId+"/"+params.id+"/strategies",function () {
+                        $(document).dialog({
+                            content: "加入旅行单成功!"
+                        });
+                    });
+                });
             }
-
-
-
         })
     </script>
 
@@ -228,7 +238,7 @@
 </div>
 
 <div class="operation">
-    <button class="btn">加入旅行单</button>
+    <button class="btn" id="joinBtn">加入旅行单</button>
     <button class="btn" id="commentBtn">点评</button>
 </div>
 

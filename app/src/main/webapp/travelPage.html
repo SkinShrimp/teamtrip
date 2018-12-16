@@ -51,9 +51,7 @@
                         list: travelArr
                     }
                     $("#allTravels").renderValues(json, {
-                        getHref: function (item, value) {
-                            $(item).attr("href", "/travelContent.html?id=" + value);
-                        }
+                        getHref: getHref
                     });
                     pages = data.pages;
                 })
@@ -161,7 +159,7 @@
                         <h4 render-html="list.title"></h4>
                     </a>
                     <p>
-                        <a href="userProfiles.html">
+                        <a data-href="userProfiles.html?id=" render-key="list.author.id" render-fun="getHref">
                             <img class="rounded-circle head-img" render-src="list.author.headImgUrl">
                             <span render-html="list.author.nickName"></span> </a> 在
                         <span class="addr" render-html="list.place.name"></span>
@@ -175,7 +173,7 @@
                     </p>
                 </div>
                 <div class="col bigimg">
-                    <a render-key="list.id" render-fun="getHref">
+                    <a render-key="list.id" render-fun="getHref" data-href="/travelContent.html?id=">
                         <img render-src="list.coverUrl">
                     </a>
                 </div>
