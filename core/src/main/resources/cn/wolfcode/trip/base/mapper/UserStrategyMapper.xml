@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.trip.base.mapper.UserStrategyMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.UserStrategy">
+    <id column="id" property="id" />
+    <result column="userId" property="userId" />
+    <result column="strategyId" property="strategyId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey">
+    delete from user_strategy
+    where id = #{id}
+  </delete>
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into user_strategy (userId, strategyId,joinTime)
+    values (#{userId}, #{strategyId},#{joinTime})
+  </insert>
+  <update id="updateByPrimaryKey">
+    update user_strategy
+    set userId = #{userId},
+      strategyId = #{strategyId}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select id, userId, strategyId
+    from user_strategy
+    where id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, userId, strategyId
+    from user_strategy
+  </select>
+  <select id="selectByUserId" resultType="map">
+    select us.id id,s.id strategyId,s.title strategyTitle,s.coverUrl strategyCoverUrl,us.joinTime joinTime
+    from user_strategy us
+    join strategy s on us.strategyId = s.id
+    <where>
+      <if test="userId != null">
+        us.userId = #{userId}
+      </if>
+    </where>
+  </select>
+</mapper>

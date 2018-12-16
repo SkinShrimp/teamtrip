@@ -1,8 +1,12 @@
 package cn.wolfcode.trip.app.controller;
 
+import cn.wolfcode.trip.base.domain.Focus;
 import cn.wolfcode.trip.base.domain.User;
+import cn.wolfcode.trip.base.domain.UserStrategy;
 import cn.wolfcode.trip.base.query.TravelQueryObject;
+import cn.wolfcode.trip.base.query.UserChatQueryObject;
 import cn.wolfcode.trip.base.query.UserQueryObject;
+import cn.wolfcode.trip.base.query.UserStrategyQueryObject;
 import cn.wolfcode.trip.base.service.ITravelService;
 import cn.wolfcode.trip.base.service.IUserService;
 import cn.wolfcode.trip.base.util.JsonResult;
@@ -10,6 +14,8 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 
 /**
  * 用户资源控制器
@@ -67,5 +73,64 @@ public class UserController {
     @GetMapping
     public PageInfo query(UserQueryObject qo){
         return userService.query(qo);
+    }
+
+    /**
+     * 关注/取消关注
+     * @return
+     */
+    @PostMapping("/{focuserId}/{focuseeId}")
+    public JsonResult focus(Focus focus){
+        JsonResult json = new JsonResult();
+        userService.focus(focus);
+        return json;
+    }
+
+    /**
+     * 查询一个用户的关注数
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}/focuses")
+    public Integer getFocuses(@PathVariable Long id){
+        return userService.getFocuses(id);
+    }
+
+    /**
+     * 查询一个用户是否关注了另一个用户
+     * @return
+     */
+    @GetMapping("/{focuserId}/{focuseeId}")
+    public Integer checkFocusRelation(Focus focus){
+        return userService.checkFocusRelation(focus);
+    }
+
+    /**
+     * 加入旅行单
+     * @return
+     */
+    @PostMapping("/{userId}/{strategyId}/strategies")
+    public JsonResult join(UserStrategy uc){
+        JsonResult json = new JsonResult();
+        userService.join(uc);
+        return json;
+    }
+
+    /**
+     * 查询当前用户的所有旅行单
+     */
+    @GetMapping("/{userId}/strategies")
+    public PageInfo getAllStrategiesByUserId(UserStrategyQueryObject qo){
+        PageInfo pageInfo = userService.getAllStrategiesByUserId(qo);
+        return pageInfo;
+    }
+
+    /**
+     * 删除旅行单
+     */
+    @DeleteMapping("/{id}/strategies")
+    public JsonResult deleteUserStrategy(@PathVariable Long id){
+        userService.deleteUserStrategy(id);
+        return new JsonResult();
     }
 }

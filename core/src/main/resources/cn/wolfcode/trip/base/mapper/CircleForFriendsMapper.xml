@@ -14,53 +14,69 @@
       <result column="coverImgUrl" property="coverImgUrl" />
     </association>
 
+    <association property="praiseCollect" javaType="praiseCollect" columnPrefix="pc_">
+      <result column="praise" property="praise"/>
+      <result column="parentId" property="parentId"/>
+    </association>
+
   </resultMap>
   <delete id="deleteByPrimaryKey">
-    delete from circleforfriends
-    where id = #{id}
+    DELETE FROM circleforfriends
+    WHERE id = #{id}
   </delete>
 
   <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-    insert into circleforfriends (user_id, content, imgUrls, releaseTime)
-    values (#{user.id}, #{content}, #{imgUrls}, #{releaseTime})
+    INSERT INTO circleforfriends (user_id, content, imgUrls, releaseTime)
+    VALUES (#{user.id}, #{content}, #{imgUrls}, #{releaseTime})
   </insert>
 
   <update id="updateByPrimaryKey">
-    update circleforfriends
-    set user_id = #{user.id},
-      content = #{content},
-      imgUrls = #{imgUrls},
-      releaseTime = #{releaseTime}
-    where id = #{id}
+    UPDATE circleforfriends
+    SET user_id = #{user.id},
+    content = #{content},
+    imgUrls = #{imgUrls},
+    releaseTime = #{releaseTime}
+    WHERE id = #{id}
   </update>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap">
-    select id, user_id, content, imgUrls, releaseTime
-    from circleforfriends
-    where id = #{id}
+    SELECT id, user_id, content, imgUrls, releaseTime
+    FROM circleforfriends
+    WHERE id = #{id}
   </select>
 
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, user_id, content, imgUrls, releaseTime
-    from circleforfriends
+    SELECT id, user_id, content, imgUrls, releaseTime
+    FROM circleforfriends
   </select>
 
   <select id="selectForList" resultMap="BaseResultMap">
-     select cs.id, cs.user_id, cs.content, cs.imgUrls, cs.releaseTime,
-     u.id u_id,u.nickName u_nickName,u.headImgUrl u_headImgUrl,u.coverImgUrl u_coverImgUrl
-    from circleforfriends cs
-    JOIN user u ON cs.user_id=u.id
+    SELECT
+    cs.id,
+    cs.user_id,
+    cs.content,
+    cs.imgUrls,
+    cs.releaseTime,
+    u.id u_id,
+    u.nickName u_nickName,
+    u.headImgUrl u_headImgUrl,
+    u.coverImgUrl u_coverImgUrl,
+    pc.parentId pc_parentId,
+    pc.praise pc_praise
+    FROM
+    circleforfriends cs
+    JOIN USER u ON cs.user_id = u.id
+    LEFT JOIN praisecollect pc ON pc.parentId = cs.id and pc.type_id = u.id
     <where>
-      <if test="userId != null">
-        AND u.id=#{userId}
+      <if test = "userId != null" >
+        AND u.id = #{userId}
       </if>
     </where>
-
   </select>
   <select id="selectReleaseTime" resultMap="BaseResultMap">
-    select cs.id, cs.user_id, cs.content, cs.imgUrls, cs.releaseTime,
+    SELECT cs.id, cs.user_id, cs.content, cs.imgUrls, cs.releaseTime,
     u.id u_id,u.nickName u_nickName,u.headImgUrl u_headImgUrl,u.coverImgUrl u_coverImgUrl
-    from circleforfriends cs
+    FROM circleforfriends cs
     JOIN user u ON cs.user_id=u.id
     WHERE u.id=#{id}
 

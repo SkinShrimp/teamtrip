@@ -18,6 +18,7 @@
     <association property="travel" javaType="Travel" columnPrefix="t_">
       <id column="id" property="id" />
       <result column="title" property="title" />
+      <result column="coverUrl" property="coverUrl" />
     </association>
   </resultMap>
   <delete id="deleteByPrimaryKey">
@@ -61,7 +62,7 @@
     join travel t on n.travel_id = t.id
   </select>
   <select id="selectForList" resultMap="BaseResultMap">
-    select n.id, n.content, n.title, n.notice_time, t.id t_id, t.title t_title ,u.id u_id, u.nickName u_nickName,n.status,n.flag
+    select n.id, n.content, n.title, n.notice_time, t.id t_id, t.title t_title ,t.coverUrl t_coverUrl,u.id u_id, u.nickName u_nickName,n.status,n.flag
     from notice n join user u
     on n.user_id = u.id
     join travel t on n.travel_id = t.id
