@@ -18,38 +18,57 @@
             var user = JSON.parse(sessionStorage.getItem("user"));
             var userId = user.id;
 
-            //向后台发送请求查询积分
-            $.get("/sign/getIntegral.do",{userId:userId},function (data) {
-                
+            //点击跳转签到
+            $(".integral").click(function () {
+                window.location.href="/mine/sign.html";
             });
 
+            //向后台发送请求查询积分
+            $.get("/sign/getIntegral",{userId:userId},function (data) {
+                $(".all").html("当前积分:"+data);
 
-            $(".game").click(function () {
-                var url = $(this).data("href");
-                var num = $(this).data("num");
-                $(document).dialog({
-                    type: 'confirm',
-                    closeBtnShow: true,
-                    content: '当前游戏需要消耗您'+num+'个积分，您确定要继续吗?',
-                    onClickConfirmBtn: function () {
-                        window.location.href = url;
-                    }
+                //点击某个游戏
+                $(".game").click(function () {
+                    var url = $(this).data("href");
+                    var num = $(this).data("num");
+                    $(document).dialog({
+                        type: 'confirm',
+                        closeBtnShow: true,
+                        content: '当前游戏需要消耗您'+num+'个积分，您确定要继续吗?',
+                        onClickConfirmBtn: function () {
+                            //如果当前积分不足
+                            if(parseInt(data)-parseInt(num)<0){
+                                $(document).dialog({
+                                    content: "您当前积分不足，请前往签到领取积分",
+                                });
+                                return;
+                            }else{
+                                //进入游戏
+                                window.location.href = url;
+                                //扣除积分
+                                var rest = parseInt(data)-parseInt(num);
+                                //向后台发请求更改该用户积分
+                                $.post("/sign/updateIntegral",{userId:userId,integral:rest},function () {
+                                });
+
+                                $(".all").html("当前积分:"+rest);
+                            }
+                        }
+                    });
                 });
             });
         });
     </script>
 </head>
-<body>
+<body style="background-color: lightgoldenrodyellow">
 
-<section class="aui-flexView">
-    <header class="aui-navBar aui-navBar-fixed b-line">
+<section class="aui-flexView" >
+    <header class="aui-navBar aui-navBar-fixed b-line" >
         <a href="/mine/message.html" class="aui-navBar-item">
             <i class="icon icon-return"></i>
         </a>
         <div class="aui-center">
             <span class="aui-center-title">游戏中心</span>
-            <span class="aui-center-title">所剩积分:4</span>
-            <span class="aui-center-title">游戏大厅</span>
         </div>
         <a href="javascript:;" class="aui-navBar-item">
         </a>
@@ -57,6 +76,17 @@
 
     <section class="aui-scrollView">
         <div class="aui-list-box">
+            <div>
+                <div style="color: black"  class="aui-center">
+                    <span class="all"></span>
+                </div>
+                <div style="color: mediumblue" class="aui-center">
+                    <span>点击签到</span>
+                    <a class="integral">
+                        <img  width="20px;" height="20px;" src="/img/game/签到.png">
+                    </a>
+                </div>
+            </div>
             <div class="aui-flex">
                 <div class="aui-flex-logo">
                     <img src="/img/game/飞机.png">
@@ -109,10 +139,77 @@
                     本次消耗积分: 4
                 </div>
             </div>
+
+            <div class="aui-flex">
+                <div class="aui-flex-logo">
+                    <img src="/img/game/路径分析.png">
+                </div>
+                <div class="aui-flex-box">
+                    <a class="game" data-href="/js/game/path/demo.html" data-num="3">
+                        <strong>路径查找器</strong>
+                    </a>
+                </div>
+                <div class="aui-flex-box">
+                    本次消耗积分: 3
+                </div>
+            </div>
+            <div class="aui-flex">
+                <div class="aui-flex-logo">
+                    <img src="/img/game/九宫格.png">
+                </div>
+                <div class="aui-flex-box">
+                    <a class="game" data-href="/js/game/2048/demo.html" data-num="1">
+                        <strong>2048</strong>
+                    </a>
+                </div>
+                <div class="aui-flex-box">
+                    本次消耗积分: 1
+                </div>
+            </div>
+
+            <div class="aui-flex">
+                <div class="aui-flex-logo">
+                    <img src="/img/game/门卫.png">
+                </div>
+                <div class="aui-flex-box">
+                    <a class="game" data-href="/js/game/door/index.html" data-num="3">
+                        <strong>door</strong>
+                    </a>
+                </div>
+                <div class="aui-flex-box">
+                    本次消耗积分: 3
+                </div>
+            </div>
+            <div class="aui-flex">
+                <div class="aui-flex-logo">
+                    <img src="/img/game/五子棋.png">
+                </div>
+                <div class="aui-flex-box">
+                    <a class="game" data-href="/js/game/chess/五子棋.html" data-num="1">
+                        <strong>五子棋</strong>
+                    </a>
+                </div>
+                <div class="aui-flex-box">
+                    本次消耗积分: 1
+                </div>
+            </div>
+            <div class="aui-flex">
+                <div class="aui-flex-logo">
+                    <img src="/img/game/大脑.png">
+                </div>
+                <div class="aui-flex-box">
+                    <a class="game" data-href="/js/game/question1/demo.html" data-num="4">
+                        <strong>头脑风暴</strong>
+                    </a>
+                </div>
+                <div class="aui-flex-box">
+                    本次消耗积分: 4
+                </div>
+            </div>
         </div>
-        <div style="">
+        <div class="aui-center" style="color: firebrick">
             <br/>
-            更多精彩内容，请期待下次更新.....
+            持续更新中.....
         </div>
     </section>
 </section>

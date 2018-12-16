@@ -73,4 +73,10 @@
         select integral
         from sign_in where user_id = #{userId}
     </select>
+    <update id="updateIntegralByUserId">
+      update sign_in
+      set
+        integral = #{integral}
+      where user_id = #{userId}
+    </update>
 </mapper>

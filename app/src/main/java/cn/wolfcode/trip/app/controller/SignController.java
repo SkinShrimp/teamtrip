@@ -8,6 +8,7 @@ import cn.wolfcode.trip.base.util.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -71,8 +72,16 @@ public class SignController {
 
 
     @ResponseBody
-    @GetMapping("/getTodaySign")
+    @GetMapping("/getIntegral")
     public Integer getIntegral(Long userId){
         return signInService.getIntegral(userId);
     }
+
+    @ResponseBody
+    @PostMapping("/updateIntegral")
+    public JsonResult updateIntegral(Long userId,Integer integral){
+        signInService.updateIntegral(userId,integral);
+        return new JsonResult();
+    }
+
 }
