@@ -15,4 +15,6 @@ public interface IQuestionService {
     List<Question> selectAll();
 
     PageInfo query(QuestionQueryObject qo);
+
+    void updateBrowseAnsave(Question question);
 }
