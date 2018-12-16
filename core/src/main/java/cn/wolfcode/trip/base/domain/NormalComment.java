@@ -10,7 +10,7 @@ public class NormalComment extends BaseDomain{
     //回复方
     private User user;
     //被回复方
-    private User acceptuser;
+    private User acceptUser;
     //内容
     private String comment;
     //评论时间
