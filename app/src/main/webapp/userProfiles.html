@@ -36,7 +36,13 @@
                     });
                 });
 
-                //当前页
+                $.get('/users/'+checkUserId+"/travels",{currentPage:1,pageSize:100},function (data) {
+                    //渲染数据
+                    $("#pills-tabContent").renderValues(data,{
+                        getHref:getHref
+                    });
+                })
+               /* //当前页
                 var currentPage = 1;
                 //总页数
                 var pages;
@@ -79,7 +85,7 @@
                             });
                         }
                     }
-                });
+                });*/
 
 
 				//关注
@@ -135,55 +141,106 @@
 
             //他的点评
 			$(function () {
-                var checkUserId = getParams().id;
+                $("#comments-tab").click(function () {
+                    var checkUserId = getParams().id;
 
-                //当前页
-                var currentPage1 = 1;
-                //总页数
-                var pages1;
-                //存储游记的数组
-                var commentArr1 = [];
+                    //当前页
+                    var currentPage1 = 1;
+                    //总页数
+                    var pages1;
+                    //存储游记的数组
+                    var commentArr1 = [];
 
-                function query1() {
-                    //获取该攻略的所有评论
-                    $.get('/strategies/users/' + checkUserId + '/comments',{currentPage:currentPage1}, function (data) {
-                        $.merge(commentArr1,data.list);
+                    function query1() {
+                        //获取该攻略的所有评论
+                        $.get('/strategies/users/' + checkUserId + '/comments',{currentPage:currentPage1}, function (data) {
+                            $.merge(commentArr1,data.list);
 
-                        $("#comment").renderValues({list:commentArr1},{
-                            getStar:function (item, value) {
-                                var temp = "";
-                                //实心
-                                for(var i=0;i<value;i++){
-                                    temp += '<i class="fa fa-star"></i>';
+                            $("#comments").renderValues({list:commentArr1},{
+                                getHref:getHref,
+                                getStar:function (item, value) {
+                                    var temp = "";
+                                    //实心
+                                    for(var i=0;i<value;i++){
+                                        temp += '<i class="fa fa-star"></i>';
+                                    }
+                                    //空心
+                                    for(var i=0;i<5-value;i++){
+                                        temp += '<i class="fa fa-star-o"></i>';
+                                    }
+                                    $(item).html(temp);
                                 }
-                                //空心
-                                for(var i=0;i<5-value;i++){
-                                    temp += '<i class="fa fa-star-o"></i>';
-                                }
-                                $(item).html(temp);
-                            }
-                        });
-                        pages1 = data.pages;
-                    })
-                    currentPage1 = currentPage1 + 1;
-                }
-
-                query1();
-
-                //给window绑定滚动事件
-                $(window).scroll(function () {
-                    if ($(window).height() + $(document).scrollTop() + 1 >= $(document).height()) {
-                        //如果是大于总页数就不发送请求了
-                        if (currentPage1 <= pages1) {
-                            query1();
-                        } else {
-                            $(document).dialog({
-                                type: 'notice',
-                                content: '<span class="info-text">亲,已经到底了!</span>',
-                                autoClose: 2500
                             });
-                        }
+                            pages1 = data.pages;
+                        })
+                        currentPage1 = currentPage1 + 1;
                     }
+
+                    query1();
+
+                    //给window绑定滚动事件
+                    $(window).scroll(function () {
+                        if ($(window).height() + $(document).scrollTop() + 1 >= $(document).height()) {
+                            //如果是大于总页数就不发送请求了
+                            if (currentPage1 <= pages1) {
+                                query1();
+                            } else {
+                                $(document).dialog({
+                                    type: 'notice',
+                                    content: '<span class="info-text">亲,已经到底了!</span>',
+                                    autoClose: 2500
+                                });
+                            }
+                        }
+                    });
+                });
+            });
+
+            //他的旅行单
+			$(function () {
+                $("#pills-contact-tab").click(function () {
+                    var checkUserId = getParams().id;
+
+                    //当前页
+                    var currentPage2 = 1;
+                    //总页数
+                    var pages2;
+                    //存储游记的数组
+                    var commentArr2 = [];
+
+                    function query2() {
+                        //获取该攻略的所有评论
+                        $.get("/users/" + checkUserId + "/strategies", {currentPage: currentPage2}, function (data) {
+                            $.merge(commentArr2, data.list);
+
+                            $("#pills-contact").renderValues({list: commentArr2}, {
+                                getHref: getHref,
+                                setTime: function (item, value) {
+                                    $(item).html(CurentTimeWithSeconds(new Date(value)));
+                                }
+                            });
+                            pages2 = data.pages;
+                        })
+                        currentPage2 = currentPage2 + 1;
+                    }
+
+                    query2();
+
+                    //给window绑定滚动事件
+                    $(window).scroll(function () {
+                        if ($(window).height() + $(document).scrollTop() + 1 >= $(document).height()) {
+                            //如果是大于总页数就不发送请求了
+                            if (currentPage2 <= pages2) {
+                                query2();
+                            } else {
+                                $(document).dialog({
+                                    type: 'notice',
+                                    content: '<span class="info-text">亲,已经到底了!</span>',
+                                    autoClose: 2500
+                                });
+                            }
+                        }
+                    });
                 });
             });
 		</script>
@@ -246,26 +303,25 @@
 				</li>
 			</ul>
 
-			<!--他的游记-->
 			<div class="container tab-content" id="pills-tabContent">
+				<!--他的游记-->
 				<div class="tab-pane fade show active" id="travels" render-loop="list">
-						<dl class="list">
-							<dd>
-								<a data-href="/travelContent.html?id=" render-fun="getHref" render-key="list.id">
-									<img  render-src="list.coverUrl">
-									<p><span class="title" render-html="list.title"></span>
-										<span class="span-right">
-						 				<span >0</span> <i class="fa fa-thumbs-o-up"></i></span>
-									</p>
-								</a>
-								<hr>
-							</dd>
-						</dl>
+					<dl class="list">
+						<dd>
+							<a data-href="/travelContent.html?id=" render-fun="getHref" render-key="list.id">
+								<img  render-src="list.coverUrl">
+								<p><span class="title" render-html="list.title"></span>
+									<span class="span-right">
+									<span >0</span> <i class="fa fa-thumbs-o-up"></i></span>
+								</p>
+							</a>
+							<hr>
+						</dd>
+					</dl>
 				</div>
 
 				<!--他的点评-->
 				<div class="comment tab-pane fade " id="comments">
-				<div id="comment">
 					<div render-loop="list">
 						<div class="container row comment">
 							<div class="col-2 comment-head">
@@ -275,7 +331,7 @@
 								</a>
 							</div>
 							<div class="col comment-right">
-								<p class="authorName"><span render-html="list.user.nickName"></span></p>
+								<!--<p class="authorName"><span render-html="list.user.nickName"></span></p>-->
 								<span class="comment-star" render-key="list.starNum" render-fun="getStar">
                         </span>
 								<span class="comment-date" render-html="list.createTime"></span>
@@ -290,22 +346,43 @@
 										<img render-src="list.imgArr.self">
 									</li>
 								</ul>
-
-								<hr/>
-
+								<div class="comment-link">
+									<a data-href="/strategyCatalogs.html?id=" render-fun="getHref" render-key="list.strategy.id">
+										<img  render-src="list.strategy.coverUrl">
+										<span render-html="list.strategy.title"></span>
+										<i class="fa fa-angle-right fa-2x"></i>
+									</a>
+								</div>
 							</div>
 						</div>
-
 					</div>
-				</div>
 				</div>
 
 				<!--他的旅行单-->
-				<div class="tab-pane fade" id="pills-contact">.3333..</div>
+				<div class="tab-pane fade" id="pills-contact">
+					<div render-loop="list">
+						<dl class="list">
+							<dd>
+								<a data-href="/strategyCatalogs.html?id=" render-fun="getHref" render-key="list.strategyId">
+									<img render-src="list.strategyCoverUrl" >
+									<p>
+										<span class="title" render-html="list.strategyTitle"></span>
+										<span class="span-right">
+											<span render-fun="setTime" render-key="list.joinTime"></span>加入
+										</span>
+									</p>
+								</a>
+								<hr>
+							</dd>
+						</dl>
+					</div>
+				</div>
+
+
 			</div>
 		</div>
 
-	
+
 
 </body>
 </html>

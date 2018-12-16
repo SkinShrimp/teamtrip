@@ -87,3 +87,30 @@ treeMenu.prototype = {
     }
 };
 var html = new treeMenu(zNodes).init(0);
+
+
+//----------------格式化时间---------------
+//格式化时间
+function CurentTimeWithSeconds(date) {
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    var hh = date.getHours();
+    var mm = date.getMinutes();
+    var ss = date.getSeconds();
+    var clock = year + "-";
+    if (month < 10)
+        clock += "0";
+    clock += month + "-";
+    if (day < 10)
+        clock += "0";
+    clock += day + " ";
+    if (hh < 10)
+        clock += "0";
+    clock += hh + ":";
+    if (mm < 10) clock += '0';
+    clock += mm + ":";
+    if (ss < 10) clock += "0";
+    clock += ss;
+    return clock;
+}

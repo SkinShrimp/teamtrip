@@ -26,7 +26,7 @@ public class Strategy extends BaseDomain{
     //封面
     private String coverUrl;
     //状态
-    private Integer state;
+    private Integer state=STATE_NORMAL;
 
 
     public String getStateName(){

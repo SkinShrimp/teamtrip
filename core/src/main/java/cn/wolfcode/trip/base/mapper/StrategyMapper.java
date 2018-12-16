@@ -2,6 +2,8 @@ package cn.wolfcode.trip.base.mapper;
 
 import cn.wolfcode.trip.base.domain.Strategy;
 import cn.wolfcode.trip.base.query.QueryObject;
+import cn.wolfcode.trip.base.query.UserChatQueryObject;
+
 import java.util.List;
 
 public interface StrategyMapper {
@@ -16,4 +18,6 @@ public interface StrategyMapper {
     int updateByPrimaryKey(Strategy record);
 
     List selectForList(QueryObject qo);
+
+    List selectByUserId(UserChatQueryObject qo);
 }

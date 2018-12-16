@@ -2,8 +2,11 @@ package cn.wolfcode.trip.app.controller;
 
 import cn.wolfcode.trip.base.domain.Focus;
 import cn.wolfcode.trip.base.domain.User;
+import cn.wolfcode.trip.base.domain.UserStrategy;
 import cn.wolfcode.trip.base.query.TravelQueryObject;
+import cn.wolfcode.trip.base.query.UserChatQueryObject;
 import cn.wolfcode.trip.base.query.UserQueryObject;
+import cn.wolfcode.trip.base.query.UserStrategyQueryObject;
 import cn.wolfcode.trip.base.service.ITravelService;
 import cn.wolfcode.trip.base.service.IUserService;
 import cn.wolfcode.trip.base.util.JsonResult;
@@ -102,4 +105,32 @@ public class UserController {
         return userService.checkFocusRelation(focus);
     }
 
+    /**
+     * 加入旅行单
+     * @return
+     */
+    @PostMapping("/{userId}/{strategyId}/strategies")
+    public JsonResult join(UserStrategy uc){
+        JsonResult json = new JsonResult();
+        userService.join(uc);
+        return json;
+    }
+
+    /**
+     * 查询当前用户的所有旅行单
+     */
+    @GetMapping("/{userId}/strategies")
+    public PageInfo getAllStrategiesByUserId(UserStrategyQueryObject qo){
+        PageInfo pageInfo = userService.getAllStrategiesByUserId(qo);
+        return pageInfo;
+    }
+
+    /**
+     * 删除旅行单
+     */
+    @DeleteMapping("/{id}/strategies")
+    public JsonResult deleteUserStrategy(@PathVariable Long id){
+        userService.deleteUserStrategy(id);
+        return new JsonResult();
+    }
 }

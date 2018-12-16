@@ -2,7 +2,11 @@ package cn.wolfcode.trip.base.service;
 
 import cn.wolfcode.trip.base.domain.Focus;
 import cn.wolfcode.trip.base.domain.User;
+import cn.wolfcode.trip.base.domain.UserStrategy;
 import cn.wolfcode.trip.base.query.QueryObject;
+import cn.wolfcode.trip.base.query.UserChatQueryObject;
+import cn.wolfcode.trip.base.query.UserStrategyQueryObject;
+import cn.wolfcode.trip.base.util.JsonResult;
 import com.github.pagehelper.PageInfo;
 
 import java.util.HashMap;
@@ -46,4 +50,10 @@ public interface IUserService {
     Integer getFocuses(Long id);
 
     Integer checkFocusRelation(Focus focus);
+
+    void join(UserStrategy uc);
+
+    PageInfo getAllStrategiesByUserId(UserStrategyQueryObject qo);
+
+    void deleteUserStrategy(Long userId);
 }
