@@ -19,9 +19,136 @@
     <script type="text/javascript" src="../themes/js/data.js"></script>
     <script type="text/javascript" src="../themes/js/layer.js"></script>
     <script type="text/javascript" src="../themes/js/touchSlider.js"></script>
-
+    <script type="text/javascript" src="../themes/js/jquery.validate.min.js"></script>
+    <script src="/js/common.js"></script>
+    <script src="/js/plugins/jrender/jrender.min.js"></script>
+    <script src="/js/plugins/form/jquery.form.js"></script>
+    <style>
+        .error{
+            color: red;
+            font-weight: bolder;
+        }
+    </style>
     <script type="text/javascript">
         $(function() {
+            //表单验证:
+            $("#detailForm").validate({
+                rules: {
+                    userName: "required",
+                    peopleNum: "required",
+                    tel:{
+                        required:true,
+                        rangelength:[11,11]
+                    }
+
+                },
+                messages: {
+                    userName: "请输入您的姓名",
+                    peopleNum: "请输入密码",
+                    tel:{
+                        required:"请输入手机号码",
+                        rangelength:'请输入11位的号码'
+                    }
+                }
+            });
+
+
+            //拿到当前登录的对象,将他的id设给隐藏域中
+            var user = JSON.parse(sessionStorage.getItem("user"))
+            $("[name='user.id']").val(user.id)
+
+
+            //从缓存中拿出入住时间,离店时间,住店天数
+            var startDate = JSON.parse(sessionStorage.getItem("startDate"))
+            var endDate = JSON.parse(sessionStorage.getItem("endDate"))
+            var NumDate = JSON.parse(sessionStorage.getItem("NumDate"))
+            //设置到对应的标签里面
+            $("#live").html(startDate)
+            $("#totalDay").html("共"+NumDate+"晚")
+            $("#left").html(endDate)
+
+            var params = getParams();
+            if (params.id) {//params.id-->房间的id
+                //获取该房间的相关信息
+                $.get('/hotelroomdetails/' + params.id, function (data) {
+                    $(".aui-flexView").renderValues(data);
+
+                    //计算应支付的价格
+                    // 房间数
+                    var roomNum = $("#roomNum").val();
+                    //每间房间价格
+                    var roomPrice = $(".roomPrice").html();
+                    //总价格
+                    var totalMoney = NumDate*roomNum*roomPrice;
+                    console.log(totalMoney);
+                    //console.log($(".roomPrice")[0]);
+                    $(".roomPrice").html(totalMoney)
+                })
+            }
+
+            //房间数减少/增加按钮
+            $(".icon-reduce").click(function () {
+                var roomNum = $("#roomNum").val();
+                if(roomNum>=1){
+                    roomNum = roomNum-1;
+
+                    //回显
+                    $("#roomNum").val(roomNum);
+                    //房间数
+                    var roomNum = $("#roomNum").val();
+                    //每间房间价格
+                    var roomPrice = $(".hiddenPrice").val();
+                    //总价格
+                    var totalMoney = NumDate*roomNum*roomPrice;
+                    console.log(totalMoney);
+                    $(".roomPrice").html(totalMoney)
+                }
+
+            })
+            $(".icon-plus").click(function () {
+
+                var roomNum = $("#roomNum").val();
+                roomNum++;
+                //回显
+                $("#roomNum").val(roomNum);
+                //房间数
+                var roomNum = $("#roomNum").val();
+                console.log(roomNum);
+                //每间房间价格  (要从渲染的房间单价拿)
+                var roomPrice = $(".hiddenPrice").val();
+                console.log(roomPrice);
+                //总价格
+                var totalMoney = NumDate*roomNum*roomPrice;
+                console.log(totalMoney);
+                $(".roomPrice").html(totalMoney)
+
+            });
+
+            //把表单变成异步请求表单
+            $("#detailForm").ajaxForm({
+                beforeSubmit:function(arr){//提交表单之前会执行该函数
+                    //arr代表提交表单时传递的数据
+                    console.log(arr);
+                     arr.push({name: "hotelroomdetail.id", value: params.id});
+                     arr.push({name: "startTime", value: startDate});
+                     arr.push({name: "endTime", value: endDate});
+                     arr.push({name: "price", value: $(".roomPrice").html()});
+                },
+                success:function (data) {//表单提交成功后执行的函数
+                    if(data.success){
+                        alert("订单成功")
+                    }
+                }
+            })
+            //保存
+            $(".book").click(function () {
+                alert(111)
+               /* state = 1;*/
+                //提交表单
+                $("#detailForm").submit();
+            })
+
+
 
             $(".main_img").touchSlider({
                 flexible: true,
@@ -58,151 +185,179 @@
 
 </head>
 <body>
+    <form method="post" action="/hotelOrders" id="detailForm">
 
-    <section class="aui-flexView">
-        <header class="aui-navBar aui-navBar-fixed aui-navBar-green">
-            <a href="javascript:window.history.go(-1)" class="aui-navBar-item">
-                <i class="aui-icon icon-return"></i>
-            </a>
-            <div class="aui-center" style="margin-left:17%">
-                <span class="aui-center-title">水镇美乐家度假别墅 水镇美乐家度假别墅</span>
-            </div>
-        </header>
-        <section class="aui-scrollView">
-            <div class="aui-hotel-page-head"></div>
-            <div class="aui-hotel-page-content">
-                <div class="aui-hotel-order-text">
-                    <h3>限量温馨家庭房</h3>
-                    <p>9月12日(今天) - 9月16日(周三)  共4晚</p>
-                    <p>2张双人床1.5米  |  无早餐  |  每间最多可住3人  </p>
-                    <span>该预定不可取消</span>
-                    <a href="javascript:;" class="aui-hotel-order-more" data-ydui-actionsheet="{target:'#actionSheet',closeElement:'#cancel'}">房型早餐详情</a>
+        <!--<input type="hidden" name="hotelroomdetail.id">
+
+        <input type="hidden" name="startTime">
+
+        <input type="hidden" name="endTime">
+
+        <input type="hidden" name="price">-->
+        <section class="aui-flexView">
+            <input type="hidden" render-value="price" class="hiddenPrice">  <!--用一个隐藏域去保存最初的房间单价,以便点击增加,减少房间数量时使用-->
+            <header class="aui-navBar aui-navBar-fixed aui-navBar-green">
+                <a href="javascript:window.history.go(-1)" class="aui-navBar-item">
+                    <i class="aui-icon icon-return"></i>   <!--减去-->
+                </a>
+                <div class="aui-center" style="margin-left:17%">
+                    <span class="aui-center-title" render-html="hotel.name"></span><!--水镇美乐家度假别墅 水镇美乐家度假别墅-->
                 </div>
-            </div>
-            <div class="aui-hotel-page-list" style="padding-bottom:0">
-                <div class="aui-hotel-page-form">
-                    <a href="javascript:;" class="aui-flex b-line">
-                        <div class="aui-added-head">房间数</div>
-                        <div class="aui-flex-box">
-                            <span class="aui-reduce-plus"><i class="aui-icon icon-reduce"></i></span>
-                            <label class="aui-reduce-label">
-                                <input class="aui-added-input aui-added-input-width" type="text" placeholder="2" name="idCard" title="" size="" value="2" >间
-                            </label>
-                            <span class="aui-reduce-plus"><i class="aui-icon icon-plus"></i></span>
-                        </div>
-                    </a>
-                    <div class="aui-add-people-list" id="add-people">
-                        <a href="javascript:;" class="aui-flex b-line">
-                            <div class="aui-added-head">入住人1</div>
-                            <div class="aui-flex-box">
-                                <input class="aui-added-input" type="text" placeholder="每间填1位入住人姓名" name="idCard" title="" size="">
+            </header>
+            <section class="aui-scrollView">
+                <div class="aui-hotel-page-head"></div>
+                <div class="aui-hotel-page-content">
+                    <div class="aui-hotel-order-text">
+                        <h3 render-html="roomName"></h3><!--限量温馨家庭房-->
+                        <!--<p>9月12日(今天) - 9月16日(周三)  共4晚</p>-->
+                        <div class="aui-flex aui-flex-go-to">
+                            <div class="aui-flex-item-info">
+                                <h3>入住</h3>
+                                <p id="live"></p>
                             </div>
-                        </a>
-                        <a href="javascript:;" class="aui-flex b-line">
-                            <div class="aui-added-head">入住人2</div>
-                            <div class="aui-flex-box">
-                                <input class="aui-added-input" type="text" placeholder="每间填1位入住人姓名" name="idCard" title="" size="">
+                            <div class="aui-flex-item-info">
+                                <h4 id="totalDay"></h4>
                             </div>
-                        </a>
-                    </div>
-                    <a href="javascript:;" class="aui-flex b-line">
-                        <div class="aui-added-head">大陆手机</div>
-                        <div class="aui-area-code">
-                            <select class="weui-select" name="select1">
-                                <option selected="" value="1">+86</option>
-                                <option value="2">+852</option>
-                                <option value="3">+001</option>
-                            </select>
-                            <i class="aui-icon icon-area"></i>
-                        </div>
-                        <div class="aui-flex-box">
-                            <input class="aui-added-input" type="text" placeholder="188 1111 1111" name="idCard" title="" size="">
-                        </div>
-                    </a>
-                    <a href="javascript:;" class="aui-flex">
-                        <div class="aui-added-head">E-MAIL</div>
-                        <div class="aui-flex-box">
-                            <input class="aui-added-input" type="text" placeholder="请输入E-MAIL地址" name="idCard" title="" size="">
-                        </div>
-                    </a>
-                </div>
-                <div class="divHeight"></div>
-                <div class="aui-hotel-page-text">
-                    <p><em>扣款说明：</em>该订单确认后不可被取消修改，若未入住将收取您全额房费RMB25。度假酒店网会根据您的付款方式进行预授权或扣除房费，如订单不确认将解除预授权或全额退款至您的付款账户。附加服务费将与房费同时扣除或反还。</p>
-                </div>
-                <div class="divHeight"></div>
-                <div class="aui-hotel-detail-box">
-                    <div class="aui-hotel-detail-item">
-                        <h2>明细</h2>
-                        <div class="aui-flex">
-                            <div class="aui-flex-box">
-                                <span>2018-09-12</span>
-                            </div>
-                            <div>
-                                <span>2 x ￥525</span>
-                            </div>
-                        </div>
-                        <div class="aui-flex">
-                            <div class="aui-flex-box">
-                                <span>2018-09-12</span>
-                            </div>
-                            <div>
-                                <span>2 x ￥525</span>
-                            </div>
-                        </div>
-                        <div class="aui-flex">
-                            <div class="aui-flex-box">
-                                <span>2018-09-12</span>
-                            </div>
-                            <div>
-                                <span>2 x ￥525</span>
-                            </div>
-                        </div>
-                        <div class="aui-flex">
-                            <div class="aui-flex-box">
-                                <span>2018-09-12</span>
-                            </div>
-                            <div>
-                                <span>2 x ￥525</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="aui-hotel-detail-item">
-                        <h2>优惠</h2>
-                        <div class="aui-flex">
-                            <div class="aui-flex-box">
-                                <span>连住优惠</span>
-                            </div>
-                            <div>
-                                <span>￥525</span>
-                            </div>
-                        </div>
-                        <div class="aui-flex">
-                            <div class="aui-flex-box">
-                                <span>新客立减</span>
-                            </div>
-                            <div>
-                                <span>￥193</span>
+                            <div class="aui-flex-item-info">
+                                <h3>离店</h3>
+                                <p id="left"></p>
                             </div>
                         </div>
 
+                        <p render-html="roomArea"></p><!--2张双人床1.5米  |  无早餐  |  每间最多可住3人-->
+                        <span>该预定不可取消</span>
+                        <a href="javascript:;" class="aui-hotel-order-more" data-ydui-actionsheet="{target:'#actionSheet',closeElement:'#cancel'}">该房型无早餐</a>
                     </div>
                 </div>
-            </div>
+                <div class="aui-hotel-page-list" style="padding-bottom:0">
+                    <div class="aui-hotel-page-form">
+                        <a href="javascript:;" class="aui-flex b-line">
+                            <div class="aui-added-head">房间数</div>
+                            <div class="aui-flex-box">
+                                <span class="aui-reduce-plus"><i class="aui-icon icon-reduce"></i></span>
+                                <label class="aui-reduce-label">
+                                    <input class="aui-added-input aui-added-input-width" type="text" placeholder="1" name="roomNum" id="roomNum" value="1" readonly >间
+                                </label>
+                                <span class="aui-reduce-plus"><i class="aui-icon icon-plus"></i></span> <!--增加-->
+                            </div>
+                        </a>
+                        <div class="aui-add-people-list" id="add-people">
+                            <a href="javascript:;" class="aui-flex b-line">
+                                <div class="aui-added-head">入住人姓名</div>
+                                <div class="aui-flex-box">
+                                    <input class="aui-added-input" type="text" placeholder="请填写入住人姓名" name="userName" title="" size="">
+                                    <!--用户id-->
+                                    <input class="aui-added-input" type="hidden" name="user.id" title="" size="">
+                                </div>
+                            </a>
+                            <a href="javascript:;" class="aui-flex b-line">
+                                <div class="aui-added-head">入住人数</div>
+                                <div class="aui-flex-box">
+                                    <input class="aui-added-input" type="text" placeholder="入住人数" name="peopleNum" title="" size="">
+                                </div>
+                            </a>
+                        </div>
+                        <a href="javascript:;" class="aui-flex b-line">
+                            <div class="aui-added-head">大陆手机</div>
+                            <div class="aui-area-code">
+                                <select class="weui-select" >
+                                    <option selected="" value="1">+86</option>
+                                    <option value="2">+852</option>
+                                    <option value="3">+001</option>
+                                </select>
+                                <i class="aui-icon icon-area"></i>
+                            </div>
+                            <div class="aui-flex-box">
+                                <input class="aui-added-input" type="text" placeholder="188 1111 1111" name="tel" >
+                            </div>
+                        </a>
+                        <!--<a href="javascript:;" class="aui-flex">
+                            <div class="aui-added-head">E-MAIL</div>
+                            <div class="aui-flex-box">
+                                <input class="aui-added-input" type="text" placeholder="请输入E-MAIL地址" name="idCard" title="" size="">
+                            </div>
+                        </a>-->
+                    </div>
+                    <div class="divHeight"></div>
+                    <div class="aui-hotel-page-text">
+                        <p><em>扣款说明：</em>该订单确认后不可被取消修改，若未入住将收取您全额房费RMB<span render-html="price"></span>。度假酒店网会根据您的付款方式进行预授权或扣除房费，如订单不确认将解除预授权或全额退款至您的付款账户。附加服务费将与房费同时扣除或反还。</p>
+                    </div>
+                    <div class="divHeight"></div>
+                    <div class="aui-hotel-detail-box">
+                        <div class="aui-hotel-detail-item">
+                            <h2>明细</h2>
+                            <div class="aui-flex">
+                                <div class="aui-flex-box">
+                                    <span>2018-09-12</span>
+                                </div>
+                                <div>
+                                    <span>2 x ￥525</span>
+                                </div>
+                            </div>
+                            <div class="aui-flex">
+                                <div class="aui-flex-box">
+                                    <span>2018-09-12</span>
+                                </div>
+                                <div>
+                                    <span>2 x ￥525</span>
+                                </div>
+                            </div>
+                            <div class="aui-flex">
+                                <div class="aui-flex-box">
+                                    <span>2018-09-12</span>
+                                </div>
+                                <div>
+                                    <span>2 x ￥525</span>
+                                </div>
+                            </div>
+                            <div class="aui-flex">
+                                <div class="aui-flex-box">
+                                    <span>2018-09-12</span>
+                                </div>
+                                <div>
+                                    <span>2 x ￥525</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="aui-hotel-detail-item">
+                            <h2>优惠</h2>
+                            <!--<div class="aui-flex">
+                                <div class="aui-flex-box">
+                                    <span>连住优惠</span>
+                                </div>
+                                <div>
+                                    <span>￥525</span>
+                                </div>
+                            </div>-->
+                            <div class="aui-flex">
+                                <div class="aui-flex-box">
+                                    <span>新客立减</span>
+                                </div>
+                                <div>
+                                    <span>您无法享受此优惠</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <footer class="aui-footer-bar">
+                <a href="javascript:;" class="aui-footer-btn aui-order-price">
+                    <span class="aui-order-price-text roomPrice" render-html="price" ></span><!--5200.00<em>￥</em>-->
+                </a>
+                <a href="javascript:;"  class="aui-footer-btn book">去支付</a>
+            </footer>
         </section>
-        <footer class="aui-footer-bar">
-            <a href="javascript:;" class="aui-footer-btn aui-order-price">
-                <span class="aui-order-price-text"><em>￥</em>5200.00</span>
-            </a>
-            <a href="javascript:;" class="aui-footer-btn">去支付</a>
-        </footer>
-    </section>
+    </form>
+
+
 
     <!-- 房型早餐详情弹窗 begin -->
     <div class="m-actionsheet" id="actionSheet" style="top:150px; overflow-y:scroll; ">
         <div class="aui-flex aui-flex-headers">
             <div class="aui-flex-box">
-                <p>限量温馨家庭房</p>
+                <p render-html="roomName"></p><!--限量温馨家庭房-->
             </div>
             <div>
                  <a href="javascript:;" id="cancel" class="">
@@ -214,25 +369,25 @@
             <div class="main_img">
                 <ul>
                     <li>
-                        <img src="themes/img/img/banner-002.png" alt="">
-                    </li>
-                    <li>
-                        <img src="themes/img/img/banner-002.png" alt="">
-                    </li>
-                    <li>
-                        <img src="themes/img/img/banner-001.png" alt="">
-                    </li>
-                    <li>
-                        <img src="themes/img/img/banner-001.png" alt="">
-                    </li>
-                    <li>
-                        <img src="themes/img/img/banner-001.png" alt="">
-                    </li>
-                    <li>
                         <img src="themes/img/img/banner-001.png" alt="">
                     </li>
                     <li>
                         <img src="themes/img/img/banner-002.png" alt="">
+                    </li>
+                    <li>
+                        <img src="themes/img/img/banner-3.jpg" alt="">
+                    </li>
+                    <li>
+                        <img src="themes/img/img/banner-4.jpg" alt="">
+                    </li>
+                    <li>
+                        <img src="themes/img/img/banner-5.jpg" alt="">
+                    </li>
+                    <li>
+                        <img src="themes/img/img/banner-6.jpg" alt="">
+                    </li>
+                    <li>
+                        <img src="themes/img/img/banner-7.jpg" alt="">
                     </li>
                 </ul>
             </div>
@@ -252,7 +407,7 @@
                 <h2>房间属性</h2>
                 <div class="aui-flex">
                     <div class="aui-flex-box">
-                        <span><em>面积</em>  20㎡</span>
+                        <span><em>面积</em>  30㎡</span>
                     </div>
                     <div class="aui-flex-box">
                         <span><em>楼层 </em>   2/3层</span>
@@ -357,15 +512,15 @@
                         <span>门店新客立减</span>
                     </div>
                     <div class="aui-flex-box">
-                        <span>8.8折   2018-08-23 至 2018-09-22</span>
+                        <span>1折抢   2018-12-19 至 2018-12-20(<a>活动未到期</a>)</span>
                     </div>
                 </div>
                 <div class="aui-flex">
                     <div class="aui-flex-sales">
-                        <span>连住优惠</span>
+                        <span>专享预定</span>
                     </div>
                     <div class="aui-flex-box">
-                        <span>连住2天立减200元</span>
+                        <span>订单提交后,酒店将第一时间确认您的订单</span>
                     </div>
                 </div>
 
@@ -382,9 +537,9 @@
 
         <footer class="aui-footer-bar">
             <a href="javascript:;" class="aui-footer-btn aui-order-price">
-                <span class="aui-order-price-text"><em>￥</em>5200.00</span>
+                <span class="aui-order-price-text roomPrice" render-html="price"><em>￥</em>5200.00</span>
             </a>
-            <a href="javascript:;" class="aui-footer-btn">预订</a>
+            <a href="javascript:;" class="aui-footer-btn book">预订</a>
         </footer>
     </div>
     <!-- 房型早餐详情弹窗 end -->

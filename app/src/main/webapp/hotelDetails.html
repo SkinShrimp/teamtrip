@@ -28,10 +28,20 @@
 
     <script>
         $(function () {
+            //从缓存中拿出入住时间,离店时间,住店天数
+            var startDate = JSON.parse(sessionStorage.getItem("startDate"))
+            var endDate = JSON.parse(sessionStorage.getItem("endDate"))
+            var NumDate = JSON.parse(sessionStorage.getItem("NumDate"))
+            //设置到对应的标签里面
+            $("#live").html(startDate)
+            $("#totalDay").html("共"+NumDate+"晚")
+            $("#left").html(endDate)
+
+
 
             var params = getParams();
             if (params.id) {//params.id-->酒店的id
-                //获取该房间的相关信息
+                //通过酒店id去查询所有的房间
                 $.get('/hotels/' + params.id, function (data) {
                     $(".aui-flexView").renderValues(data);
                 })
@@ -60,10 +70,14 @@
                         list:roomArr
                     };
                     //渲染数据
-                    $(".aui-room-list").renderValues(json);
-                    $(".order").click(function () {
+                    $(".aui-room-list").renderValues(json, {
+                        getHref: function (item, value) {
+                            $(item).attr("href", "/mine/orderDetails.html?id=" + value);
+                        }
+                    });
+                   /* $(".order").click(function () {
                         window.location.href="/mine/orderDetails.html"
-                    })
+                    })*/
 
                     //获取总页数
                     pages = data.pages;
@@ -121,19 +135,19 @@
                             <img src="themes/img/img/banner-002.png" alt="">
                         </li>
                         <li>
-                            <img src="themes/img/img/banner-001.png" alt="">
+                            <img src="themes/img/img/banner-3.jpg" alt="">
                         </li>
                         <li>
-                            <img src="themes/img/img/banner-002.png" alt="">
+                            <img src="themes/img/img/banner-4.jpg" alt="">
                         </li>
                         <li>
-                            <img src="themes/img/img/banner-001.png" alt="">
+                            <img src="themes/img/img/banner-5.jpg" alt="">
                         </li>
                         <li>
-                            <img src="themes/img/img/banner-001.png" alt="">
+                            <img src="themes/img/img/banner-6.jpg" alt="">
                         </li>
                         <li>
-                            <img src="themes/img/img/banner-002.png" alt="">
+                            <img src="themes/img/img/banner-7.jpg" alt="">
                         </li>
                     </ul>
                 </div>
@@ -183,14 +197,14 @@
                     <div class="aui-flex aui-flex-go-to">
                         <div class="aui-flex-item-info">
                             <h3>入住</h3>
-                            <p>9月12日今天</p>
+                            <p id="live"></p><!--9月12日今天-->
                         </div>
                         <div class="aui-flex-item-info">
-                            <h4>共8晚</h4>
+                            <h4 id="totalDay"></h4><!--共8晚-->
                         </div>
                         <div class="aui-flex-item-info">
                             <h3>离店</h3>
-                            <p>9月26日周三</p>
+                            <p id="left"></p><!--9月26日周三-->
                         </div>
                     </div>
                 </div>
@@ -200,8 +214,7 @@
                     <li class="aui-flex b-line" >
                         <div class="aui-flex-small-room">
                             <img render-src="list.roomPic">
-                           <!-- <a   render-key="list.id" render-fun="getHref">
-
+                           <!-- <a  render-key="list.id" render-fun="getHref">
                             </a>-->
 
                         </div>
@@ -213,7 +226,9 @@
                             </div>
                         </div>
                         <div class="aui-flex-take">
-                            <div class="aui-flex-take-text order">订</div>
+                            <div class="aui-flex-take-text order" render-key="list.id" render-fun="getHref" >
+                                <a  render-key="list.id" render-fun="getHref">订</a>
+                            </div>
                             <div class="aui-flex-take-pay">在线付</div>
                         </div>
                     </li>

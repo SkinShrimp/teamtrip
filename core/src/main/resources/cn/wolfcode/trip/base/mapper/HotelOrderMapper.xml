@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.trip.base.mapper.HotelOrderMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.HotelOrder">
+    <id column="id" property="id" />
+    <result column="roomNum" property="roomNum" />
+    <result column="peopleNum" property="peopleNum" />
+    <result column="tel" property="tel" />
+    <result column="price" property="price" />
+    <result column="startTime" property="startTime" />
+    <result column="endTime" property="endTime" />
+    <result column="state" property="state" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey">
+    delete from hotelorder
+    where id = #{id}
+  </delete>
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into hotelorder (user_id, hotelroomdetail_id, roomNum, peopleNum, tel, price, 
+      startTime, endTime, state)
+    values (#{user.id}, #{hotelroomdetail.id}, #{roomNum}, #{peopleNum}, #{tel}, #{price}, 
+      #{startTime}, #{endTime}, #{state})
+  </insert>
+  <update id="updateByPrimaryKey">
+    update hotelorder
+    set user_id = #{user.id},
+      hotelroomdetail_id = #{hotelroomdetail.id},
+      roomNum = #{roomNum},
+      peopleNum = #{peopleNum},
+      tel = #{tel},
+      price = #{price},
+      startTime = #{startTime},
+      endTime = #{endTime},
+      state = #{state}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select id, user_id, hotelroomdetail_id, roomNum, peopleNum, tel, price, startTime, 
+    endTime, state
+    from hotelorder
+    where id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, user_id, hotelroomdetail_id, roomNum, peopleNum, tel, price, startTime, 
+    endTime, state
+    from hotelorder
+  </select>
+</mapper>

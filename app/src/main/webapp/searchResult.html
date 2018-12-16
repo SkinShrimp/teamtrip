@@ -36,9 +36,6 @@
 
             function query() {
 
-                //进来默认点击
-                //$("#pills-top").addClass("active").addClass("show");
-
                 //查询
                 $.get("/hotels",{keyword:data,starLevel:starLevel,currentPage:currentPage},function (data) {
                     $.merge(hotelArr, data.list);

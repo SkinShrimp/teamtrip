@@ -385,6 +385,12 @@
                     console.log(startDate);
                     console.log(endDate);
                     console.log(NumDate);
+
+                    //将入住时间,离店时间,住店天数存到缓存中
+                    sessionStorage.setItem("startDate",JSON.stringify(startDate))
+                    sessionStorage.setItem("endDate",JSON.stringify(endDate))
+                    sessionStorage.setItem("NumDate",JSON.stringify(NumDate))
+
                     //下面做ajax请求
                 },
                 comfireBtn: '.comfire'//确定按钮的class或者id

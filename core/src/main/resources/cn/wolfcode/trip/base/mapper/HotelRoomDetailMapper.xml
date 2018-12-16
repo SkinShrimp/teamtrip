@@ -7,6 +7,10 @@
     <result column="price" property="price" />
     <result column="roomPic" property="roomPic" />
     <result column="roomArea" property="roomArea" />
+    <association property="hotel" javaType="Hotel" columnPrefix="h_">
+      <id column="id" property="id" />
+      <result column="name" property="name" />
+    </association>
   </resultMap>
   <delete id="deleteByPrimaryKey">
     delete from hotelroomdetail
@@ -26,9 +30,11 @@
     where id = #{id}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap">
-    select id, hotel_id, roomName, price, roomPic, roomArea
-    from hotelroomdetail
-    where id = #{id}
+    select hr.id, hr.hotel_id, hr.roomName, hr.price, hr.roomPic, hr.roomArea,
+    h.id h_id,h.name h_name
+    from hotelroomdetail hr
+    join hotel h on hr.hotel_id = h.id
+    where hr.id = #{id}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select id, hotel_id, roomName, price, roomPic, roomArea

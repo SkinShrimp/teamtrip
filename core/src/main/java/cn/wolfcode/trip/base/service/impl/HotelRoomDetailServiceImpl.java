@@ -1,5 +1,6 @@
 package cn.wolfcode.trip.base.service.impl;
 
+import cn.wolfcode.trip.base.domain.HotelRoomDetail;
 import cn.wolfcode.trip.base.mapper.HotelRoomDetailMapper;
 import cn.wolfcode.trip.base.query.QueryObject;
 import cn.wolfcode.trip.base.service.IHotelRoomDetailService;
@@ -20,5 +21,10 @@ public class HotelRoomDetailServiceImpl implements IHotelRoomDetailService {
         PageHelper.startPage(qo.getCurrentPage(),qo.getPageSize(),"price");
         List list = hotelRoomDetailMapper.selectForList(qo);
         return new PageInfo(list);
+    }
+
+    @Override
+    public HotelRoomDetail queryById(Long id) {
+        return hotelRoomDetailMapper.selectByPrimaryKey(id);
     }
 }
