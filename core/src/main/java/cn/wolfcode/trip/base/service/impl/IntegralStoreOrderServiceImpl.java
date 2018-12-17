@@ -4,8 +4,12 @@ import cn.wolfcode.trip.base.domain.*;
 import cn.wolfcode.trip.base.mapper.ExpressageMapper;
 import cn.wolfcode.trip.base.mapper.IntegralStoreOrderMapper;
 import cn.wolfcode.trip.base.mapper.UserMapper;
+import cn.wolfcode.trip.base.query.IntegralStoreOrderQuery;
+import cn.wolfcode.trip.base.query.QueryObject;
 import cn.wolfcode.trip.base.service.IIntegralStoreOrderService;
 import cn.wolfcode.trip.base.util.UserContext;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,13 +61,20 @@ public class IntegralStoreOrderServiceImpl implements IIntegralStoreOrderService
     }
 
     @Override
-    public List list(Boolean stutes) {
+    public PageInfo list(QueryObject qo) {
 
         //传入状态 ,传入当前用于
-       /* Long id = UserContext.getUser().getId();*/
-        return integralStoreOrderMapper.selectAll(stutes,1);
+        PageHelper.startPage(qo.getCurrentPage(),qo.getPageSize());
+        List<IntegralStoreOrder> list = integralStoreOrderMapper.selectAll(qo);
+        return new PageInfo(list);
 
 
+    }
 
+    @Override
+    public PageInfo query(IntegralStoreOrderQuery qo) {
+        PageHelper.startPage(qo.getCurrentPage(),qo.getPageSize());
+        List<IntegralStoreOrder> list = integralStoreOrderMapper.selectForList(qo);
+        return new PageInfo(list);
     }
 }

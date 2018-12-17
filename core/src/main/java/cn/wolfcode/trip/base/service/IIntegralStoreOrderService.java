@@ -1,6 +1,10 @@
 package cn.wolfcode.trip.base.service;
 
 
+import cn.wolfcode.trip.base.query.IntegralStoreOrderQuery;
+import cn.wolfcode.trip.base.query.QueryObject;
+import com.github.pagehelper.PageInfo;
+
 import java.util.List;
 
 public interface IIntegralStoreOrderService {
@@ -14,6 +18,7 @@ public interface IIntegralStoreOrderService {
     /**
      * 查询指定状态的订单
      */
-    List list(Boolean stutes);
+    PageInfo list(QueryObject qo);
 
+    PageInfo query(IntegralStoreOrderQuery qo);
 }
