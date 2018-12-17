@@ -14,43 +14,51 @@
       <result property="nickName" column="nickName"/>
       <result property="headImgUrl" column="headImgUrl"/>
     </association>
-    <association property="acceptuser" javaType="user" columnPrefix="a_">
+    <association property="acceptUser" javaType="user" columnPrefix="a_">
       <result property="id" column="id"/>
       <result property="nickName" column="nickName"/>
       <result property="headImgUrl" column="headImgUrl"/>
     </association>
   </resultMap>
   <delete id="deleteByPrimaryKey">
-    delete from normalcomment
-    where id = #{id}
+    DELETE FROM normalcomment
+    WHERE id = #{id}
   </delete>
   <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-    insert into normalcomment (user_id, acceptuser_id, comment, createTime, type, type_id, 
+    INSERT INTO normalcomment (user_id, acceptuser_id, comment, createTime, type, type_id,
       parentId, flagId)
-    values (#{user.id}, #{acceptuser.id}, #{comment}, #{createTime}, #{type}, #{typeId}, 
+    VALUES (#{user.id}, #{acceptUser.id}, #{comment}, #{createTime}, #{type}, #{typeId},
       #{parentId}, #{flagId})
   </insert>
   <update id="updateByPrimaryKey">
-    update normalcomment
-    set user_id = #{user.id},
-      acceptuser_id = #{acceptuser.id},
+    UPDATE normalcomment
+    SET user_id = #{user.id},
+      acceptuser_id = #{acceptUser.id},
       comment = #{comment},
       createTime = #{createTime},
       type = #{type},
       type_id = #{typeId},
       parentId = #{parentId},
       flagId = #{flagId}
-    where id = #{id}
+    WHERE id = #{id}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap">
-    select id, user_id, acceptuser_id, comment, createTime, type, type_id, parentId, 
+    SELECT id, user_id, acceptuser_id, comment, createTime, type, type_id, parentId,
     flagId
-    from normalcomment
-    where id = #{id}
+    FROM normalcomment
+    WHERE id = #{id}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, user_id, acceptuser_id, comment, createTime, type, type_id, parentId, 
+    SELECT id, user_id, acceptuser_id, comment, createTime, type, type_id, parentId,
     flagId
-    from normalcomment
+    FROM normalcomment
+  </select>
+
+  <!--初始化朋友圈的评论信息-->
+  <select id="selectForInitNormalComment" resultType="map">
+    SELECT user.id userId, user.nickName userName, acceptUser.nickName acceptUserName, nc.comment comment,nc.createTime FROM normalcomment nc
+    LEFT JOIN user user ON  user.id = nc.user_id
+    LEFT JOIN user acceptUser ON acceptUser.id = nc.acceptuser_id
+    WHERE nc.type = #{type} AND nc.parentId = #{typeId}
   </select>
 </mapper>

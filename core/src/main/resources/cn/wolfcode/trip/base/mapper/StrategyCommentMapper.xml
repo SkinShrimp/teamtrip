@@ -51,15 +51,16 @@
     where id = #{id}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, user_id, createTime, content, imgUrls, starNum, strategy_id, state, commendTime
-    from strategycomment
+    select sc.id, sc.user_id, sc.createTime, sc.content, sc.imgUrls, sc.starNum, sc.strategy_id, sc.state, sc.commendTime,
+    u.id u_id,u.headImgUrl u_headImgUrl,u.nickName u_nickName,
+    s.id s_id,s.title s_title
+    from strategycomment sc
+    JOIN user u ON sc.user_id=u.id
+    JOIN strategy s ON sc.strategy_id=s.id
   </select>
   <select id="selectForList" resultMap="BaseResultMap">
      select sc.id, sc.user_id, sc.createTime, sc.content, sc.imgUrls, sc.starNum, sc.strategy_id, sc.state, sc.commendTime,
-    u.id u_id,u.nickName u_nickName,u.headImgUrl u_headImgUrl,s.id s_id,s.title s_title,s.coverUrl s_coverUrl
     from strategycomment sc
-    JOIN user u on sc.user_id = u.id
-    join strategy s on sc.strategy_id = s.id
     <where>
       <if test="strategyId!=null">
         and sc.strategy_id = #{strategyId}
@@ -68,6 +69,16 @@
         and sc.user_id = #{userId}
       </if>
     </where>
+  </select>
+
+  <select id="selectStrategyAll" resultMap="BaseResultMap">
+    select sc.id, sc.user_id, sc.strategy_id, sc.state,
+    u.id u_id,u.headImgUrl u_headImgUrl,u.nickName u_nickName,
+    s.id s_id,s.title s_title
+    from strategycomment sc
+    JOIN user u ON sc.user_id=u.id
+    JOIN strategy s ON sc.strategy_id=s.id
+    LIMIT 5
   </select>
 
 </mapper>

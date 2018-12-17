@@ -43,12 +43,17 @@
 
             //获取地址栏的id
 			var params=getParams();
-            console.log(params.id);
 
 			if(params.id){
+
+			    //根据id获取指定的商品
 				$.get("/points/getGoodsById/"+params.id+"/goodses",function (data) {
                     console.log(data);
                     $(".showGoods").renderValues(data);
+                    $("#buy").renderValues(data,{
+                        getHref: getHref
+
+                    });
                 })
 			}
         })
@@ -108,7 +113,6 @@
 				<div class="middle clearfloat box-s showGoods">
 					<a href="#">
 						<span class="fl">商品详情</span>
-						<i class="iconfont icon-jiantou1 fr"></i>
 					</a>
 				</div>
 				<div class="middle clearfloat box-s showGoods">
@@ -144,7 +148,7 @@
 			</div>
 			<div class="right clearfloat fl">
 				<span class="btn fl" onClick="toshare()">加入购物车</span>
-				<a href="confirm.html" class="btn btnone fl">立即购买</a>
+				<a id="buy" data-href="confirm.html?id=" class="btn btnone fl" render-fun="getHref" render-key="id">立即购买</a>
 			</div>
 		</div>
 		<!--footerone end-->

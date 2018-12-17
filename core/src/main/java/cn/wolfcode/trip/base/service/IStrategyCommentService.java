@@ -7,6 +7,8 @@ import cn.wolfcode.trip.base.query.StrategyCommentQueryObject;
 import cn.wolfcode.trip.base.util.JsonResult;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 public interface IStrategyCommentService {
 
     /**
@@ -22,4 +24,14 @@ public interface IStrategyCommentService {
      * @return
      */
     void save(StrategyComment strategyComment, String[] tags);
+
+
+
+    List<StrategyComment> selectAll();
+
+    /**
+     * 查询所有的评论用于首页轮播图
+     * @return
+     */
+    List<StrategyComment> selectStrategyAll(StrategyComment strategyComment);
 }

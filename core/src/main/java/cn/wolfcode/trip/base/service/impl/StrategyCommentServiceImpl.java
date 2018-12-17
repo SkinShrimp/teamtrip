@@ -53,4 +53,14 @@ public class StrategyCommentServiceImpl implements IStrategyCommentService {
         }
         }
     }
+
+    @Override
+    public List<StrategyComment> selectAll() {
+        return strategyCommentMapper.selectAll();
+    }
+
+    @Override
+    public List<StrategyComment> selectStrategyAll(StrategyComment strategyComment) {
+        return strategyCommentMapper.selectStrategyAll(strategyComment);
+    }
 }
