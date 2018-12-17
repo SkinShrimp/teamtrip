@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/js/plugins/dialog2/dialog.css">
     <script src="/js/plugins/dialog2/dialog.min.js"></script>
     <script src="/js/common.js"></script>
+
     <script>
         $(function () {
             //获取当前用户的id
@@ -59,160 +60,186 @@
             });
         });
     </script>
+
+    <link rel="stylesheet" type="text/css" href="/js/background/bg1/css/normalize.css" /><!--CSS RESET-->
+    <link rel="stylesheet" type="text/css" href="/js/background/bg1/css/demo.css"><!--演示页面样式，使用时可以不引用-->
+
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+        #site-landing {
+            position:relative;
+            height: 100%;
+            width: 100%;
+            background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
+        }
+        .white {
+            color: lightgoldenrodyellow;
+        }
+
+    </style>
+    <script type="text/javascript" src="/js/background/bg1/js/polygonizr.min.js"></script>
+    <script type="text/javascript">
+        $('#site-landing').polygonizr();
+    </script>
 </head>
-<body style="background-color: lightgoldenrodyellow">
+<body>
+<div id="site-landing">
+    <section class="aui-flexView" >
+        <header class="aui-navBar aui-navBar-fixed b-line">
+            <a href="/mine/profiles.html" class="aui-navBar-item">
+                <i class="icon icon-return"></i>
+            </a>
+            <div class="aui-center">
+                <span class="aui-center-title">游戏中心</span>
+            </div>
+            <a href="javascript:;" class="aui-navBar-item">
+            </a>
+        </header>
 
-<section class="aui-flexView" >
-    <header class="aui-navBar aui-navBar-fixed b-line" style="background-color: lightgoldenrodyellow">
-        <a href="/mine/message.html" class="aui-navBar-item">
-            <i class="icon icon-return"></i>
-        </a>
-        <div class="aui-center">
-            <span class="aui-center-title">游戏中心</span>
-        </div>
-        <a href="javascript:;" class="aui-navBar-item">
-        </a>
-    </header>
+        <section class="aui-scrollView">
+            <div class="aui-list-box">
+                <div>
+                    <div style="color: black"  class="aui-center">
+                        <span class="all" style="color: white"></span>
+                    </div>
+                    <div style="color: mediumblue" class="aui-center">
+                        <span style="color: white">点击签到</span>
+                        <a class="integral">
+                            <img  width="20px;" height="20px;" src="/img/game/签到1.png">
+                        </a>
+                    </div>
+                </div>
+                <div class="aui-flex">
+                    <div class="aui-flex-logo">
+                        <img src="/img/game/飞机.png">
+                    </div>
+                    <div class="aui-flex-box">
+                        <a class="game white" data-href="/js/game/plane/index.html" data-num="1">
+                            <strong>打飞机</strong>
+                        </a>
+                    </div>
+                    <div class="aui-flex-box" style="color: lightgoldenrodyellow">
+                        本次消耗积分: 1
+                    </div>
+                </div>
+                <div class="aui-flex">
+                    <div class="aui-flex-logo">
+                        <img src="/img/game/扑克.png">
+                    </div>
+                    <div class="aui-flex-box">
+                        <a class="game white" data-href="/js/game/fight/index.html" data-num="2">
+                            <strong>斗地主</strong>
+                        </a>
+                    </div>
+                    <div class="aui-flex-box" style="color: lightgoldenrodyellow">
+                        本次消耗积分: 2
+                    </div>
+                </div>
+                <div class="aui-flex">
+                    <div class="aui-flex-logo">
+                        <img src="/img/game/针对性练习.png">
+                    </div>
+                    <div class="aui-flex-box">
+                        <a class="game white" data-href="/js/game/pin/index.html" data-num="3">
+                            <strong>见缝插针</strong>
+                        </a>
+                    </div>
+                    <div class="aui-flex-box" style="color: lightgoldenrodyellow">
+                        本次消耗积分: 3
+                    </div>
+                </div>
+                <div class="aui-flex">
+                    <div class="aui-flex-logo">
+                        <img src="/img/game/金钱.png">
+                    </div>
+                    <div class="aui-flex-box">
+                        <a class="game white" data-href="/js/game/21point/index.html" data-num="4">
+                            <strong>21点</strong>
+                        </a>
+                    </div>
+                    <div class="aui-flex-box" style="color: lightgoldenrodyellow">
+                        本次消耗积分: 4
+                    </div>
+                </div>
 
-    <section class="aui-scrollView">
-        <div class="aui-list-box">
-            <div>
-                <div style="color: black"  class="aui-center">
-                    <span class="all"></span>
+                <div class="aui-flex">
+                    <div class="aui-flex-logo">
+                        <img src="/img/game/路径分析.png">
+                    </div>
+                    <div class="aui-flex-box">
+                        <a class="game white" data-href="/js/game/path/demo.html" data-num="3">
+                            <strong>路径查找器</strong>
+                        </a>
+                    </div>
+                    <div class="aui-flex-box" style="color: lightgoldenrodyellow">
+                        本次消耗积分: 3
+                    </div>
                 </div>
-                <div style="color: mediumblue" class="aui-center">
-                    <span>点击签到</span>
-                    <a class="integral">
-                        <img  width="20px;" height="20px;" src="/img/game/签到.png">
-                    </a>
+                <div class="aui-flex">
+                    <div class="aui-flex-logo">
+                        <img src="/img/game/九宫格.png">
+                    </div>
+                    <div class="aui-flex-box">
+                        <a class="game white" data-href="/js/game/2048/demo.html" data-num="1">
+                            <strong>2048</strong>
+                        </a>
+                    </div>
+                    <div class="aui-flex-box" style="color: lightgoldenrodyellow">
+                        本次消耗积分: 1
+                    </div>
                 </div>
-            </div>
-            <div class="aui-flex">
-                <div class="aui-flex-logo">
-                    <img src="/img/game/飞机.png">
-                </div>
-                <div class="aui-flex-box">
-                    <a class="game" data-href="/js/game/plane/index.html" data-num="1">
-                        <strong>打飞机</strong>
-                    </a>
-                </div>
-                <div class="aui-flex-box">
-                    本次消耗积分: 1
-                </div>
-            </div>
-            <div class="aui-flex">
-                <div class="aui-flex-logo">
-                    <img src="/img/game/扑克.png">
-                </div>
-                <div class="aui-flex-box">
-                    <a class="game" data-href="/js/game/fight/index.html" data-num="2">
-                        <strong>斗地主</strong>
-                    </a>
-                </div>
-                <div class="aui-flex-box">
-                    本次消耗积分: 2
-                </div>
-            </div>
-            <div class="aui-flex">
-                <div class="aui-flex-logo">
-                    <img src="/img/game/针对性练习.png">
-                </div>
-                <div class="aui-flex-box">
-                    <a class="game" data-href="/js/game/pin/index.html" data-num="3">
-                        <strong>见缝插针</strong>
-                    </a>
-                </div>
-                <div class="aui-flex-box">
-                    本次消耗积分: 3
-                </div>
-            </div>
-            <div class="aui-flex">
-                <div class="aui-flex-logo">
-                    <img src="/img/game/金钱.png">
-                </div>
-                <div class="aui-flex-box">
-                    <a class="game" data-href="/js/game/21point/index.html" data-num="4">
-                        <strong>21点</strong>
-                    </a>
-                </div>
-                <div class="aui-flex-box">
-                    本次消耗积分: 4
-                </div>
-            </div>
 
-            <div class="aui-flex">
-                <div class="aui-flex-logo">
-                    <img src="/img/game/路径分析.png">
+                <div class="aui-flex">
+                    <div class="aui-flex-logo">
+                        <img src="/img/game/门卫.png">
+                    </div>
+                    <div class="aui-flex-box">
+                        <a class="game white" data-href="/js/game/door/index.html" data-num="3">
+                            <strong>door</strong>
+                        </a>
+                    </div>
+                    <div class="aui-flex-box" style="color: lightgoldenrodyellow">
+                        本次消耗积分: 3
+                    </div>
                 </div>
-                <div class="aui-flex-box">
-                    <a class="game" data-href="/js/game/path/demo.html" data-num="3">
-                        <strong>路径查找器</strong>
-                    </a>
+                <div class="aui-flex">
+                    <div class="aui-flex-logo">
+                        <img src="/img/game/五子棋.png">
+                    </div>
+                    <div class="aui-flex-box">
+                        <a class="game white" data-href="/js/game/chess/五子棋.html" data-num="1">
+                            <strong>五子棋</strong>
+                        </a>
+                    </div>
+                    <div class="aui-flex-box" style="color: lightgoldenrodyellow">
+                        本次消耗积分: 1
+                    </div>
                 </div>
-                <div class="aui-flex-box">
-                    本次消耗积分: 3
-                </div>
-            </div>
-            <div class="aui-flex">
-                <div class="aui-flex-logo">
-                    <img src="/img/game/九宫格.png">
-                </div>
-                <div class="aui-flex-box">
-                    <a class="game" data-href="/js/game/2048/demo.html" data-num="1">
-                        <strong>2048</strong>
-                    </a>
-                </div>
-                <div class="aui-flex-box">
-                    本次消耗积分: 1
-                </div>
-            </div>
-
-            <div class="aui-flex">
-                <div class="aui-flex-logo">
-                    <img src="/img/game/门卫.png">
-                </div>
-                <div class="aui-flex-box">
-                    <a class="game" data-href="/js/game/door/index.html" data-num="3">
-                        <strong>door</strong>
-                    </a>
-                </div>
-                <div class="aui-flex-box">
-                    本次消耗积分: 3
-                </div>
-            </div>
-            <div class="aui-flex">
-                <div class="aui-flex-logo">
-                    <img src="/img/game/五子棋.png">
-                </div>
-                <div class="aui-flex-box">
-                    <a class="game" data-href="/js/game/chess/五子棋.html" data-num="1">
-                        <strong>五子棋</strong>
-                    </a>
-                </div>
-                <div class="aui-flex-box">
-                    本次消耗积分: 1
+                <div class="aui-flex">
+                    <div class="aui-flex-logo">
+                        <img src="/img/game/大脑.png">
+                    </div>
+                    <div class="aui-flex-box">
+                        <a class="game white" data-href="/js/game/question1/demo.html" data-num="4">
+                            <strong>头脑风暴</strong>
+                        </a>
+                    </div>
+                    <div class="aui-flex-box " style="color: lightgoldenrodyellow">
+                        本次消耗积分: 4
+                    </div>
                 </div>
             </div>
-            <div class="aui-flex">
-                <div class="aui-flex-logo">
-                    <img src="/img/game/大脑.png">
-                </div>
-                <div class="aui-flex-box">
-                    <a class="game" data-href="/js/game/question1/demo.html" data-num="4">
-                        <strong>头脑风暴</strong>
-                    </a>
-                </div>
-                <div class="aui-flex-box">
-                    本次消耗积分: 4
-                </div>
+            <div class="aui-center" style="color: firebrick">
+                <br/>
+                持续更新中.....
             </div>
-        </div>
-        <div class="aui-center" style="color: firebrick">
-            <br/>
-            持续更新中.....
-        </div>
+        </section>
     </section>
-</section>
-
+</div>
 </body>
 </html>

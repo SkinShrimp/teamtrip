@@ -38,7 +38,6 @@ public class UserController {
             @ApiImplicitParam(value = "邮箱",name = "email",dataType = "String",required = true),
             @ApiImplicitParam(value = "密码",name = "password",dataType = "String",required = true)
     })
-
     public JsonResult register(User user){
         JsonResult json = new JsonResult();
         try {
