@@ -56,7 +56,7 @@
 
   <!--初始化朋友圈的评论信息-->
   <select id="selectForInitNormalComment" resultType="map">
-    SELECT user.id userId, user.nickName userName, acceptUser.nickName acceptUserName, nc.comment comment FROM normalcomment nc
+    SELECT user.id userId, user.nickName userName, acceptUser.nickName acceptUserName, nc.comment comment,nc.createTime FROM normalcomment nc
     LEFT JOIN user user ON  user.id = nc.user_id
     LEFT JOIN user acceptUser ON acceptUser.id = nc.acceptuser_id
     WHERE nc.type = #{type} AND nc.parentId = #{typeId}

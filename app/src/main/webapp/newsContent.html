@@ -15,16 +15,24 @@
     <link rel="stylesheet" href="/js/plugins/dialog2/dialog.css"/>
     <script src="/js/plugins/dialog2/dialog.min.js"></script>
     <script src="/js/common.js"></script>
+    <script src="/js/plugins/inputbox/dist/mDialogMin.js"></script>
+    <link rel="stylesheet" href="/js/plugins/inputbox/dist/dialog.css">
 
     <script>
         $(function () {
+            //获取到文章的id
             var params = getParams();
-
+            //获取到当前用户的id
+            var user = JSON.parse(sessionStorage.getItem("user"));
             if (params.id) {
 
                 $.get("/dailies/" + params.id, function (data) {
-                    $('.newsDetail').renderValues(data);
+                    console.log(data);
+                    $('.newsDetail').renderValues(data)
+
+
                 })
+
             }
         })
     </script>
@@ -33,7 +41,7 @@
 
 <body>
 <div class="newsDetail">
-    <div>
+    <div >
         <a href="javascript:history.go(-1);" style="position: absolute;top: 10px;left: 22px;">
             <span><i class="fa fa-chevron-left fa-2x" style="color: white;"></i></span>
         </a>
@@ -60,11 +68,10 @@
 
                 </div>
             </div>
+
         </div>
     </div>
+
 </div>
-
-
 </body>
-
 </html>

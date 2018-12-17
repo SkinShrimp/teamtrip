@@ -1,7 +1,9 @@
 package cn.wolfcode.trip.base.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 @Getter@Setter
@@ -13,6 +15,8 @@ public class NormalComment extends BaseDomain{
     //内容
     private String comment;
     //评论时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private Date createTime;
     //类型
     private Integer type;
