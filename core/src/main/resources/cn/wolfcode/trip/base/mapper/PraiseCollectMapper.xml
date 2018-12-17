@@ -58,10 +58,16 @@
   </select>
 
   <!--根据(typeId用户名 查询点赞)-->
-  <select id="selectPraiseByTypeId">
+  <select id="selectPraiseByTypeId" resultType="praiseCollect">
     SELECT id, praise, collect, typeflag, type_id, parentId
     FROM praisecollect
     WHERE type_id = #{typeId}
+  </select>
+  <!--查询日报点赞收藏-->
+  <select id="selectPraiseByParentId" resultType="praiseCollect">
+    SELECT id, praise, collect, typeflag, type_id, parentId
+    FROM praisecollect
+    WHERE parentId = #{parentId}
   </select>
 
   <!--查询所有点赞用户名-->

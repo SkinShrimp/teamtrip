@@ -31,4 +31,12 @@ public class PraiseCollectController {
     public List<String> getPraiseNames(@PathVariable Long parenId) {
         return praiseCollectService.selectPraiseNameByParentId(parenId);
     }
+    @GetMapping("/parent")
+    public List<PraiseCollect> getParent(PraiseCollectQueryObject qo) {
+        return praiseCollectService.selectPraiseByParentId(qo);
+    }
+    @PutMapping()
+    public void getParent(PraiseCollect record) {
+         praiseCollectService.update(record);
+    }
 }

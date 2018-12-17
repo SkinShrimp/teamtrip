@@ -17,7 +17,7 @@ public interface IPraiseCollectService {
 
     public abstract PraiseCollect get(Long id);
 
-    public abstract void update(PraiseCollect entry);
+     void   update(PraiseCollect record );
 
     public abstract List<PraiseCollect> listAll();
 
@@ -28,4 +28,7 @@ public interface IPraiseCollectService {
     List<PraiseCollect> selectPraiseByTypeId(QueryObject qo);
 
     List<String> selectPraiseNameByParentId(Long parenId);
+
+    //日报点赞
+    List<PraiseCollect> selectPraiseByParentId(PraiseCollectQueryObject qo);
 }

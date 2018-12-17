@@ -27,13 +27,70 @@
             if (params.id) {
 
                 $.get("/dailies/" + params.id, function (data) {
-                    console.log(data);
                     $('.newsDetail').renderValues(data)
-
-
                 })
-
             }
+           //初始化点赞、收藏功能
+            $.get("/praiseCollects/parent",{ParentId:params.id},function (data) {
+                console.log(data);
+                if (data[0].praise == 1) {
+                    $("#likeBtn").removeClass().addClass("fa fa-thumbs-up");
+                }
+                if (data[0].collect == 1) {
+                    $("#collectBtn").removeClass().addClass("fa fa-star");
+                }
+            });
+            //点赞、收藏评论
+            $(".d-flex i").click(function () {
+                var data;
+                var collect = 0;
+                var praise = 0;
+                if ($(this).data("id") == 1) {//点赞
+                    var item = sessionStorage.getItem("user");
+                    if (!item) {
+                        window.location.href = "/login.html";
+                        return;
+                    }
+                    if ($("#likeBtn").hasClass("fa-thumbs-o-up")) {
+                        praise = 1;
+                        $("#likeBtn").removeClass().addClass("fa fa-thumbs-up");
+                    } else {
+                        $("#likeBtn").removeClass().addClass("fa fa-thumbs-o-up");
+                        praise = 0;
+                    }
+                    data = {
+                        typeFlag: 2,//标识日报点赞
+                        typeId: user.id,
+                        parentId: params.id,
+                        praise: praise
+                    };
+                    $.post("/praiseCollects/praise",data, function (data) {
+
+                    });
+                }else if ($(this).data("id") == 3){   //收藏
+                    //判断用户是否登陆
+                    var item = sessionStorage.getItem("user");
+                    if (!item) {
+                        window.location.href = "/login.html";
+                        return;
+                    }
+                    if ($("#collectBtn").hasClass("fa fa-star-o")) {
+                        $("#collectBtn").removeClass().addClass("fa fa-star");
+                        collect = 1;
+                    } else {
+                        $("#collectBtn").removeClass().addClass("fa fa-star-o");
+                        collect = 0;
+                    }
+                    data = {
+                        typeId: user.id,
+                        parentId: params.id,
+                        collect: collect
+                    };
+                        $.post("/praiseCollects/praise",data, function (data) {
+
+                        });
+                }
+            });
         })
     </script>
 
@@ -68,7 +125,17 @@
 
                 </div>
             </div>
-
+            <div class="container d-flex">
+                <div class="p-2  flex-fill fa-2x">
+                    <i data-id="1" class="fa fa-thumbs-o-up" id="likeBtn"> </i>
+                </div>
+                <div class="p-2  flex-fill fa-2x">
+                    <i data-id="2" class="fa  fa-commenting-o" id="commentBtn"> </i>
+                </div>
+                <div class="p-2  flex-fill fa-2x">
+                    <i data-id="3" class="fa fa-star-o" id="collectBtn"> </i>
+                </div>
+            </div>
         </div>
     </div>
 

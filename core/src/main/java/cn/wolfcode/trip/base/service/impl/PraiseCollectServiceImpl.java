@@ -82,4 +82,9 @@ public class PraiseCollectServiceImpl implements IPraiseCollectService {
     public List<String> selectPraiseNameByParentId(Long parenId) {
         return praiseCollectMapper.selectPraiseNameByParentId(parenId);
     }
+
+    @Override
+    public List<PraiseCollect> selectPraiseByParentId(PraiseCollectQueryObject qo) {
+        return praiseCollectMapper.selectPraiseByParentId(qo);
+    }
 }

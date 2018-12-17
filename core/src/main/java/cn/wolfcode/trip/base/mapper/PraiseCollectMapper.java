@@ -1,6 +1,7 @@
 package cn.wolfcode.trip.base.mapper;
 
 import cn.wolfcode.trip.base.domain.PraiseCollect;
+import cn.wolfcode.trip.base.query.PraiseCollectQueryObject;
 import cn.wolfcode.trip.base.query.QueryObject;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Param;
@@ -16,7 +17,7 @@ public interface PraiseCollectMapper {
 
     List<PraiseCollect> selectAll();
 
-    int updateByPrimaryKey(PraiseCollect record);
+    void updateByPrimaryKey(PraiseCollect record);
 
     List<PraiseCollect> selectForList(QueryObject qo);
 
@@ -31,4 +32,6 @@ public interface PraiseCollectMapper {
     List<PraiseCollect> selectPraiseByTypeId(QueryObject qo);
 
     List<String> selectPraiseNameByParentId(@Param("parentId") Long parentId);
+
+    List<PraiseCollect> selectPraiseByParentId(PraiseCollectQueryObject qo);
 }
