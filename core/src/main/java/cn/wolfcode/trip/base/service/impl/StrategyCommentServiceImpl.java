@@ -6,6 +6,7 @@ import cn.wolfcode.trip.base.mapper.StrategyCommentMapper;
 import cn.wolfcode.trip.base.mapper.TagMapper;
 import cn.wolfcode.trip.base.query.QueryObject;
 import cn.wolfcode.trip.base.service.IStrategyCommentService;
+import cn.wolfcode.trip.base.util.FilterUtil;
 import cn.wolfcode.trip.base.util.JsonResult;
 import cn.wolfcode.trip.base.util.UserContext;
 import com.github.pagehelper.PageHelper;
@@ -32,6 +33,8 @@ public class StrategyCommentServiceImpl implements IStrategyCommentService {
     }
 
     public void save(StrategyComment strategyComment,String[] tags) {
+        //过滤敏感词
+        strategyComment.setContent(FilterUtil.pass(strategyComment.getContent()));
         //设置评论者
         strategyComment.setUser(UserContext.getUser());
         //设置创建时间
@@ -49,5 +52,15 @@ public class StrategyCommentServiceImpl implements IStrategyCommentService {
             strategyCommentMapper.insertRelation(strategyComment.getId(), tag.getId());
         }
         }
+    }
+
+    @Override
+    public List<StrategyComment> selectAll() {
+        return strategyCommentMapper.selectAll();
+    }
+
+    @Override
+    public List<StrategyComment> selectStrategyAll(StrategyComment strategyComment) {
+        return strategyCommentMapper.selectStrategyAll(strategyComment);
     }
 }

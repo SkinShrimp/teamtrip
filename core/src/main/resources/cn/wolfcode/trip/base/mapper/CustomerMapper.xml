@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.trip.base.mapper.CustomerMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.Customer">
+    <result column="user_id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="phone" jdbcType="BIGINT" property="phone" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+  </resultMap>
+  <insert id="insert" parameterType="cn.wolfcode.trip.base.domain.Customer">
+    insert into customer (user_id, name, address, 
+      phone, email)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+      #{phone,jdbcType=BIGINT}, #{email,jdbcType=VARCHAR})
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select user_id, name, address, phone, email
+    from customer
+  </select>
+  <select id="selectByUserId" resultMap="BaseResultMap">
+    select user_id, name, address, phone, email
+    from customer WHERE user_id = #{userId}
+  </select>
+</mapper>

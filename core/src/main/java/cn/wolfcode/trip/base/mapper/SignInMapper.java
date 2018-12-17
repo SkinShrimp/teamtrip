@@ -26,4 +26,8 @@ public interface SignInMapper {
     SignIn isContinuous();
 
     void resetContinuous(@Param("userId")Long userId);
+
+    Integer selectIntegral(@Param("userId") Long userId);
+
+    void updateIntegralByUserId(@Param("userId") Long userId, @Param("integral")Integer integral);
 }

@@ -20,4 +20,6 @@ public interface StrategyCommentMapper {
     List selectForList(QueryObject qo);
 
     void insertRelation(@Param("commentId") Long commentId, @Param("tagId") Long tagId);
+
+    List<StrategyComment> selectStrategyAll(StrategyComment strategyComment);
 }

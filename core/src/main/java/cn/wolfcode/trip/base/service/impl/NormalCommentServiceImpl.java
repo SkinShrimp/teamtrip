@@ -18,7 +18,9 @@ public class NormalCommentServiceImpl implements INormalCommentService {
 
     @Override
     public int insert(NormalComment record) {
-        record.setUser(UserContext.getUser());
+        if (record.getUser()==null) {
+            record.setUser(UserContext.getUser());
+        }
         record.setCreateTime(new Date());
         return normalCommentMapper.insert(record);
     }
@@ -38,4 +40,5 @@ public class NormalCommentServiceImpl implements INormalCommentService {
         List<Map<String, String>> list = new ArrayList<>();
         return normalCommentMapper.selectForInitNormalComment(qo);
     }
+
 }

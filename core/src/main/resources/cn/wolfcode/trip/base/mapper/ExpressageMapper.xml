@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.trip.base.mapper.ExpressageMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.Expressage">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="money" jdbcType="INTEGER" property="money" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from expressage
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.wolfcode.trip.base.domain.Expressage" useGeneratedKeys="true">
+    insert into expressage (name, money)
+    values (#{name,jdbcType=VARCHAR}, #{money,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.wolfcode.trip.base.domain.Expressage">
+    update expressage
+    set name = #{name,jdbcType=VARCHAR},
+      money = #{money,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, name, money
+    from expressage
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, name, money
+    from expressage
+  </select>
+</mapper>

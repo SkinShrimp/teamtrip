@@ -273,6 +273,16 @@
                 });
 
             });
+
+
+            //发送请求获取首页攻略点评信息
+            $.get("/strategyComments",function (data) {
+                json={
+                    list:data
+                }
+                console.log(data);
+                $(".dynamic").renderValues(json)
+            })
         })
     </script>
 
@@ -282,7 +292,7 @@
 <body>
 
 <!--缓存-->
-<div class="page" id="app">
+<!--<div class="page" id="app">
     <div id="loader-wrapper">
         <figure>
             <div class="dot white"></div>
@@ -291,7 +301,7 @@
             <div class="dot"></div>
             <div class="dot"></div>
         </figure>
-    </div>
+    </div>-->
 
 
     <div class="body">
@@ -443,33 +453,29 @@
             </div>
 
 
-            <div class="row dynamic " id="comments">
+
+            <div class="row dynamic" >
                 <div class="col-1" style="padding: 0px;">
                     <img class="rounded" src="/img/topComment.png" style="width: 50px;">
                 </div>
                 <div class="col">
-                    <div class="Marquee">
-                        <div class="d-flex">
-                            <a href="userProfiles.html">
-                                <img class="rounded-circle dynamic-head"
-                                     src="/upload/6610317b-2077-4bd3-98c7-7d31b6613469.jpg">
-                            </a>
-                            <a href="strategyComment.html" class="dynamic-detail" data-id="1">
-                                <span>叩丁狼</span> 点评了攻略<p>广州攻略</p>
-                            </a>
-                        </div>
-                        <div class="d-flex">
-                            <a href="userProfiles.html">
-                                <img class="rounded-circle dynamic-head"
-                                     src="/upload/23a45130-e59c-4844-bc52-67aed3d57fc1.jpeg">
-                            </a>
-                            <a href="strategyComment.html" class="dynamic-detail">
-                                <span>喵喵</span> 点评了攻略<p>广州攻略</p>
-                            </a>
-                        </div>
+
+                    <div class="Marquee" render-loop="list">
+                            <div class="d-flex" >
+                                <a href="userProfiles.html">
+                                    <img class="rounded-circle dynamic-head"
+                                         render-src="list.user.headImgUrl">
+                                </a>
+                                <a href="strategyComment.html" class="dynamic-detail" data-id="list.user.id">
+                                    <span render-html="list.user.nickName">叩丁狼</span> 点评了攻略<p render-html="list.strategy.title">广州攻略</p>
+                                </a>
+                            </div>
                     </div>
                 </div>
-            </div>
+        </div>
+
+
+
         </div>
 
         <hr>
@@ -625,7 +631,7 @@
         });
     </script>
 
-</div>
+<!--</div>-->
 </body>
 
 </html>

@@ -4,6 +4,7 @@ import cn.wolfcode.trip.base.domain.SignIn;
 import cn.wolfcode.trip.base.mapper.SignInMapper;
 import cn.wolfcode.trip.base.service.ISignInTimeService;
 import cn.wolfcode.trip.base.service.ISignService;
+import cn.wolfcode.trip.base.util.JsonResult;
 import cn.wolfcode.trip.base.util.UserContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,5 +62,14 @@ public class SignServiceImpl implements ISignService {
         Long UserId = UserContext.getUser().getId();
         Date date =new Date();
         return  signInMapper.SelectByUserId(UserId, date);
+    }
+
+    public Integer getIntegral(Long userId) {
+        return signInMapper.selectIntegral(userId);
+    }
+
+    @Override
+    public void updateIntegral(Long userId, Integer integral) {
+        signInMapper.updateIntegralByUserId(userId,integral);
     }
 }
