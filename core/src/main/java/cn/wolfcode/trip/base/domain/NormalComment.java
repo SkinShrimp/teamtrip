@@ -26,5 +26,4 @@ public class NormalComment extends BaseDomain{
     private Long parentId;
     //标识
     private Long flagId;
-
 }

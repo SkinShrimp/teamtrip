@@ -67,14 +67,6 @@
                 })
             })
 
-            //加载此页面会将浏览量加一
-            if (value){
-                $.ajax({
-                    type: "put",
-                    url: "/questions",
-                    data: {pageView: data.pageView, id: data.id}
-                });
-            }
 
             //当前登录用户
             var currentUserId=user.id
@@ -89,13 +81,6 @@
                 }
 
             })
-            //向后台发送请求判断当前被查看用户的关注数
-            $.get("/users/"+checkUserId+"/focuses",function (data) {
-                if(data){
-                    $(".followNum").html(data);
-                }
-            })
-
             //关注/取消关注改变样式
             function changeFocusState(flag){
                 if(flag){
@@ -346,8 +331,6 @@
 
             });
         }
-
-
     })
 </script>
 <body>
