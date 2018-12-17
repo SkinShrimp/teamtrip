@@ -4,6 +4,7 @@ import cn.wolfcode.trip.base.domain.NormalComment;
 import cn.wolfcode.trip.base.mapper.NormalCommentMapper;
 import cn.wolfcode.trip.base.query.CircleForFriendsCommentQueryObject;
 import cn.wolfcode.trip.base.service.INormalCommentService;
+import cn.wolfcode.trip.base.util.FilterUtil;
 import cn.wolfcode.trip.base.util.UserContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,9 @@ public class NormalCommentServiceImpl implements INormalCommentService {
             record.setUser(UserContext.getUser());
         }
         record.setCreateTime(new Date());
+
+        //敏感词过滤
+        record.setComment(FilterUtil.pass(record.getComment()));
         return normalCommentMapper.insert(record);
     }
 

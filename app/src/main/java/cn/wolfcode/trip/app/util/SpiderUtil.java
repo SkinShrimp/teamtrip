@@ -17,8 +17,8 @@ public class SpiderUtil {
         try {
             url = new URL(address);
             conn = (HttpURLConnection) url.openConnection();
-            conn.setConnectTimeout(5000);
-            conn.setReadTimeout(5000);
+            conn.setConnectTimeout(50000);
+            conn.setReadTimeout(50000);
             conn.setDoInput(true);
             conn.connect();
             in = conn.getInputStream();
