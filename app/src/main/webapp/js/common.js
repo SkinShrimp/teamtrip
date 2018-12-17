@@ -114,3 +114,14 @@ function CurentTimeWithSeconds(date) {
     clock += ss;
     return clock;
 }
+/*
+<ul class="clearfix" id="j-nav-li">
+    <li><a href="/mdd/" class="i1"><i></i><br>找攻略</a></li>
+<li><a href="/note/" class="i5"><i></i><br>看游记</a></li>
+<li><a href="/wenda/" class="i7"><i></i><br>问达人</a></li>
+<li><a href="/together/" class="i6"><i></i><br>结伴</a></li>
+<li><a href="/hotel/" class="i2"><i></i><br>酒店</a></li>
+<li><a href="/sales/" class="i3"><i></i><br>旅行商城</a></li>
+<li><a href="/flight/" class="i4"><i></i><br>机票</a></li>
+<li><a href="/localdeals/" class="i8"><i></i><br>当地玩乐</a></li>
+</ul>*/
