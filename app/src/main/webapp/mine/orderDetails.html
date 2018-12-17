@@ -38,7 +38,7 @@
                     peopleNum: "required",
                     tel:{
                         required:true,
-                        rangelength:[11,11]
+                        rangelength:[13,13]
                     }
 
                 },
@@ -102,6 +102,8 @@
                     var totalMoney = NumDate*roomNum*roomPrice;
                     console.log(totalMoney);
                     $(".roomPrice").html(totalMoney)
+                    //将总价格保存到sessionStorage中,支付界面要用到
+                    sessionStorage.setItem("price",JSON.stringify(totalMoney))
                 }
 
             })
@@ -121,8 +123,12 @@
                 var totalMoney = NumDate*roomNum*roomPrice;
                 console.log(totalMoney);
                 $(".roomPrice").html(totalMoney)
+                //将总价格保存到sessionStorage中,支付界面要用到
+                sessionStorage.setItem("price",JSON.stringify(totalMoney))
 
             });
+
+
 
             //把表单变成异步请求表单
             $("#detailForm").ajaxForm({
@@ -133,20 +139,21 @@
                      arr.push({name: "startTime", value: startDate});
                      arr.push({name: "endTime", value: endDate});
                      arr.push({name: "price", value: $(".roomPrice").html()});
+                    //将总价格保存到sessionStorage中,支付界面要用到
+                    sessionStorage.setItem("price",JSON.stringify($(".roomPrice").html()))
                 },
                 success:function (data) {//表单提交成功后执行的函数
                     if(data.success){
-                        alert("订单成功")
+                        window.location.href="/mine/payOrder.html"
                     }
                 }
             })
             //保存
             $(".book").click(function () {
-                alert(111)
-               /* state = 1;*/
                 //提交表单
                 $("#detailForm").submit();
             })
+
 
 
 

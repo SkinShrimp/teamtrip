@@ -10,6 +10,19 @@
     <result column="startTime" property="startTime" />
     <result column="endTime" property="endTime" />
     <result column="state" property="state" />
+    <association property="user" javaType="User" columnPrefix="u_">
+      <id column="id" property="id" />
+      <result column="nickName" property="nickName" />
+    </association>
+    <association property="hotelroomdetail" javaType="HotelRoomDetail" columnPrefix="hrd_">
+      <id column="id" property="id" />
+      <result column="roomName" property="roomName" />
+      <result column="roomPic" property="roomPic" />
+      <association property="hotel" javaType="Hotel" columnPrefix="h_">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+      </association>
+    </association>
   </resultMap>
   <delete id="deleteByPrimaryKey">
     delete from hotelorder
@@ -44,5 +57,24 @@
     select id, user_id, hotelroomdetail_id, roomNum, peopleNum, tel, price, startTime, 
     endTime, state
     from hotelorder
+  </select>
+  <select id="selectForList" resultMap="BaseResultMap">
+    select ho.id, ho.user_id, ho.hotelroomdetail_id, ho.roomNum, ho.peopleNum, ho.tel, ho.price, ho.startTime,
+    ho.endTime, ho.state,
+    u.id u_id,u.nickName u_nickName,
+    hrd.id hrd_id,hrd.roomName hrd_roomName,hrd.roomPic hrd_roomPic,
+    h.id hrd_h_id,h.name hrd_h_name
+    from hotelorder ho
+    join user u on ho.user_id = u.id
+    join hotelroomdetail hrd on ho.hotelroomdetail_id = hrd.id
+    join hotel h on h.id = hrd.hotel_id
+    <where>
+      <if test="state!=null">
+        and ho.state = #{state}
+      </if>
+      <if test="userId!=null and userId!=''">
+        and ho.user_id = #{userId}
+      </if>
+    </where>
   </select>
 </mapper>

@@ -7,29 +7,110 @@
         <meta content="yes" name="apple-mobile-web-app-capable"/>
         <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
         <meta content="telephone=no" name="format-detection"/>
-        <link href="css/style.css" rel="stylesheet" type="text/css"/>
-        <script type="text/javascript" src="js/jquery.min.js"></script>
-        <script type="text/javascript" src="js/tab.js"></script>
-        <script type="text/javascript" src="js/popUP.js"></script>
+        <link href="../css/style.css" rel="stylesheet" type="text/css"/>
+        <script type="text/javascript" src="../js/jquery.min.js"></script>
+        <script type="text/javascript" src="../js/tab.js"></script>
+        <script type="text/javascript" src="../js/popUP.js"></script>
+        <script src="/js/plugins/jrender/jrender.min.js"></script>
+        <link rel="stylesheet" href="/js/plugins/dialog2/dialog.css">
+        <script src="/js/plugins/dialog2/dialog.min.js"></script>
+        <style>
+            .icon-return{
+                color: black;
+            }
+            img{
+                width: 85px;
+                height: 85px;
+            }
+        </style>
+        <script>
+            $(function () {
+                var user = JSON.parse(sessionStorage.getItem("user"));
+
+                //获取全部订单(分页)
+                //当前页
+                var currentPage = 1;
+                //总页数
+                var pages;
+                //存储订单的数组
+                var travelArr = [];
+
+                function query() {
+                    $.get("/hotelOrders/"+user.id, {currentPage: currentPage,state:1}, function (data) {
+
+                        $.merge(travelArr, data.list);
+                        var json = {
+                            list: travelArr
+                        }
+                        $(".tab-panel").renderValues(json, {
+                            getHref: function (item, value) {
+                                $(item).attr("href", "/hotelDetails.html?id=" + value);
+                            }
+                        });
+                        pages = data.pages;
+                    })
+                    currentPage = currentPage + 1;
+                }
+
+                query();
+
+
+                //获取全部积分商品订单(分页)
+                //当前页
+                var integralCurrentPage = 1;
+                //总页数
+                var integralPages;
+                //存储积分商品的数组
+                var integralArr = [];
+
+                function integralQuery() {
+                    $.get("/orders/"+user.id, {currentPage: integralCurrentPage}, function (data) {
+
+                        $.merge(integralArr, data.list);
+                        var json = {
+                            list: integralArr
+                        }
+                        console.log(json);
+                        $(".new").renderValues(json, {
+                            getHref: function (item, value) {
+                                $(item).attr("href", "/hotelDetails.html?id=" + value);
+                            }
+                        });
+                        integralPages = data.pages;
+                    })
+                    integralCurrentPage = integralCurrentPage + 1;
+                }
+
+                integralQuery();
+
+
+
+                //给window绑定滚动事件
+                $(".aui-scrollView").scroll(function () {
+                    if (($(".aui-scrollView").height() + $(document).scrollTop() + 70) >= $(document).height()) {
+                        //如果是大于总页数就不发送请求了
+                        if (currentPage <= pages) {
+                            query();
+                        } else {
+                           /* $(document).dialog({
+                                type: 'notice',
+                                content: '<span class="info-text">亲,已经到底了!</span>',
+                                autoClose: 2500
+                            });*/
+                        }
+                    }
+                });
+
+
+            })
+        </script>
     </head>
     <body>
 
-        <!--
-
-         * 17素材vip建站专区模块代码
-         * 详尽信息请看官网：http://www.17sucai.com/pins/vip
-         *
-         * Copyright , 温州易站网络科技有限公司版权所有
-         *
-         * 请尊重原创，未经允许请勿转载。
-         * 在保留版权的前提下可应用于个人或商业用途
-
-        -->
-
         <section class="aui-flexView">
             <header class="aui-navBar aui-navBar-fixed b-line">
-                <a href="javascript:;" class="aui-navBar-item">
-                    <i class="icon icon-return"></i>
+                <a href="javascript:window.history.go(-1)" class="aui-navBar-item" style="color: black">
+                    <i class="aui-icon icon-return"></i>
                 </a>
                 <div class="aui-center">
                     <span class="aui-center-title">我的订单</span>
@@ -43,236 +124,106 @@
                 <div class="aui-tab" data-ydui-tab>
                     <ul class="tab-nav">
                         <li class="tab-nav-item tab-active">
-                            <a href="javascript:;">全部</a>
+                            <a href="javascript:;">酒店订单</a>
                         </li>
                         <li class="tab-nav-item">
-                            <a href="javascript:;">待付款</a>
+                            <a href="javascript:;">积分商品订单</a>
                             <span class="badge badge-hollow">5</span>
                         </li>
                         <li class="tab-nav-item">
-                            <a href="javascript:;">待发货</a>
-                            <span class="badge badge-hollow">15</span>
-                        </li>
-                        <li class="tab-nav-item">
-                            <a href="javascript:;">待收货</a>
-                            <span class="badge badge-hollow">9</span>
-                        </li>
-                        <li class="tab-nav-item">
-                            <a href="javascript:;">评价</a>
+                            <a href="javascript:;">售后</a>
                             <span class="badge badge-hollow">25</span>
                         </li>
                     </ul>
                     <div class="divHeight"></div>
                     <div class="tab-panel">
-                        <div class="tab-panel-item tab-active">
+                        <div class="tab-panel-item tab-active" render-loop="list">
                             <div class="tab-item">
                                 <a href="javascript:void(0);" class="aui-well-item aui-well-item-clear b-line">
                                     <div class="aui-well-item-bd">
-                                        <h3>2018-10-11</h3>
+                                        <h3 render-html="list.startTime"></h3><!--2018-10-11-->
                                     </div>
-                                    <span class="aui-well-item-fr">订单关闭</span>
+                                    <span class="aui-well-item-fr">删除该订单</span>
                                 </a>
                                 <div class="aui-mail-product b-line">
                                     <a href="javascript:;" class="aui-mail-product-item">
                                         <div class="aui-mail-product-item-hd">
-                                            <img src="images/pd-001.png" alt="">
+                                            <img render-src="list.hotelroomdetail.roomPic" alt="">
                                         </div>
                                         <div class="aui-mail-product-item-bd">
-                                            <p>Apple 苹果 iPhone8 Plus 4G手机 深空灰 移动联通版64G裸机Apple 苹果 iPhone8 Plus 4G手机 深空灰 移动联通版64G裸机</p>
+                                            <p render-html="list.hotelroomdetail.hotel.name"></p>
+                                            <div class="aui-mail-product-item-bd">
+                                                <span render-html="list.roomNum"></span><span>间,  </span><span render-html="list.hotelroomdetail.roomName"></span>
+                                            </div>
                                         </div>
+
                                         <div class="aui-mail-product-right">
-                                            <h4>￥4999.00</h4>
-                                            <span>x1</span>
+                                            <h4 render-html="list.price"></h4><!--￥4999.00-->
+                                           <!-- <span>x1</span>-->
                                         </div>
                                     </a>
                                 </div>
                                 <a href="javascript:;" class="aui-mail-payment">
                                     <p>
-                                        共<em>1</em>
-                                        件商品 实付款: <i>￥6899.00</i>
+                                       <!-- 共<em>1</em>
+                                        件商品--> 实付款: <i render-html="list.price"></i><!--￥6899.00-->
                                     </p>
                                 </a>
                                 <div class="aui-mail-button">
-                                    <a href="javascript:;" class="aui-df-color">再次购买</a>
+                                    <a class="aui-df-color" render-key="list.hotelroomdetail.hotel.id" render-fun="getHref">再次预定</a>
                                 </div>
                             </div>
                             <div class="divHeight"></div>
-                            <div class="tab-item">
-                                <a href="javascript:void(0);" class="aui-well-item aui-well-item-clear b-line">
-                                    <div class="aui-well-item-bd">
-                                        <h3>2018-10-11</h3>
-                                    </div>
-
-                                    <span class="aui-well-item-fr aui-well-item-fr-clear">待付款</span>
-                                </a>
-                                <div class="aui-mail-product b-line">
-                                    <a href="javascript:;" class="aui-mail-product-item">
-                                        <div class="aui-mail-product-item-hd">
-                                            <img src="images/pd-002.png" alt="">
-                                        </div>
-                                        <div class="aui-mail-product-item-bd">
-                                            <p>Apple 苹果 iPhone8 Plus 4G手机 深空灰 移动联通版64G裸机Apple 苹果 iPhone8 Plus 4G手机 深空灰 移动联通版64G裸机</p>
-                                        </div>
-                                        <div class="aui-mail-product-right">
-                                            <h4>￥4999.00</h4>
-                                            <span>x1</span>
-                                        </div>
-                                    </a>
-                                </div>
-                                <a href="javascript:;" class="aui-mail-payment">
-                                    <p>
-                                        共<em>1</em>
-                                        件商品 实付款: <i>￥6899.00</i>
-                                    </p>
-                                </a>
-                                <div class="aui-mail-button">
-                                    <a href="javascript:;">立即付款</a>
-                                    <a href="javascript:;" class="aui-df-color ClickMe">取消订单</a>
-                                </div>
-                            </div>
-
                         </div>
-                        <div class="tab-panel-item">
-                            <div class="tab-item">
-                                <a href="javascript:void(0);" class="aui-well-item aui-well-item-clear b-line">
-                                    <div class="aui-well-item-bd">
-                                        <h3>2018-10-11</h3>
-                                    </div>
 
-                                    <span class="aui-well-item-fr aui-well-item-fr-clear">待付款</span>
-                                </a>
-                                <div class="aui-mail-product b-line">
-                                    <a href="javascript:;" class="aui-mail-product-item">
-                                        <div class="aui-mail-product-item-hd">
-                                            <img src="images/pd-002.png" alt="">
+
+
+
+                        <div class="new">
+                            <div class="tab-panel-item-new" render-loop="list">
+                                <div class="tab-item-new">
+                                    <a href="javascript:void(0);" class="aui-well-item aui-well-item-clear b-line">
+                                        <div class="aui-well-item-bd">
+                                            <h3 render-html="list.date"></h3><!--2018-10-11-->
                                         </div>
-                                        <div class="aui-mail-product-item-bd">
-                                            <p>Apple 苹果 iPhone8 Plus 4G手机 深空灰 移动联通版64G裸机Apple 苹果 iPhone8 Plus 4G手机 深空灰 移动联通版64G裸机</p>
-                                        </div>
-                                        <div class="aui-mail-product-right">
-                                            <h4>￥4999.00</h4>
-                                            <span>x1</span>
-                                        </div>
+                                        <span class="aui-well-item-fr">删除该订单</span>
                                     </a>
-                                </div>
-                                <a href="javascript:;" class="aui-mail-payment">
-                                    <p>
-                                        共<em>1</em>
-                                        件商品 实付款: <i>￥6899.00</i>
-                                    </p>
-                                </a>
-                                <div class="aui-mail-button">
-                                    <a href="javascript:;">立即付款</a>
-                                    <a href="javascript:;" class="aui-df-color ClickMe">取消订单</a>
+                                    <div class="aui-mail-product b-line">
+                                        <a href="javascript:;" class="aui-mail-product-item">
+                                            <div class="aui-mail-product-item-hd">
+                                                <img render-src="list.goods.picture" alt="">
+                                            </div>
+                                            <div class="aui-mail-product-item-bd">
+                                                <p render-html="list.goods.name"></p>
+                                                <div class="aui-mail-product-item-bd">
+                                                    <span render-html="list.count"></span><span>件,  </span><span render-html="list.goods.name"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="aui-mail-product-right">
+                                                <h4 render-html="list.totalMoney"></h4><!--￥4999.00-->
+                                                <!-- <span>x1</span>-->
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <a href="javascript:;" class="aui-mail-payment">
+                                        <p>
+                                            <!-- 共<em>1</em>
+                                             件商品--> 实付款: <i render-html="list.totalMoney"></i><!--￥6899.00-->
+                                        </p>
+                                    </a>
+                                    <div class="aui-mail-button">
+                                        <a href="javascript:;">立即付款</a>
+                                        <a href="javascript:;" class="aui-df-color ClickMe">取消订单</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-panel-item">
-                            <div class="tab-item">
-                                <a href="javascript:void(0);" class="aui-well-item aui-well-item-clear b-line">
-                                    <div class="aui-well-item-bd">
-                                        <h3>2018-10-11</h3>
-                                    </div>
 
-                                    <span class="aui-well-item-fr aui-well-item-fr-clear">待付款</span>
-                                </a>
-                                <div class="aui-mail-product b-line">
-                                    <a href="javascript:;" class="aui-mail-product-item">
-                                        <div class="aui-mail-product-item-hd">
-                                            <img src="images/pd-002.png" alt="">
-                                        </div>
-                                        <div class="aui-mail-product-item-bd">
-                                            <p>Apple 苹果 iPhone8 Plus 4G手机 深空灰 移动联通版64G裸机Apple 苹果 iPhone8 Plus 4G手机 深空灰 移动联通版64G裸机</p>
-                                        </div>
-                                        <div class="aui-mail-product-right">
-                                            <h4>￥4999.00</h4>
-                                            <span>x1</span>
-                                        </div>
-                                    </a>
-                                </div>
-                                <a href="javascript:;" class="aui-mail-payment">
-                                    <p>
-                                        共<em>1</em>
-                                        件商品 实付款: <i>￥6899.00</i>
-                                    </p>
-                                </a>
-                                <div class="aui-mail-button">
-                                    <a href="javascript:;">立即付款</a>
-                                    <a href="javascript:;" class="aui-df-color ClickMe">取消订单</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-panel-item">
-                            <div class="tab-item">
-                                <a href="javascript:void(0);" class="aui-well-item aui-well-item-clear b-line">
-                                    <div class="aui-well-item-bd">
-                                        <h3>2018-10-11</h3>
-                                    </div>
 
-                                    <span class="aui-well-item-fr aui-well-item-fr-clear">待付款</span>
-                                </a>
-                                <div class="aui-mail-product b-line">
-                                    <a href="javascript:;" class="aui-mail-product-item">
-                                        <div class="aui-mail-product-item-hd">
-                                            <img src="images/pd-002.png" alt="">
-                                        </div>
-                                        <div class="aui-mail-product-item-bd">
-                                            <p>Apple 苹果 iPhone8 Plus 4G手机 深空灰 移动联通版64G裸机Apple 苹果 iPhone8 Plus 4G手机 深空灰 移动联通版64G裸机</p>
-                                        </div>
-                                        <div class="aui-mail-product-right">
-                                            <h4>￥4999.00</h4>
-                                            <span>x1</span>
-                                        </div>
-                                    </a>
-                                </div>
-                                <a href="javascript:;" class="aui-mail-payment">
-                                    <p>
-                                        共<em>1</em>
-                                        件商品 实付款: <i>￥6899.00</i>
-                                    </p>
-                                </a>
-                                <div class="aui-mail-button">
-                                    <a href="javascript:;">确认收货</a>
-                                    <a href="javascript:;" class="aui-df-color ClickMe">查看物流</a>
-                                    <a href="javascript:;" class="aui-df-color ClickMe">再次购买</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-panel-item">
-                            <div class="tab-item">
-                                <a href="javascript:void(0);" class="aui-well-item aui-well-item-clear b-line">
-                                    <div class="aui-well-item-bd">
-                                        <h3>2018-10-11</h3>
-                                    </div>
 
-                                    <span class="aui-well-item-fr aui-well-item-fr-clear">待付款</span>
-                                </a>
-                                <div class="aui-mail-product b-line">
-                                    <a href="javascript:;" class="aui-mail-product-item">
-                                        <div class="aui-mail-product-item-hd">
-                                            <img src="images/pd-002.png" alt="">
-                                        </div>
-                                        <div class="aui-mail-product-item-bd">
-                                            <p>Apple 苹果 iPhone8 Plus 4G手机 深空灰 移动联通版64G裸机Apple 苹果 iPhone8 Plus 4G手机 深空灰 移动联通版64G裸机</p>
-                                        </div>
-                                        <div class="aui-mail-product-right">
-                                            <h4>￥4999.00</h4>
-                                            <span>x1</span>
-                                        </div>
-                                    </a>
-                                </div>
-                                <a href="javascript:;" class="aui-mail-payment">
-                                    <p>
-                                        共<em>1</em>
-                                        件商品 实付款: <i>￥6899.00</i>
-                                    </p>
-                                </a>
-                                <div class="aui-mail-button">
-                                    <a href="javascript:;">评价有礼</a>
-                                    <a href="javascript:;" class="aui-df-color ClickMe">查看订单</a>
-                                </div>
-                            </div>
-                        </div>
+
+                        
                     </div>
                 </div>
             </section>

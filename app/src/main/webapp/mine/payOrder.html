@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<title>支付订单</title>
+	
+	<link rel="stylesheet" href="../css/payOrder.css" type="text/css"/>
+	<script src="/js/jquery.min.js"></script>
+	<style>
+
+
+
+	</style>
+	<script>
+        var maxtime = 10 * 60; //倒计时10分钟
+        function CountDown() {
+            if (maxtime >= 0) {
+                minutes = Math.floor(maxtime / 60);
+                seconds = Math.floor(maxtime % 60);
+                msg = "剩余时间" + minutes + "分" + seconds + "秒";
+                document.all["timer"].innerHTML = msg;
+                --maxtime;
+            } else {
+                clearInterval(timer);
+                alert("时间到，结束!");
+            }
+        }
+
+        timer = setInterval("CountDown()", 1000);
+
+
+		$(function () {
+		    //订单号
+			var date = new Date().getTime();
+			$(".order").html(date);
+
+			//取出总价格
+            var price = JSON.parse(sessionStorage.getItem("price"))
+			$(".price").html(price)
+
+			//跳转到密码支付界面
+			$(".confirm").click(function () {
+				window.location.href='/mine/passwordPay.html'
+            })
+        })
+	</script>
+</head>
+	
+<body>
+<!--头部  star-->
+<header style="color:#fff">
+	<a href="javascript:history.go(-1);">
+		<div class="_left"><img src="/img/images-payOrder/left.png"></div><span>支付订单</span></a>
+</header>
+<!--头部 end-->
+<!--内容 star-->
+<div class="contaniner fixed-cont">
+	<div class="pay_img"><img src="/img/images-payOrder/pay.jpg"></div>
+
+
+    <div class="payTime">
+    	<li><span id="timer"></span></li>
+		<li><strong>¥<span class="price a" style="font-size: 24px;"></span></strong></li>
+		<li>订单号:<span class="order"></span></li>
+    </div>
+    
+    <!--支付 star-->
+	<div class="pay">
+		<div class="show">
+			<li><label><img src="/img/images-payOrder/weixin.png" >微信支付<input name="Fruit" type="radio" value="" checked/><span></span></label> </li>
+    		<li><label><img src="/img/images-payOrder/zhifubao.png" >支付宝支付<input name="Fruit" type="radio" value="" /><span></span></label> </li>
+    		<li><label><img src="/img/images-payOrder/yue.png" >余额支付<input name="Fruit" type="radio" value="" /><span></span></label> </li>
+    		<li class="center"><a href="#" onClick="showHideCode()">查看更多支付方式↓</a></li>
+		</div>
+		<div class="showList" id = "showdiv" style="display:none;">
+			<li><label><img src="/img/images-payOrder/yinhang.png" >银行卡<input name="Fruit" type="radio" value="" /><span></span></label> </li>
+            <li><label><img src="/img/images-payOrder/weixin.png" >添加更多<input name="Fruit" type="radio" value=""/><span></span></label> </li>
+            
+            <li style="background:none" ></li>
+		</div>
+	</div> 
+    <!--支付 end--> 
+    
+    
+</div>
+
+    
+<div class="book-recovery-bot2" id="footer">
+	<a href="#">
+		<div class="payBottom confirm">
+			<li class="textfr ">确认支付:</li>
+			<li class="textfl">¥<span class="price "></span></li>
+    	</div>
+	</a>
+</div> 
+<!--内容 end-->
+        
+
+<script type="text/javascript">
+function showHideCode(){
+ 	$("#showdiv").toggle();
+}
+</script>
+
+</body>
+</html>

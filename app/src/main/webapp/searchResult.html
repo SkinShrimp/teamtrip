@@ -56,8 +56,8 @@
             query();
 
             //给window绑定滚动事件
-            $(window).scroll(function () {
-                if ($(window).height() + $(document).scrollTop() + 1 >= $(document).height()) {
+            $(".aui-scrollView").scroll(function () {
+                if ($(".aui-scrollView").height() + $(document).scrollTop() + 100 >= $(document).height()) {
                     //如果是大于总页数就不发送请求了
                     if (currentPage <= pages) {
                         query();
@@ -136,6 +136,11 @@
     <div class="aui-price-cells">
         <h3>价格</h3>
         <div class="aui-touch-slide">
+            <!--11111111111111
+            77777777777777
+            最小价格:<input type="text" name="minPrice" >
+            ~
+            最大价格:<input type="text" name="maxPrice" >-->
             <div class="aui-touch-slide-title">
                 <a href="javascript:;" class="aui-touch-slide-item aui-touch-gray">
                     <span>1</span>

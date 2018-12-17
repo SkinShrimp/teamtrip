@@ -1,6 +1,8 @@
 package cn.wolfcode.trip.base.mapper;
 
 import cn.wolfcode.trip.base.domain.HotelOrder;
+import cn.wolfcode.trip.base.query.HotelOrderQuery;
+
 import java.util.List;
 
 public interface HotelOrderMapper {
@@ -13,4 +15,6 @@ public interface HotelOrderMapper {
     List<HotelOrder> selectAll();
 
     int updateByPrimaryKey(HotelOrder record);
+
+    List selectForList(HotelOrderQuery qo);
 }
