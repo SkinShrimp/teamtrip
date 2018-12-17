@@ -276,9 +276,9 @@
 
 
             //发送请求获取首页攻略点评信息
-            $.get("/strategyComments",function (data) {
-                json={
-                    list:data
+            $.get("/strategyComments", function (data) {
+                json = {
+                    list: data
                 }
                 console.log(data);
                 $(".dynamic").renderValues(json)
@@ -304,332 +304,333 @@
     </div>-->
 
 
-    <div class="body">
-        <input type="checkbox" id="menu">
+<div class="body">
+    <input type="checkbox" id="menu">
 
-        <label for="menu" class="menu">
-            <span><i class="fa fa-user fa-fw fa-2x"></i></span>
-            <span><i class="fa fa-chevron-left fa-fw fa-2x" style="color: #3E3C3B"></i></span>
-        </label>
+    <label for="menu" class="menu">
+        <span><i class="fa fa-user fa-fw fa-2x"></i></span>
+        <span><i class="fa fa-chevron-left fa-fw fa-2x" style="color: #3E3C3B"></i></span>
+    </label>
 
-        <!-- 侧边栏 -->
-        <div class="nav">
-            <iframe id="ipage" frameborder="0" width="90%"></iframe>
-        </div>
+    <!-- 侧边栏 -->
+    <div class="nav">
+        <iframe id="ipage" frameborder="0" width="90%"></iframe>
+    </div>
 
-        <div class="search-head">
-            <div class="row nav-search">
-                <div class="col-1">
-                    <a href="index.html">
-                        <span><i class="fa fa-chevron-left fa-2x"></i></span>
-                    </a>
-                </div>
-                <div class="col-8">
-                    <div class="input-group-sm search">
-                        <input id="search" class="form-control" placeholder="找攻略/游记/用户/日报">
-                    </div>
-                </div>
-                <div class="col-1">
-                    <i class="fa fa-search" id="searchBtn"
-                       style="color:white;font-size:25px;position: absolute;top: 23%;left: 88%">
-                    </i>
-                </div>
-            </div>
-        </div>
-
-        <div class="safe_bg"></div>
-
-
-        <div class="container">
-            <h6 class="module-title">每周推荐</h6>
-            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                <div id="travelsCommends">
-                    <div class="carousel-inner" render-loop="list">
-                        <div class="carousel-item ">
-                            <a render-key="list.t_id" render-fun="getHref" data-href="/travelContent.html?id=">
-                                <img class="d-block w-100" render-src="list.coverUrl" width="100%" height="200px">
-                                <span class="recommend" render-html="list.title"></span></a>
-                            <div class="recommend-author">
-                                <a render-key="list.u_id" render-fun="getHref" data-href="/userProfiles.html?id=">
-                                    <img class="rounded-circle" style="width: 10%;" render-src="list.u_headImgUrl">
-                                    <span render-html="list.u_nickName"></span>
-                                </a>
-                                在&nbsp;
-                                <span render-html="list.r_name">广州</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only"></span>
-                </a>
-                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only"></span>
+    <div class="search-head">
+        <div class="row nav-search">
+            <div class="col-1">
+                <a href="index.html">
+                    <span><i class="fa fa-chevron-left fa-2x"></i></span>
                 </a>
             </div>
-            <hr>
-
-            <div class="weui-grids home_page_grids row nav-box" style="background-color: #f8f9fa">
-                <a href="strategyPage.html" class="weui-grid none_border_right none_border_bottom">
-                    <div class="weui-grid__icon">
-                        <img src="picture/icon_home_01.png" alt="">
-                    </div>
-                    <p class="weui-grid__label">找攻略</p></a>
-                <a href="strategyPage.html" class="weui-grid none_border_right none_border_bottom">
-                    <div class="weui-grid__icon">
-                        <img src="picture/icon_home_02.png" alt="">
-                    </div>
-                    <p class="weui-grid__label">景点门票</p></a>
-                <a href="//m.jinmalvyou.com/plist_2" class="weui-grid none_border_right none_border_bottom">
-                    <div class="weui-grid__icon">
-                        <img src="picture/icon_home_03.png" alt="">
-                    </div>
-                    <p class="weui-grid__label">度假酒店</p></a>
-                <a href="//m.jinmalvyou.com/bus/zgt" class="weui-grid none_border_right none_border_bottom">
-                    <div class="weui-grid__icon">
-                        <img src="picture/icon_home_04.png" alt="">
-                    </div>
-                    <p class="weui-grid__label">港澳车票</p></a>
-                <a href="travelPage.html" class="weui-grid none_border_right none_border_bottom">
-                    <div class="weui-grid__icon">
-                        <img src="picture/icon_home_05.png" alt="">
-                    </div>
-                    <p class="weui-grid__label">看游记</p></a>
-                <a href="travelPage.html" class="weui-grid none_border_right none_border_bottom">
-                    <div class="weui-grid__icon">
-                        <img src="picture/icon_home_06.png" alt="">
-                    </div>
-                    <p class="weui-grid__label">国内旅游</p></a>
-                <a href="//m.jinmalvyou.com/plist_4" class="weui-grid none_border_right none_border_bottom">
-                    <div class="weui-grid__icon">
-                        <img src="picture/icon_home_07.png" alt="">
-                    </div>
-                    <p class="weui-grid__label">出境旅游</p></a>
-                <a href="//m.jinmalvyou.com/plist_7" class="weui-grid none_border_right none_border_bottom">
-                    <div class="weui-grid__icon">
-                        <img src="picture/icon_home_08.png" alt="">
-                    </div>
-                    <p class="weui-grid__label">港澳旅游</p></a>
-                <a href="//m.jinmalvyou.com/m_zt/2018_chujing_m" class="weui-grid none_border_right none_border_bottom">
-                    <div class="weui-grid__icon">
-                        <img src="picture/icon_home_10.png" alt="">
-                    </div>
-                    <p class="weui-grid__label">出境自由行</p></a>
-                <a href="//m.jinmalvyou.com/m_zt/2018gn_travel_m"
-                   class="weui-grid none_border_right none_border_bottom">
-                    <div class="weui-grid__icon">
-                        <img src="picture/icon_home_11.png" alt="">
-                    </div>
-                    <p class="weui-grid__label">国内自由行</p></a>
-                <a href="//m.jinmalvyou.com/train" class="weui-grid none_border_right none_border_bottom">
-                    <div class="weui-grid__icon">
-                        <img src="picture/icon_home_13.png" alt="">
-                    </div>
-                    <p class="weui-grid__label">火车票</p></a>
-                <a href="//m.jinmalvyou.com/flight" class="weui-grid none_border_right none_border_bottom">
-                    <div class="weui-grid__icon">
-                        <img src="picture/icon_home_14.png" alt="">
-                    </div>
-                    <p class="weui-grid__label">机票</p></a>
-            </div>
-
-
-            <!-- 回到顶部，回到首页-->
-            <div class="lvToTop" id="lvToTop">回到顶部<span class="lvToTop_triangle"></span></div>
-            <div class="safe_class">
-                <img src="picture/safe_icon.png" style="width: 100%;">
-            </div>
-            <div class="kf_class" id="kf_btn_div" onclick="jiaxinTogglerDiv()">
-                <img src="picture/onlinekf.png" style="width: 100%;">
-            </div>
-
-            <div class="safe_info">
-                <div class="img_safe">
-                    <img src="" style="width: 88%; margin-left: 6%;" class="safe_info_img">
-                    <img src="picture/safe_close.png" class="close_safe">
+            <div class="col-8">
+                <div class="input-group-sm search">
+                    <input id="search" class="form-control" placeholder="找攻略/游记/用户/日报">
                 </div>
             </div>
-
-
-
-            <div class="row dynamic" >
-                <div class="col-1" style="padding: 0px;">
-                    <img class="rounded" src="/img/topComment.png" style="width: 50px;">
-                </div>
-                <div class="col">
-
-                    <div class="Marquee" render-loop="list">
-                            <div class="d-flex" >
-                                <a href="userProfiles.html">
-                                    <img class="rounded-circle dynamic-head"
-                                         render-src="list.user.headImgUrl">
-                                </a>
-                                <a href="strategyComment.html" class="dynamic-detail" data-id="list.user.id">
-                                    <span render-html="list.user.nickName">叩丁狼</span> 点评了攻略<p render-html="list.strategy.title">广州攻略</p>
-                                </a>
-                            </div>
-                    </div>
-                </div>
-        </div>
-
-
-
-        </div>
-
-        <hr>
-
-        <div class="container">
-            <h6 class="module-title">骡窝日报 <a href="/newsPage.html">更多</a></h6>
-            <div id="dailyCommends1">
-                <div class="news" id="bigger">
-                    <a data-href="newsContent.html?id=" render-key="id" render-fun="getHref">
-                        <img width="100%" render-src="coverUrl">
-                        <div class="caption">
-                            <h5 render-html="title"></h5>
-                            <p render-html="subTitle"></p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <hr>
-            <div id="smaller">
-                <div id="dailyCommends2">
-                    <div style="margin-bottom: 20px">
-                        <a data-href="newsContent.html?id=" render-key="id" render-fun="getHref">
-                            <div class="row news-detail">
-                                <div class="col-5">
-                                    <img render-src="coverUrl">
-                                </div>
-                                <div class="col-7">
-                                    <h4 render-html="title"></h4>
-                                    <p render-html="subTitle"></p>
-                                </div>
-                            </div>
-                        </a>
-                        <hr>
-                    </div>
-                </div>
-                <div id="dailyCommends3">
-                    <div style="margin-bottom: 20px">
-                        <a data-href="newsContent.html?id=" render-key="id" render-fun="getHref">
-                            <div class="row news-detail">
-                                <div class="col-5">
-                                    <img render-src="coverUrl">
-                                </div>
-                                <div class="col-7">
-                                    <h4 render-html="title"></h4>
-                                    <p render-html="subTitle"></p>
-                                </div>
-                            </div>
-                        </a>
-                        <hr>
-                    </div>
-                </div>
+            <div class="col-1">
+                <i class="fa fa-search" id="searchBtn"
+                   style="color:white;font-size:25px;position: absolute;top: 23%;left: 88%">
+                </i>
             </div>
         </div>
     </div>
 
+    <div class="safe_bg"></div>
 
-    <script>
 
-        $(function () {
-            showComments();
-        })
+    <div class="container">
+        <h6 class="module-title">每周推荐</h6>
+        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+            <div id="travelsCommends">
+                <div class="carousel-inner" render-loop="list">
+                    <div class="carousel-item ">
+                        <a render-key="list.t_id" render-fun="getHref" data-href="/travelContent.html?id=">
+                            <img class="d-block w-100" render-src="list.coverUrl" width="100%" height="200px">
+                            <span class="recommend" render-html="list.title"></span></a>
+                        <div class="recommend-author">
+                            <a render-key="list.u_id" render-fun="getHref" data-href="/userProfiles.html?id=">
+                                <img class="rounded-circle" style="width: 10%;" render-src="list.u_headImgUrl">
+                                <span render-html="list.u_nickName"></span>
+                            </a>
+                            在&nbsp;
+                            <span render-html="list.r_name">广州</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only"></span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only"></span>
+            </a>
+        </div>
+        <hr>
 
-        function showComments() {
-            var Mar = document.getElementsByClassName("Marquee")[0];
-            var child_div = Mar.getElementsByTagName("div");
-            var picH = 50;//移动高度
-            var scrollstep = 3;//移动步幅,越大越快
-            var scrolltime = 20;//移动频度(毫秒)越大越慢
-            var stoptime = 3000;//间断时间(毫秒)
-            var tmpH = 0;
-            Mar.innerHTML += Mar.innerHTML;
+        <div class="weui-grids home_page_grids row nav-box" style="background-color: #f8f9fa">
+            <a href="strategyPage.html" class="weui-grid none_border_right none_border_bottom">
+                <div class="weui-grid__icon">
+                    <img src="picture/icon_home_01.png" alt="">
+                </div>
+                <p class="weui-grid__label">找攻略</p></a>
+            <a href="strategyPage.html" class="weui-grid none_border_right none_border_bottom">
+                <div class="weui-grid__icon">
+                    <img src="picture/icon_home_02.png" alt="">
+                </div>
+                <p class="weui-grid__label">景点门票</p></a>
+            <a href="//m.jinmalvyou.com/plist_2" class="weui-grid none_border_right none_border_bottom">
+                <div class="weui-grid__icon">
+                    <img src="picture/icon_home_03.png" alt="">
+                </div>
+                <p class="weui-grid__label">度假酒店</p></a>
+            <a href="//m.jinmalvyou.com/bus/zgt" class="weui-grid none_border_right none_border_bottom">
+                <div class="weui-grid__icon">
+                    <img src="picture/icon_home_04.png" alt="">
+                </div>
+                <p class="weui-grid__label">港澳车票</p></a>
+            <a href="travelPage.html" class="weui-grid none_border_right none_border_bottom">
+                <div class="weui-grid__icon">
+                    <img src="picture/icon_home_05.png" alt="">
+                </div>
+                <p class="weui-grid__label">看游记</p></a>
+            <a href="travelPage.html" class="weui-grid none_border_right none_border_bottom">
+                <div class="weui-grid__icon">
+                    <img src="picture/icon_home_06.png" alt="">
+                </div>
+                <p class="weui-grid__label">国内旅游</p></a>
+            <a href="//m.jinmalvyou.com/plist_4" class="weui-grid none_border_right none_border_bottom">
+                <div class="weui-grid__icon">
+                    <img src="picture/icon_home_07.png" alt="">
+                </div>
+                <p class="weui-grid__label">出境旅游</p></a>
+            <a href="//m.jinmalvyou.com/plist_7" class="weui-grid none_border_right none_border_bottom">
+                <div class="weui-grid__icon">
+                    <img src="picture/icon_home_08.png" alt="">
+                </div>
+                <p class="weui-grid__label">港澳旅游</p></a>
+            <a href="//m.jinmalvyou.com/m_zt/2018_chujing_m" class="weui-grid none_border_right none_border_bottom">
+                <div class="weui-grid__icon">
+                    <img src="picture/icon_home_10.png" alt="">
+                </div>
+                <p class="weui-grid__label">出境自由行</p></a>
+            <a href="//m.jinmalvyou.com/m_zt/2018gn_travel_m"
+               class="weui-grid none_border_right none_border_bottom">
+                <div class="weui-grid__icon">
+                    <img src="picture/icon_home_11.png" alt="">
+                </div>
+                <p class="weui-grid__label">国内自由行</p></a>
+            <a href="//m.jinmalvyou.com/train" class="weui-grid none_border_right none_border_bottom">
+                <div class="weui-grid__icon">
+                    <img src="picture/icon_home_13.png" alt="">
+                </div>
+                <p class="weui-grid__label">火车票</p></a>
+            <a href="//m.jinmalvyou.com/flight" class="weui-grid none_border_right none_border_bottom">
+                <div class="weui-grid__icon">
+                    <img src="picture/icon_home_14.png" alt="">
+                </div>
+                <p class="weui-grid__label">机票</p></a>
+        </div>
 
-            function start() {
-                if (tmpH < picH) {
-                    tmpH += scrollstep;
-                    if (tmpH > picH) tmpH = picH;
-                    Mar.scrollTop = tmpH;
-                    setTimeout(start, scrolltime);
-                } else {
-                    tmpH = 0;
-                    Mar.appendChild(child_div[0]);
-                    Mar.scrollTop = 0;
-                    setTimeout(start, stoptime);
-                }
+
+        <!-- 回到顶部，回到首页-->
+        <div class="lvToTop" id="lvToTop">回到顶部<span class="lvToTop_triangle"></span></div>
+        <div class="safe_class">
+            <img src="picture/safe_icon.png" style="width: 100%;">
+        </div>
+        <a href="">
+            <div class="kf_class" id="kf_btn_div">
+                <img src="picture/onlinekf.png" style="width: 100%;">
+            </div>
+        </a>
+
+        <div class="safe_info">
+            <div class="img_safe">
+                <img src="" style="width: 88%; margin-left: 6%;" class="safe_info_img">
+                <img src="picture/safe_close.png" class="close_safe">
+            </div>
+        </div>
+
+
+        <div class="row dynamic">
+            <div class="col-1" style="padding: 0px;">
+                <img class="rounded" src="/img/topComment.png" style="width: 50px;">
+            </div>
+            <div class="col">
+
+                <div class="Marquee" render-loop="list">
+                    <div class="d-flex">
+                        <a href="userProfiles.html">
+                            <img class="rounded-circle dynamic-head"
+                                 render-src="list.user.headImgUrl">
+                        </a>
+                        <a href="strategyComment.html" class="dynamic-detail" data-id="list.user.id">
+                            <span render-html="list.user.nickName">叩丁狼</span> 点评了攻略<p render-html="list.strategy.title">
+                            广州攻略</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <hr>
+
+    <div class="container">
+        <h6 class="module-title">骡窝日报 <a href="/newsPage.html">更多</a></h6>
+        <div id="dailyCommends1">
+            <div class="news" id="bigger">
+                <a data-href="newsContent.html?id=" render-key="id" render-fun="getHref">
+                    <img width="100%" render-src="coverUrl">
+                    <div class="caption">
+                        <h5 render-html="title"></h5>
+                        <p render-html="subTitle"></p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <hr>
+        <div id="smaller">
+            <div id="dailyCommends2">
+                <div style="margin-bottom: 20px">
+                    <a data-href="newsContent.html?id=" render-key="id" render-fun="getHref">
+                        <div class="row news-detail">
+                            <div class="col-5">
+                                <img render-src="coverUrl">
+                            </div>
+                            <div class="col-7">
+                                <h4 render-html="title"></h4>
+                                <p render-html="subTitle"></p>
+                            </div>
+                        </div>
+                    </a>
+                    <hr>
+                </div>
+            </div>
+            <div id="dailyCommends3">
+                <div style="margin-bottom: 20px">
+                    <a data-href="newsContent.html?id=" render-key="id" render-fun="getHref">
+                        <div class="row news-detail">
+                            <div class="col-5">
+                                <img render-src="coverUrl">
+                            </div>
+                            <div class="col-7">
+                                <h4 render-html="title"></h4>
+                                <p render-html="subTitle"></p>
+                            </div>
+                        </div>
+                    </a>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    $(function () {
+        showComments();
+    })
+
+    function showComments() {
+        var Mar = document.getElementsByClassName("Marquee")[0];
+        var child_div = Mar.getElementsByTagName("div");
+        var picH = 50;//移动高度
+        var scrollstep = 3;//移动步幅,越大越快
+        var scrolltime = 20;//移动频度(毫秒)越大越慢
+        var stoptime = 3000;//间断时间(毫秒)
+        var tmpH = 0;
+        Mar.innerHTML += Mar.innerHTML;
+
+        function start() {
+            if (tmpH < picH) {
+                tmpH += scrollstep;
+                if (tmpH > picH) tmpH = picH;
+                Mar.scrollTop = tmpH;
+                setTimeout(start, scrolltime);
+            } else {
+                tmpH = 0;
+                Mar.appendChild(child_div[0]);
+                Mar.scrollTop = 0;
+                setTimeout(start, stoptime);
             }
-
-            setTimeout(start, stoptime)
         }
-    </script>
+
+        setTimeout(start, stoptime)
+    }
+</script>
 
 
-    <script>
-        var _hmt = _hmt || [];
-        (function () {
-            var hm = document.createElement("script");
-            hm.src = "https://hm.baidu.com/hm.js?b9619e7d34a6b62f603203cc9fbd5347";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
-        })();
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?b9619e7d34a6b62f603203cc9fbd5347";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
 
-    </script>
-    <script>
-        //回到顶部
-        var btn = document.getElementById('lvToTop');
-        var _t = null;
+</script>
+<script>
+    //回到顶部
+    var btn = document.getElementById('lvToTop');
+    var _t = null;
 
-        if (btn) {
-            btn.onclick = function () {
-                scrollTo(0, 0);
-            }
-            window.onscroll = function () {
-                var t = document.documentElement.scrollTop || document.body.scrollTop;
-                var dis = t <= _t ? 'block' : 'none';
-                if (t <= 0) dis = 'none';
-                btn.style.display = dis;
-                setTimeout(function () {
-                    _t = t;
-                }, 0);
-            }
+    if (btn) {
+        btn.onclick = function () {
+            scrollTo(0, 0);
         }
-
-        if ('1') {
-            // var img_url = document.querySelector('#home_site_url').value;
-            // 安全提示
-            document.querySelector('.safe_class').onclick = function () {
-                document.querySelector('.safe_info').style.display = 'block';
-                document.querySelector('.safe_bg').style.display = 'block';
-                document.querySelector('.safe_info_img').src = '/picture/safe_info.jpg';
-            }
-            document.querySelector('.close_safe').onclick = function () {
-                document.querySelector('.safe_info').style.display = 'none';
-                document.querySelector('.safe_bg').style.display = 'none';
-            }
+        window.onscroll = function () {
+            var t = document.documentElement.scrollTop || document.body.scrollTop;
+            var dis = t <= _t ? 'block' : 'none';
+            if (t <= 0) dis = 'none';
+            btn.style.display = dis;
+            setTimeout(function () {
+                _t = t;
+            }, 0);
         }
-    </script>
+    }
 
-    <script>
-        window.onload = function () {
-            document.getElementById("loader-wrapper").style.display = "none";
-        };
+    if ('1') {
+        // var img_url = document.querySelector('#home_site_url').value;
+        // 安全提示
+        document.querySelector('.safe_class').onclick = function () {
+            document.querySelector('.safe_info').style.display = 'block';
+            document.querySelector('.safe_bg').style.display = 'block';
+            document.querySelector('.safe_info_img').src = '/picture/safe_info.jpg';
+        }
+        document.querySelector('.close_safe').onclick = function () {
+            document.querySelector('.safe_info').style.display = 'none';
+            document.querySelector('.safe_bg').style.display = 'none';
+        }
+    }
+</script>
 
-        var swiper = new Swiper('.swiper-container', {
-            pagination: '.swiper-pagination',
-            paginationClickable: true,
-            nextButton: '.swiper-button-next',
-            prevButton: '.swiper-button-prev',
-            //spaceBetween: 30,
-            effect: 'slide',
-            autoplay: 2500,
-            autoplayDisableOnInteraction: false,
-            lazyLoading: true,
-            loop: true
-        });
-    </script>
+<script>
+    window.onload = function () {
+        document.getElementById("loader-wrapper").style.display = "none";
+    };
+
+    var swiper = new Swiper('.swiper-container', {
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        //spaceBetween: 30,
+        effect: 'slide',
+        autoplay: 2500,
+        autoplayDisableOnInteraction: false,
+        lazyLoading: true,
+        loop: true
+    });
+</script>
 
 <!--</div>-->
 </body>
