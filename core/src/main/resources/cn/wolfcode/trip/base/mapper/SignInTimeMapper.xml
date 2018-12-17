@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.trip.base.mapper.SignInTimeMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.trip.base.domain.SignInTime">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="sign_time" jdbcType="DATE" property="signTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sign_in_time
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertByUserName">
+    insert into sign_in_time (user_id,sign_time)
+    values (#{userId},#{date})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.wolfcode.trip.base.domain.SignInTime">
+    update sign_in_time
+    set sign_time = #{signTime,jdbcType=DATE}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, sign_time
+    from sign_in_time
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, sign_time
+    from sign_in_time
+  </select>
+  <select id="selectDaysByUserId" resultType="int">
+    select DAY(sign_time) from sign_in_time where user_id = #{id}
+  </select>
+    <select id="SelectByUserId" resultMap="BaseResultMap">
+      select id,sign_time
+      from sign_in_time
+      WHERE user_id = #{userId} and TO_DAYS(sign_time)= TO_DAYS(#{date})
+    </select>
+</mapper>

@@ -73,8 +73,9 @@
   <select id="selectForList" resultMap="BaseResultMap">
     select t.*,r.id r_id, r.name r_name,u.id u_id,u.nickName u_nickName,u.headImgUrl u_headImgUrl
     from travel t
-    join region r on t.place_id = r.id
-    join user u on t.author_id = u.id
+    left join region r on t.place_id = r.id
+    left join user u on t.author_id = u.id
+    left join travelcommend commend on t.title = commend .title
     <where>
       <if test="authorId!=null">
         and t.author_id = #{authorId}
@@ -88,6 +89,10 @@
       <if test="travelId!=null">
         and t.id = #{travelId}
       </if>
+      <if test="keyword!=null and keyword!=''">
+        and t.title like concat('%',#{keyword},'%')
+      </if>
     </where>
+
   </select>
 </mapper>

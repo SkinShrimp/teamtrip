@@ -6,7 +6,7 @@ import org.springframework.util.StringUtils;
 
 @Getter
 @Setter
-public class   QueryObject {
+public class QueryObject {
     private int currentPage = 1;
     private int pageSize = 3;
     private String orderBy;
@@ -15,6 +15,7 @@ public class   QueryObject {
     public String getOrderBy() {
         return StringUtils.hasLength(orderBy) ? orderBy : null;
     }
+
     public String getKeyword() {
         return StringUtils.hasLength(keyword) ? keyword : null;
     }

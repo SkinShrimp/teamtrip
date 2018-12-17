@@ -8,5 +8,6 @@ import lombok.Setter;
 public class DailyQueryObject extends QueryObject {
 
     private Integer state;//状态
+    private String keyword;//关键字
 
 }

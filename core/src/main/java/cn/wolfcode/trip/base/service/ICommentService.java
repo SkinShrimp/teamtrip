@@ -15,5 +15,12 @@ public interface ICommentService {
 
     public abstract PageInfo<Comment> query(QueryObject qo);
 
-    Comment getCommentByTypeId(Integer typeId);
+    public abstract Comment getCommentByTypeId(Comment entry);
+
+    /**
+     * 评论信息保存或者更新
+     *
+     * @param entry
+     */
+    public abstract void saveComment(Comment entry);
 }

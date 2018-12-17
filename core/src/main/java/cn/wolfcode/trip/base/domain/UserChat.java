@@ -11,8 +11,8 @@ import java.util.Date;
  */
 @Data
 public class UserChat extends BaseDomain{
-    public final int STATUS_ON = 1;
-    public final int STATUS_OFF = 0;
+    public static final int STATUS_ON = 1;
+    public static final int STATUS_OFF = 0;
 
     private User sender;  //发送者
     private User receiver;  //接收者

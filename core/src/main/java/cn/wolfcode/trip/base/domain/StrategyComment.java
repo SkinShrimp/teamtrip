@@ -3,6 +3,7 @@ package cn.wolfcode.trip.base.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
@@ -20,7 +21,8 @@ public class StrategyComment extends BaseDomain{
     //点评者
     private User user;
     //创建时间
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;
     //点评内容
     private String content;

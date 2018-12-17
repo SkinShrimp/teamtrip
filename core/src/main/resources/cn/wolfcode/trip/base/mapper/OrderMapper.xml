@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.wolfcode.trip.base.mapper.OrderMapper">
+
+    <insert id="save" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
+        insert INTO `order` (oid, order_time, total, state, address, name, telephone, uid)
+       values (#{oid}, #{ordertime}, #{total}, #{state}, #{address}, #{name}, #{telephone}, #{user.id})
+    </insert>
+    <!--更新订状态-->
+    <update id="updateOrderState">
+        UPDATE `order` set
+        state = 1
+        where oid = #{oid}
+    </update>
+    <!--更新收货人-->
+    <update id="updateOrder">
+        UPDATE `order` set
+        name = #{name},
+        telephone = #{telephone},
+        address = #{address}
+        where oid = #{oid}
+    </update>
+    <select id="queryOrder" resultType="cn.wolfcode.trip.base.domain.Order">
+        SELECT  * from `order` where uid = #{id} order by order_time desc
+    </select>
+</mapper>

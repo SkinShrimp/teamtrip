@@ -24,7 +24,8 @@ public class CircleForFriendsServiceImpl implements ICircleForFriendsService {
     private CircleForFriendsMapper circleForFriendsMapper;
 
     public PageInfo query(CircleForFriendsQueryObject qo) {
-        PageHelper.startPage(qo.getCurrentPage(),qo.getPageSize(),qo.getOrderBy());
+        PageHelper.startPage(qo.getCurrentPage(), qo.getPageSize(), qo.getOrderBy());
+        qo.setLoginUserId(UserContext.getUser().getId());
         List list = circleForFriendsMapper.selectForList(qo);
         return new PageInfo(list);
     }
