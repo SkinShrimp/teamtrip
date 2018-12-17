@@ -26,13 +26,13 @@
         $(function () {
 
             $.get("/points/getTypeId/1/goodses",function (data) {
-                $("#boyfriend").renderValues(data,{
+                $(".boyfriend").renderValues(data,{
                     getHref:getHref
                 });
                 console.log(data);
             })
             $.get("/points/getTypeId/2/goodses",function (data) {
-                $("#girlfriend").renderValues(data,{
+                $(".girlfriend").renderValues(data,{
                     getHref:getHref
                 });
             })
@@ -180,15 +180,15 @@
 		        	</div>
 		        </div>
 				<!--单身旅游必备-->
-				<div class="theme clearfloat">
+				<div class="theme clearfloat boyfriend">
 					<div class="boutit clearfloat">
 						<span></span>
 						<samp>男朋友招租</samp>
 					</div>
-					<div class="content clearfloat" id="boyfriend">
-						<div class="list clearfloat fl" render-loop="list">
-							<a data-href="detail.html?id=" render-key="list.type.id" render-fun="getHref">
-								<div class="tu clearfloat fr">
+					<div class="content clearfloat" render-loop="list">
+						<div class="list clearfloat fl ">
+							<a data-href="detail.html?id=" render-key="list.id" render-fun="getHref">
+								<div class="tu clearfloat fr" style="width: 107px;height: 107px">
 									<span></span>
 									<img render-src="list.picture"/>
 								</div>
@@ -200,14 +200,14 @@
 						</div>
 					</div>
 				</div>
-				<div class="theme clearfloat">
+				<div class="theme clearfloat girlfriend">
 					<div class="boutit clearfloat">
 						<span></span>
 						<samp>女朋友招租</samp>
 					</div>
-					<div class="content clearfloat" id="girlfriend">
-						<div class="list clearfloat fl" render-loop="list">
-							<a data-href="detail.html?id=" render-key="list.type.id" render-fun="getHref">
+					<div class="content clearfloat" render-loop="list">
+						<div class="list clearfloat fl">
+							<a data-href="detail.html?id=" render-key="list.id" render-fun="getHref">
 								<div class="tu clearfloat fr">
 									<span></span>
 									<img render-src="list.picture"/>

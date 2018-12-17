@@ -19,7 +19,7 @@ public class Goods {
 
     private String introduce;
 
-    private BigDecimal money;
+    private Integer money;
 
     private Integer sellcount;
 
