@@ -1,5 +1,8 @@
 package cn.wolfcode.trip.base.domain;
 
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +22,7 @@ public class IntegralStoreOrder extends BaseDomain {
 
     private Integer totalMoney;
 
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date date;
 
     private Boolean state;
