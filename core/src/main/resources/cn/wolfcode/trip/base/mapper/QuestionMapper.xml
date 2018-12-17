@@ -42,8 +42,8 @@
     WHERE id=#{id}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap">
-      select id,content,browse,title,user_id u_id,region,releaseTime,imgUrls
-     from question
+      select id,content,browse,title,user_id,region,releaseTime,imgUrls
+    from question
     WHERE id=#{id}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">

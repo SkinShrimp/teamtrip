@@ -9,6 +9,4 @@ public class CircleForFriendsCommentQueryObject extends QueryObject {
     //用户id
     private Long type;
     private Long typeId;
-
-    private Long parentId;
 }

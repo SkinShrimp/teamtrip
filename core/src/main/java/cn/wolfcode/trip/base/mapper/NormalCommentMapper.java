@@ -19,5 +19,5 @@ public interface NormalCommentMapper {
 
     int updateByPrimaryKey(NormalComment record);
 
-    List<Map<String, Object>> selectForInitNormalComment(CircleForFriendsCommentQueryObject qo);
+    List<Map<String, Object>> selectForInitNormalComment(QueryObject qo);
 }

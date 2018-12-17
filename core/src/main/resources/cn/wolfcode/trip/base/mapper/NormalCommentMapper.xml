@@ -60,8 +60,5 @@
     LEFT JOIN user user ON  user.id = nc.user_id
     LEFT JOIN user acceptUser ON acceptUser.id = nc.acceptuser_id
     WHERE nc.type = #{type} AND nc.parentId = #{typeId}
-    <if test="parentId!=null ">
-      AND type_id=#{parentId}
-    </if>
   </select>
 </mapper>
