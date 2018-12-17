@@ -23,6 +23,12 @@
                 $(".col").renderValues(data)
             })
 
+			//获取关注数
+			$.get("/users/"+user.id+"/focuses",function (data) {
+				if(data){
+					$("#focus").html(data);
+				}
+            });
         })
 	</script>
 </head>
@@ -44,8 +50,8 @@
 			<ul class="list-inline">
 				<li class="list-inline-item"><small>常住地</small></li>
 				<li class="list-inline-item"><small render-html="place"></small></li>
-				<li class="list-inline-item"><small>关注<span>0</span></small></li>
-				<li class="list-inline-item"><small>粉丝<span>0</span></small></li>
+				<li class="list-inline-item"><small>关注<span id="focus">0</span></small></li>
+				<li class="list-inline-item"><small>粉丝<span>4</span></small></li>
 			</ul>
 		</div>
 	</div>
