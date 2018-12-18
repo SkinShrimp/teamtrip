@@ -54,9 +54,17 @@
             //删除按钮
             $(".btn-delete").click(function () {
                 var json = $(this).data('json');
+
                 console.log(json);
-                $.post("/goods/deleteById.do",{id:json.id},function () {
-                    window.location.reload();
+                $.messager.confirm("温馨提示", "您确定要删除选中的数据吗?", function () {
+                    $.post("/goods/deleteById.do",{id:json.id},function (data) {
+                        if(data.success){
+                            $.messager.alert("温馨提示","操作成功,2S之后关闭");
+                            setTimeout(function () {
+                                window.location.reload();
+                            },2000);
+                        }
+                    })
                 })
             })
         })
