@@ -9,8 +9,10 @@
     <link rel="stylesheet" type="text/css" href="css/mui.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/loaders.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/loading.css"/>
+	<link rel="stylesheet" href="/js/plugins/dialog2/dialog.css" />
     <script src="js/rem.js"></script> 
     <script src="js/jquery.min.js" type="text/javascript"></script>
+	<script src="/js/plugins/dialog2/dialog.min.js"></script>
 	<script type="text/javascript">
 		$(window).load(function(){
 			$(".loading").addClass("loader-chanage")
@@ -33,19 +35,38 @@
 	<script>
 		$(function () {
 		var totalPrice =sessionStorage.getItem("totalPrice");
-        $("#pay").html(totalPrice);
+
+            $("#pay").html(totalPrice);
         $("input[name='pay']").val(totalPrice);
 
+
+			//支付操作
+			$("#zhifu").click(function () {
+					console.log(1);
+				var password = $("input[name=password]").attr("value");
+				$.get("/orders/verifyPassword",{password:password},function (data) {
+				    if(data.success){
+                        $(document).dialog({
+                            content: '支付成功',
+                        });
+                        setTimeout(function () {
+                        window.location.href="index.html";
+                        },2000);
+					}else {
+                        $(document).dialog({
+                            content: '支付密码错误',
+                        });
+					}
+					console.log(data);
+					console.log(1);
+
+				})
+			})
+
+
         })
 
 
-		//支付操作
-		$("#zhifu").click(function () {
-			var password = $("input[name=password]").attr("value");
-			$.get("/verifyPassword",{password:password},function (data) {
-                console.log(data);
-            })
-        })
 	</script>
 </head>
 <!--loading页开始-->
