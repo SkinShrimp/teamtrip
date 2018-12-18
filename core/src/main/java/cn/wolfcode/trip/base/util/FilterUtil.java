@@ -15,7 +15,12 @@ public class FilterUtil {
     private static List<String> forbidWord = new ArrayList<>();
     //对敏感词集合进行初始化
     static {
-        readFile();
+        //readFile();
+        forbidWord.add("script");
+        forbidWord.add("垃圾");
+        forbidWord.add("蠢");
+        forbidWord.add("笨蛋");
+        forbidWord.add("习近平");
     }
 
     /**
