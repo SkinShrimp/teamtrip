@@ -28,7 +28,8 @@
 
                 $.ajax({
                     url: "/dailies/" + params.id, method: "get", async: false, success: function (data) {
-                        $('.detail').renderValues(data);
+                        console.log(data);
+                        $('.newsDetail').renderValues(data);
                     }
                 })
             }
@@ -137,19 +138,7 @@
     </div>
 
 
-    <!--评论区-->
-    <div class="container d-flex">
-        <div class="p-2  flex-fill fa-2x">
-            <i data-id="1" class="fa fa-thumbs-o-up" id="like-Btn"> </i>
-        </div>
-        <div class="p-2  flex-fill fa-2x">
-            <i data-id="2" class="commentingParent fa  fa-commenting-o" id="comment-Btn"> </i>
-        </div>
-        <div class="p-2  flex-fill fa-2x">
-            <i data-id="3" class="fa fa-star-o" id="collect-Btn"> </i>
-        </div>
-    </div>
-    <div id="comment">
+    <!--<div id="comment">
         <div render-loop="list">
             <div class="container row comment">
                 <div class="col-2 comment-head">
@@ -160,9 +149,9 @@
                 </div>
                 <div class="col comment-right">
                     <p class="authorName"><span render-html="list.userName"></span></p>
-                    <!--
+                    &lt;!&ndash;
                                         <span class="comment-date" render-html="list.createTime"></span>
-                    -->
+                    &ndash;&gt;
                     <div class="comment-content">
                         <a href="strategyComment.html">
                             <p render-html="list.comment"></p>
@@ -178,8 +167,8 @@
                     </div>
 
                 </div>
-            </div>
-            <div class="container d-flex">
+            </div>-->
+          <div class="container d-flex">
                 <div class="p-2  flex-fill fa-2x">
                     <i data-id="1" class="fa fa-thumbs-o-up" id="likeBtn"> </i>
                 </div>
