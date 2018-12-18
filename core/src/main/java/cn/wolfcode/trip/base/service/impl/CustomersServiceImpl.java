@@ -16,6 +16,12 @@ public class CustomersServiceImpl implements ICustomersService{
     @Override
     public Customer getCustomerById() {
         Long userId = UserContext.getUser().getId();
-        return customerMapper.selectByUserId(userId);
+        Customer customer = customerMapper.selectByUserId(userId);
+        return customer;
+    }
+
+    @Override
+    public void update(Customer customer) {
+        customerMapper.updateByUserId(customer);
     }
 }

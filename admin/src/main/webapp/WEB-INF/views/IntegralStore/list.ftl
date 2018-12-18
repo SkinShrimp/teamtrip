@@ -50,6 +50,15 @@
                     }
                 })
             });
+
+            //删除按钮
+            $(".btn-delete").click(function () {
+                var json = $(this).data('json');
+                console.log(json);
+                $.post("/goods/deleteById.do",{id:json.id},function () {
+                    window.location.reload();
+                })
+            })
         })
     </script>
 </head>
@@ -104,6 +113,9 @@
                     <td>${entity.sellcount}</td>
                     <td>
                         <a href="javascript:void(0);" class="btn-input" data-json='${entity.json}'>修改</a>
+                    </td>
+                    <td>
+                        <a href="javascript:void(0);" class="btn-delete" data-json='${entity.json}'>删除</a>
                     </td>
                 </tr>
                 </#list>

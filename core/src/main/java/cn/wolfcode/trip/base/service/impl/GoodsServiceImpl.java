@@ -39,4 +39,9 @@ public class GoodsServiceImpl implements IGoodsService {
     public Goods getGoodsById(Long id) {
         return goodsMapper.selectByPrimaryKey(id);
     }
+
+    @Override
+    public void deleteById(Long id) {
+        goodsMapper.deleteByPrimaryKey(id);
+    }
 }
