@@ -26,8 +26,10 @@
             var user = JSON.parse(sessionStorage.getItem("user"));
             if (params.id) {
 
-                $.get("/dailies/" + params.id, function (data) {
-                    $('.newsDetail').renderValues(data)
+                $.ajax({
+                    url: "/dailies/" + params.id, method: "get", async: false, success: function (data) {
+                        $('.detail').renderValues(data);
+                    }
                 })
             }
             console.log(params.id);
@@ -128,6 +130,52 @@
             <div class="detail">
                 <h2 class="title" render-html="title"></h2>
                 <div class="content"  render-html="content.content">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--评论区-->
+    <div class="container d-flex">
+        <div class="p-2  flex-fill fa-2x">
+            <i data-id="1" class="fa fa-thumbs-o-up" id="like-Btn"> </i>
+        </div>
+        <div class="p-2  flex-fill fa-2x">
+            <i data-id="2" class="commentingParent fa  fa-commenting-o" id="comment-Btn"> </i>
+        </div>
+        <div class="p-2  flex-fill fa-2x">
+            <i data-id="3" class="fa fa-star-o" id="collect-Btn"> </i>
+        </div>
+    </div>
+    <div id="comment">
+        <div render-loop="list">
+            <div class="container row comment">
+                <div class="col-2 comment-head">
+                    <a href="userProfiles.html">
+                        <img class="rounded-circle"
+                             render-src="list.headImgUrl">
+                    </a>
+                </div>
+                <div class="col comment-right">
+                    <p class="authorName"><span render-html="list.userName"></span></p>
+                    <!--
+                                        <span class="comment-date" render-html="list.createTime"></span>
+                    -->
+                    <div class="comment-content">
+                        <a href="strategyComment.html">
+                            <p render-html="list.comment"></p>
+                        </a>
+                    </div>
+
+                    <div class="d-flex icon">
+                        <i class="commenting fa  fa-commenting-o " style="margin-right: 10px" render-key="list.userId"
+                           render-fun="getId"> 评论 </i>
+                        <div id="subCommit" render-fun="getParentId" render-key="list.userId">
+
+                        </div>
+                    </div>
 
                 </div>
             </div>

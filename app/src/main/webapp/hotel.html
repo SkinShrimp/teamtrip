@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>度假日式酒店</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+    <script src="/js/jquery/jquery.min.js"></script>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="iTunesArtwork@2x.png" sizes="114x114" rel="apple-touch-icon-precomposed">
+    <link type="text/css" rel="stylesheet" href="themes/css/base.css">
+    <link type="text/css" rel="stylesheet" href="themes/css/icon.css">
+    <link type="text/css" rel="stylesheet" href="themes/css/home.css">
+
+    
+    <script>
+        $(function () {
+            //先清空
+            $("#search").val("");
+            //点击输入框跳转到城市页面
+            $("#search").click(function(){
+                window.location.href="/city.html";
+            });
+            //从sessionStorage中获取点击拿到数据
+            var data = JSON.parse(sessionStorage.getItem("data"))
+            //放入到搜索框中
+            $("#search").val(data);
+
+
+            $(".queryBtn").click(function () {
+                window.location.href="/searchResult.html";
+            })
+
+            //点击星级下面的按钮,拿到对应的星级,共享到sessionStorage
+            $(".aui-grids-item").click(function () {
+                var starLevel = $(this).data('star');
+                //alert(starLevel)
+                sessionStorage.setItem("starLevel",JSON.stringify(starLevel));
+            })
+        })
+    </script>
+</head>
+<body>
+
+    <section class="aui-flexView">
+        <section class="aui-scrollView" style="overflow:hidden">
+            <header class="aui-navBar aui-navBar-fixed">
+                <a href="javascript:window.history.go(-1)" class="aui-navBar-item">
+                    <i class="aui-icon icon-return"></i>
+                </a>
+                <div class="aui-center" style="margin-left:5%; width:100%">
+            <span class="aui-center-title">
+                <div class="aui-search-content">
+                    <div class="aui-search-fictitious" style="right:inherit; left:10px;">
+                        <i class="aui-icon icon-search-small"></i>
+                        <input type="text" placeholder="搜索酒店或目的地" value="" name="">
+                    </div>
+                </div>
+            </span>
+                </div>
+                <a href="javascript:;" class="aui-navBar-item" style="min-width: 5%; -webkit-flex: 0 0 25%; -ms-flex: 0 0 25%; flex: 0 0 5%;" data-ydui-actionsheet="{target:'#actionSheet',closeElement:'#cancel'}">
+                    <i class="aui-icon icon-price"></i>
+                </a>
+            </header>
+            <div class="aui-hotel-content">
+                <div class="aui-hotel-content-bg">
+                    <div class="m-slider" data-ydui-slider>
+                        <div class="slider-wrapper">
+                            <div class="slider-item">
+                                <a href="javascript:;">
+                                    <img src="themes/img/img/banner-001.jpg">
+                                </a>
+                            </div>
+                            <div class="slider-item">
+                                <a href="javascript:;">
+                                    <img src="themes/img/img/banner-002.jpg">
+                                </a>
+                            </div>
+                            <div class="slider-item">
+                                <a href="javascript:;">
+                                    <img src="themes/img/img/banner-003.jpg">
+                                </a>
+                            </div>
+                            <div class="slider-item">
+                                <a href="javascript:;">
+                                    <img src="themes/img/img/banner-001.jpg">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="slider-pagination"></div>
+                    </div>
+                    <div class="aui-palace">
+                        <a href="javascript:;" class="aui-palace-grid">
+                            <div class="aui-palace-grid-icon">
+                                <img src="themes/img/icon/icon-hl-001.png" alt="">
+                            </div>
+                            <div class="aui-palace-grid-text">
+                                <h2>民宿公寓</h2>
+                            </div>
+                        </a>
+                        <a href="javascript:;" class="aui-palace-grid">
+                            <div class="aui-palace-grid-icon">
+                                <img src="themes/img/icon/icon-hl-002.png" alt="">
+                            </div>
+                            <div class="aui-palace-grid-text">
+                                <h2>钟点房间</h2>
+                            </div>
+                        </a>
+                        <a href="javascript:;" class="aui-palace-grid">
+                            <div class="aui-palace-grid-icon">
+                                <img src="themes/img/icon/icon-hl-003.png" alt="">
+                            </div>
+                            <div class="aui-palace-grid-text">
+                                <h2>酒店特惠</h2>
+                            </div>
+                        </a>
+                        <a href="javascript:;" class="aui-palace-grid">
+                            <div class="aui-palace-grid-icon">
+                                <img src="themes/img/icon/icon-hl-004.png" alt="">
+                            </div>
+                            <div class="aui-palace-grid-text">
+                                <h2>机票车票</h2>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="aui-tab" data-ydui-tab>
+                        <ul class="tab-nav">
+                            <li class="tab-nav-item tab-active">
+                                <a href="javascript:;">国内酒店</a>
+                            </li>
+                            <li class="tab-nav-item">
+                                <a href="javascript:;">国际酒店</a>
+                            </li>
+                        </ul>
+                        <div class="tab-panel">
+                            <!-- 酒店预订 begin -->
+                            <div class="tab-panel-item tab-active">
+                                <div class="aui-flex aui-flex-mar b-line">
+                                    <div id="beijing" class="aui-hotel-city">北京</div>
+                                    <div class="aui-flex-box aui-hotel-text">精品酒店预订 <i class="aui-icon icon-location"></i></div>
+                                </div>
+
+                                <div id="checkinout" class="b-line">
+                                    <div id="firstSelect" style="width:100%;">
+                                        <div class="Date_lr" style="float:left;">
+                                            <P>入住</p>
+                                            <input id="startDate" type="text" value="" style="" readonly>
+                                        </div>
+                                        <span class="aui-calendar-days">共<span class="NumDate">1</span>晚</span>
+                                        <div class="Date_lr" style="float:right;">
+                                            <p>离店</p>
+                                            <input id="endDate" type="text" value="" style="" readonly>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="aui-flex aui-flex-mar b-line">
+                                    <div class="aui-flex-head">试试搜</div>
+                                    <div class="aui-flex-box">
+                                        <input type="text" class="aui-flex-search" placeholder="名称/位置" id="search">
+                                    </div>
+                                </div>
+
+                                <div class="aui-flex aui-flex-mar b-line" data-ydui-actionsheet="{target:'#actionSheet',closeElement:'#cancel'}">
+                                    <div class="aui-flex-head">价格/星级</div>
+                                </div>
+
+                                <div class="aui-flex-button-box">
+                                    <button class="aui-flex-button-btn queryBtn">酒店查询</button>
+                                </div>
+
+
+                            </div>
+                            <!-- 酒店预订 end -->
+
+                            <!-- 机票预订 begin -->
+                            <div class="tab-panel-item">
+                                <div class="aui-city-select b-line">
+                                    <span class="aui-city-swap"></span>
+                                    <div class="aui-city-select-item">北京</div>
+                                    <div class="aui-city-select-item aui-city-fr">上海</div>
+                                </div>
+                                <div class="aui-city-select b-line aui-city-calendar">
+                                    <div class="aui-city-select-item">
+                                        <p>出发日期</p>
+                                        <h2>9月12日 <em>今天</em></h2>
+                                    </div>
+                                    <div class="aui-city-select-item aui-city-fr">
+                                        <p>返程日期</p>
+                                        <h2>添加返程<i class="aui-icon aui-icon-add"></i> </h2>
+                                    </div>
+                                </div>
+                                <div class="aui-flex aui-flex-mar b-line">
+                                    <div class="aui-flex-head">头等/商务舱</div>
+                                    <div class="aui-flex-box">
+                                        <label class="cell-item">
+                                            <label class="cell-right">
+                                                <input type="radio" value="0" name="checkbox" checked="checked">
+                                                <i class="cell-checkbox-icon"></i>
+                                            </label>
+                                            <span class="cell-left">儿童2-11岁</span>
+                                        </label>
+                                        <label class="cell-item">
+                                            <label class="cell-right">
+                                                <input type="radio" value="0" name="checkbox">
+                                                <i class="cell-checkbox-icon"></i>
+                                            </label>
+                                            <span class="cell-left">婴儿14天-2岁</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="aui-flex-button-box">
+                                    <button class="aui-flex-button-btn">搜索</button>
+                                </div>
+                            </div>
+                            <!-- 机票预订 end -->
+                        </div>
+                    </div>
+                </div>
+                <div class="aui-hotel-ads">
+                    <img src="themes/img/img/ad-001.png" alt="">
+                </div>
+                <div style="height:20px;"></div>
+
+            </div>
+
+
+        </section>
+
+        <footer class="aui-footer">
+            <a href="javascript:;" class="aui-tabBar-item">
+                    <span class="aui-tabBar-item-icon">
+                        <i class="aui-icon icon-home"></i>
+                    </span>
+                <span class="aui-tabBar-item-text">首页</span>
+            </a>
+            <a href="javascript:;" class="aui-tabBar-item ">
+                    <span class="aui-tabBar-item-icon">
+                        <i class="aui-icon icon-loan"></i>
+                    </span>
+                <span class="aui-tabBar-item-text">发现</span>
+            </a>
+            <a href="javascript:;" class="aui-tabBar-item ">
+                    <span class="aui-tabBar-item-icon">
+                        <i class="aui-icon icon-find"></i>
+                    </span>
+                <span class="aui-tabBar-item-text"></span>
+            </a>
+            <a href="javascript:;" class="aui-tabBar-item ">
+                    <span class="aui-tabBar-item-icon">
+                        <i class="aui-icon icon-car"></i>
+                    </span>
+                <span class="aui-tabBar-item-text">客服</span>
+            </a>
+            <a href="javascript:;" class="aui-tabBar-item aui-tabBar-item-active">
+                    <span class="aui-tabBar-item-icon">
+                        <i class="aui-icon icon-me"></i>
+                    </span>
+                <span class="aui-tabBar-item-text">我的</span>
+            </a>
+        </footer>
+
+
+    </section>
+
+    <!-- 入住离店日期弹窗 begin -->
+    <div class="mask_calendar">
+        <div class="calendar"></div>
+        <div class="calendar_tishi aui-calendar-tips">请选择离店时间</div>
+    </div>
+    <!-- 入住离店日期弹窗 end -->
+
+    <!-- 价格/星级弹窗 begin -->
+    <div class="m-actionsheet" id="actionSheet">
+        <div class="aui-price-cells">
+            <h3>价格</h3>
+            <div class="aui-touch-slide">
+
+                <div class="aui-touch-slide-title">
+                    <a href="javascript:;" class="aui-touch-slide-item aui-touch-gray">
+                        <span>1</span>
+                    </a>
+                    <a href="javascript:;" class="aui-touch-slide-item aui-touch-gray">
+                        <span>100</span>
+                    </a>
+                    <a href="javascript:;" class="aui-touch-slide-item aui-touch-green">
+                        <span>200</span>
+                    </a>
+                    <a href="javascript:;" class="aui-touch-slide-item">
+                        <span>300</span>
+                    </a>
+                    <a href="javascript:;" class="aui-touch-slide-item">
+                        <span>400</span>
+                    </a>
+                    <a href="javascript:;" class="aui-touch-slide-item">
+                        <span>500</span>
+                    </a>
+                    <a href="javascript:;" class="aui-touch-slide-item aui-touch-green">
+                        <span>不限</span>
+                    </a>
+                </div>
+                <div class="aui-touch-gray-line">
+                    <div class="aui-touch-gray-line-top" style="width:67%"></div>
+                    <span class="aui-touch-left-btn" style="left:95px;"></span>
+                    <span class="aui-touch-right-btn"></span>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="aui-price-cells">
+            <h3>星级</h3>
+            <div class="aui-price-grids">
+                <a href="javascript:;" class="aui-grids-item" data-star="2">
+                    <span >经济型</span>
+                </a>
+                <a href="javascript:;" class="aui-grids-item" data-star="3">
+                    <span >舒适/三星</span>
+                </a>
+                <a href="javascript:;" class="aui-grids-item this-card" data-star="4">
+                    <span >高档/四星</span>
+                </a>
+                <a href="javascript:;" class="aui-grids-item" data-star="5">
+                    <span >豪华/五星</span>
+                </a>
+            </div>
+        </div>
+        <div class="aui-price-button">
+            <button class="aui-flex-button-btn" id="cancel">完成</button>
+        </div>
+    </div>
+    <!-- <a href="javascript:;" id="cancel" class="">关闭</a> -->
+    <!-- 价格/星级弹窗 end -->
+
+    <script type="text/javascript" src="themes/js/jquery.js"></script>
+    <script type="text/javascript" src="themes/js/tab.js"></script>
+    <script type="text/javascript" src="themes/js/data.js"></script>
+    <script type="text/javascript" src="themes/js/layer.js"></script>
+
+    <script type="text/javascript">
+        $(function() {
+            $('#firstSelect').on('click', function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                $('.mask_calendar').show();
+            });
+            $('.mask_calendar').on('click', function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                if (e.target.className == "mask_calendar") {
+                    $('.calendar').slideUp(200);
+                    $('.mask_calendar').fadeOut(200);
+                }
+            })
+            $('#firstSelect').calendarSwitch({
+                selectors: {
+                    sections: ".calendar"
+                },
+                index: 4,
+                //展示的月份个数
+                animateFunction: "slideToggle",
+                //动画效果
+                controlDay: true,
+                //知否控制在daysnumber天之内，这个数值的设置前提是总显示天数大于90天
+                daysnumber: "60",
+                //控制天数
+                comeColor: "#0195ff",
+                //入住颜色
+                outColor: "#0195ff",
+                //离店颜色
+                comeoutColor: "#8ccfff",
+                //入住和离店之间的颜色
+                callback: function() {
+                    //回调函数
+                    $('.mask_calendar').fadeOut(200);
+                    var startDate = $('#startDate').val();
+                    //入住的天数
+                    var endDate = $('#endDate').val();
+                    //离店的天数
+                    var NumDate = $('.NumDate').text();
+                    //共多少晚
+                    console.log(startDate);
+                    console.log(endDate);
+                    console.log(NumDate);
+
+                    //将入住时间,离店时间,住店天数存到缓存中
+                    sessionStorage.setItem("startDate",JSON.stringify(startDate))
+                    sessionStorage.setItem("endDate",JSON.stringify(endDate))
+                    sessionStorage.setItem("NumDate",JSON.stringify(NumDate))
+
+                    //下面做ajax请求
+                },
+                comfireBtn: '.comfire'//确定按钮的class或者id
+            });
+            var b = new Date();
+            var ye = b.getFullYear();
+            var mo = b.getMonth() + 1;
+            mo = mo < 10 ? "0" + mo : mo;
+            var da = b.getDate();
+            da = da < 10 ? "0" + da : da;
+            $('#startDate').val(ye + '-' + mo + '-' + da);
+            b = new Date(b.getTime() + 24 * 3600 * 1000);
+            var ye = b.getFullYear();
+            var mo = b.getMonth() + 1;
+            mo = mo < 10 ? "0" + mo : mo;
+            var da = b.getDate();
+            da = da < 10 ? "0" + da : da;
+            $('#endDate').val(ye + '-' + mo + '-' + da);
+        });
+    </script>
+    <script type="text/javascript">
+
+
+        $('.aui-grids-item').click(function(e){
+
+            $(this).addClass('this-card').siblings().removeClass('this-card');
+
+            $('#type-amount').html($(this).find('.cardAmount').html());
+
+        })
+
+
+    </script>
+
+</body>
+</html>

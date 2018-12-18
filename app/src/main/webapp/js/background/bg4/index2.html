@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html >
+<head>
+<meta charset="UTF-8">
+<meta name="google" value="notranslate">
+<title>code2</title>
+<style>
+HTML, BODY { height: 100%; overflow: hidden; }
+BODY { background: #0a0a0a; background-image: -webkit-linear-gradient(#0f0f0f 1px, transparent 1px), -webkit-linear-gradient(left, #0f0f0f 1px, transparent 1px); background-image: linear-gradient(#0f0f0f 1px, transparent 1px), linear-gradient(to right, #0f0f0f 1px, transparent 1px); background-size: 3.33333vmin 3.33333vmin; }
+.range { /* display: none; */
+position: absolute; zind: 2px; }
+.wrapper { position: absolute; top: 0; right: 0; bottom: 0; left: 0; margin: auto; width: 10vmin; height: 10vmin; font-size: 10vmin; -webkit-transform: rotateX(-45deg); transform: rotateX(-45deg); -webkit-transform-style: preserve-3d; transform-style: preserve-3d; }
+.flower { width: 10vmin; height: 10vmin; -webkit-animation: rotate-flower 10s linear infinite; animation: rotate-flower 10s linear infinite; -webkit-transform-style: preserve-3d; transform-style: preserve-3d; }
+.flower:before { content: ''; display: block; position: absolute; width: 95%; height: 95%; top: 0; right: 0; bottom: 0; left: 0; margin: auto; background: #226600; border-radius: 50%; -webkit-transform: rotateX(90deg); transform: rotateX(90deg); -webkit-animation: rotate-hue 5s infinite; animation: rotate-hue 5s infinite; }
+.petal { position: absolute; z-index: 20; bottom: 80%; left: -10vmin; -webkit-transform-style: preserve-3d; transform-style: preserve-3d; -webkit-transform-origin: bottom; transform-origin: bottom; }
+.box { width: 30vmin; -webkit-transform-style: preserve-3d; transform-style: preserve-3d; -webkit-transform-origin: bottom; transform-origin: bottom; -webkit-animation: rotate-box 12s infinite; animation: rotate-box 12s infinite; }
+.shape { width: 0.5em; height: 0.5em; margin: auto; background: currentColor; box-shadow: 0.5em 0 0 0, 1em 0 0 0, -1em 0 0 0, -0.5em 0 0 0; border-radius: 50%; -webkit-animation: rotate-hue 5s infinite; animation: rotate-hue 5s infinite; }
+ @-webkit-keyframes rotate-box {
+ 0% {
+ -webkit-transform: rotateX(3.5deg);
+ transform: rotateX(3.5deg);
+}
+ 15% {
+ -webkit-transform: rotateX(3.5deg);
+ transform: rotateX(3.5deg);
+}
+ 50% {
+ -webkit-transform: rotateX(-7deg);
+ transform: rotateX(-7deg);
+}
+ 80% {
+ -webkit-transform: rotateX(-7deg);
+ transform: rotateX(-7deg);
+}
+ 100% {
+ -webkit-transform: rotateX(3.5deg);
+ transform: rotateX(3.5deg);
+}
+}
+ @keyframes rotate-box {
+ 0% {
+ -webkit-transform: rotateX(3.5deg);
+ transform: rotateX(3.5deg);
+}
+ 15% {
+ -webkit-transform: rotateX(3.5deg);
+ transform: rotateX(3.5deg);
+}
+ 50% {
+ -webkit-transform: rotateX(-7deg);
+ transform: rotateX(-7deg);
+}
+ 80% {
+ -webkit-transform: rotateX(-7deg);
+ transform: rotateX(-7deg);
+}
+ 100% {
+ -webkit-transform: rotateX(3.5deg);
+ transform: rotateX(3.5deg);
+}
+}
+@-webkit-keyframes rotate-flower {
+ 100% {
+ -webkit-transform: rotateY(360deg);
+ transform: rotateY(360deg);
+}
+}
+@keyframes rotate-flower {
+ 100% {
+ -webkit-transform: rotateY(360deg);
+ transform: rotateY(360deg);
+}
+}
+@-webkit-keyframes rotate-hue {
+ 100% {
+ -webkit-filter: hue-rotate(360deg);
+ filter: hue-rotate(360deg);
+}
+}
+@keyframes rotate-hue {
+ 100% {
+ -webkit-filter: hue-rotate(360deg);
+ filter: hue-rotate(360deg);
+}
+}
+
+/* Demo Buttons Style */
+.codrops-demos {
+	font-size: 0.8em;
+	text-align:center;
+	position:absolute;
+	z-index:99;
+	width:96%;
+}
+
+.codrops-demos a {
+	display: inline-block;
+	margin: 0.35em 0.1em;
+	padding: 0.5em 1.2em;
+	outline: none;
+	text-decoration: none;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-weight: 700;
+	border-radius: 2px;
+	font-size: 110%;
+	border: 2px solid transparent;
+	color:#fff;
+}
+
+.codrops-demos a:hover,
+.codrops-demos a.current-demo {
+	border-color: #383a3c;
+}
+</style>
+
+	<script src="/js/jquery/jquery.min.js"></script>
+	<script src="/js/plugins/jrender/jrender.min.js"></script>
+	<link href="/css/likeHistory.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/js/plugins/dialog2/dialog.css">
+	<script src="/js/plugins/dialog2/dialog.min.js"></script>
+	<script src="/js/common.js"></script>
+
+	<script>
+        $(function () {
+            //获取当前用户的id
+            var user = JSON.parse(sessionStorage.getItem("user"));
+            var userId = user.id;
+
+            //点击跳转签到
+            $(".integral").click(function () {
+                window.location.href="/mine/sign.html";
+            });
+
+            //向后台发送请求查询积分
+            $.get("/sign/getIntegral",{userId:userId},function (data) {
+                $(".all").html("当前积分:"+data);
+
+                //点击某个游戏
+                $(".game").click(function () {
+                    var url = $(this).data("href");
+                    var num = $(this).data("num");
+                    $(document).dialog({
+                        type: 'confirm',
+                        closeBtnShow: true,
+                        content: '当前游戏需要消耗您'+num+'个积分，您确定要继续吗?',
+                        onClickConfirmBtn: function () {
+                            //如果当前积分不足
+                            if(parseInt(data)-parseInt(num)<0){
+                                $(document).dialog({
+                                    content: "您当前积分不足，请前往签到领取积分",
+                                });
+                                return;
+                            }else{
+                                //进入游戏
+                                window.location.href = url;
+                                //扣除积分
+                                var rest = parseInt(data)-parseInt(num);
+                                //向后台发请求更改该用户积分
+                                $.post("/sign/updateIntegral",{userId:userId,integral:rest},function () {
+                                });
+
+                                $(".all").html("当前积分:"+rest);
+                            }
+                        }
+                    });
+                });
+            });
+        });
+	</script>
+</head>
+
+<body>
+
+<div class="wrapper">
+  <div class="flower"></div>
+</div>
+<script>
+ console.clear();
+
+var doc = document;
+var flower = doc.querySelector('.flower');
+var range = doc.querySelector('.range');
+
+var petalPartMarkup = '<div class="box"> \
+                    <div class="shape"></div> \
+                </div>';
+
+var maxParts = 20;
+var maxPetalsDef = 6;
+var maxPetals = maxPetalsDef;
+
+var partsFontStepDef = 25 / maxParts;
+var partsFontStep = partsFontStepDef;
+var huetStep = 150 / maxParts;
+
+createFlower();
+
+function createFlower() {
+
+	var angle = 360 / maxPetals;
+
+	for (var i = 0; i < maxPetals; i++) {
+		var petal = createPetal();
+		var currAngle = angle * i + 'deg';
+		var transform = 'transform: rotateY(' + currAngle + ') rotateX(-30deg) translateZ(9vmin)';
+
+		petal.setAttribute('style', transform);
+
+		flower.appendChild(petal);
+	}
+}
+
+function createPetal() {
+
+	var box = createBox(null, 0);
+
+	var petal = doc.createElement('div');
+	petal.classList.add('petal');
+
+	for (var i = 1; i <= maxParts; i++) {
+		newBox = createBox(box, i);
+		box = newBox;
+	}
+
+	petal.appendChild(box);
+
+	return petal;
+}
+
+function createBox(box, pos) {
+
+	var fontSize = partsFontStep * (maxParts - pos) + 'vmin';
+	var half = maxParts / 2;
+
+	var bright = '50';
+
+	if (pos < half + 1) {
+		fontSize = partsFontStep * pos + 'vmin';
+	} else {
+		bright = 10 + 40 / half * (maxParts - pos);
+	}
+
+	var color = 'hsl(' + huetStep * pos + ', 100%, ' + bright + '%)';
+
+	// 1. Add shape
+	var newShape = doc.createElement('div');
+	newShape.classList.add('shape');
+
+	// 2. Create wrapper .box
+	var newBox = doc.createElement('div');
+	newBox.classList.add('box');
+
+	var boxStyle = ['color: ' + color, 'font-size: ' + fontSize].join(';');
+	newBox.setAttribute('style', boxStyle);
+
+	// 3. Add old box to new box
+	if (box) {
+		newBox.appendChild(box);
+	}
+
+	// 4. Add shape to new box
+	newBox.appendChild(newShape);
+
+	return newBox;
+}
+
+function out(content) {
+	console.log(content);
+}
+</script>
+
+<section class="aui-flexView" >
+	<header class="aui-navBar aui-navBar-fixed b-line">
+		<a href="/mine/message.html" class="aui-navBar-item">
+			<i class="icon icon-return"></i>
+		</a>
+		<div class="aui-center">
+			<span class="aui-center-title">游戏中心</span>
+		</div>
+		<a href="javascript:;" class="aui-navBar-item">
+		</a>
+	</header>
+
+	<section class="aui-scrollView">
+		<div class="aui-list-box">
+			<div>
+				<div style="color: black"  class="aui-center">
+					<span class="all" style="color: white"></span>
+				</div>
+				<div style="color: mediumblue" class="aui-center">
+					<span style="color: white">点击签到</span>
+					<a class="integral">
+						<img  width="20px;" height="20px;" src="/img/game/签到1.png">
+					</a>
+				</div>
+			</div>
+			<div class="aui-flex">
+				<div class="aui-flex-logo">
+					<img src="/img/game/飞机.png">
+				</div>
+				<div class="aui-flex-box">
+					<a class="game white" data-href="/js/game/plane/index.html" data-num="1">
+						<strong>打飞机</strong>
+					</a>
+				</div>
+				<div class="aui-flex-box" style="color: lightgoldenrodyellow">
+					本次消耗积分: 1
+				</div>
+			</div>
+			<div class="aui-flex">
+				<div class="aui-flex-logo">
+					<img src="/img/game/扑克.png">
+				</div>
+				<div class="aui-flex-box">
+					<a class="game white" data-href="/js/game/fight/index.html" data-num="2">
+						<strong>斗地主</strong>
+					</a>
+				</div>
+				<div class="aui-flex-box" style="color: lightgoldenrodyellow">
+					本次消耗积分: 2
+				</div>
+			</div>
+			<div class="aui-flex">
+				<div class="aui-flex-logo">
+					<img src="/img/game/针对性练习.png">
+				</div>
+				<div class="aui-flex-box">
+					<a class="game white" data-href="/js/game/pin/index.html" data-num="3">
+						<strong>见缝插针</strong>
+					</a>
+				</div>
+				<div class="aui-flex-box" style="color: lightgoldenrodyellow">
+					本次消耗积分: 3
+				</div>
+			</div>
+			<div class="aui-flex">
+				<div class="aui-flex-logo">
+					<img src="/img/game/金钱.png">
+				</div>
+				<div class="aui-flex-box">
+					<a class="game white" data-href="/js/game/21point/index.html" data-num="4">
+						<strong>21点</strong>
+					</a>
+				</div>
+				<div class="aui-flex-box" style="color: lightgoldenrodyellow">
+					本次消耗积分: 4
+				</div>
+			</div>
+
+			<div class="aui-flex">
+				<div class="aui-flex-logo">
+					<img src="/img/game/路径分析.png">
+				</div>
+				<div class="aui-flex-box">
+					<a class="game white" data-href="/js/game/path/demo.html" data-num="3">
+						<strong>路径查找器</strong>
+					</a>
+				</div>
+				<div class="aui-flex-box" style="color: lightgoldenrodyellow">
+					本次消耗积分: 3
+				</div>
+			</div>
+			<div class="aui-flex">
+				<div class="aui-flex-logo">
+					<img src="/img/game/九宫格.png">
+				</div>
+				<div class="aui-flex-box">
+					<a class="game white" data-href="/js/game/2048/demo.html" data-num="1">
+						<strong>2048</strong>
+					</a>
+				</div>
+				<div class="aui-flex-box" style="color: lightgoldenrodyellow">
+					本次消耗积分: 1
+				</div>
+			</div>
+
+			<div class="aui-flex">
+				<div class="aui-flex-logo">
+					<img src="/img/game/门卫.png">
+				</div>
+				<div class="aui-flex-box">
+					<a class="game white" data-href="/js/game/door/index.html" data-num="3">
+						<strong>door</strong>
+					</a>
+				</div>
+				<div class="aui-flex-box" style="color: lightgoldenrodyellow">
+					本次消耗积分: 3
+				</div>
+			</div>
+			<div class="aui-flex">
+				<div class="aui-flex-logo">
+					<img src="/img/game/五子棋.png">
+				</div>
+				<div class="aui-flex-box">
+					<a class="game white" data-href="/js/game/chess/五子棋.html" data-num="1">
+						<strong>五子棋</strong>
+					</a>
+				</div>
+				<div class="aui-flex-box" style="color: lightgoldenrodyellow">
+					本次消耗积分: 1
+				</div>
+			</div>
+			<div class="aui-flex">
+				<div class="aui-flex-logo">
+					<img src="/img/game/大脑.png">
+				</div>
+				<div class="aui-flex-box">
+					<a class="game white" data-href="/js/game/question1/demo.html" data-num="4">
+						<strong>头脑风暴</strong>
+					</a>
+				</div>
+				<div class="aui-flex-box " style="color: lightgoldenrodyellow">
+					本次消耗积分: 4
+				</div>
+			</div>
+		</div>
+		<div class="aui-center" style="color: firebrick">
+			<br/>
+			持续更新中.....
+		</div>
+	</section>
+</section>
+</body>
+</html>

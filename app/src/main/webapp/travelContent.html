@@ -49,7 +49,6 @@
                 $(".travels").renderValues(data);
 
                 var checkUserId = data.author.id;
-                console.log(checkUserId);
                 //关注
                 //向后台发送请求判断当前用户是否已关注
                 $.get("/users/"+currentUserId+"/"+checkUserId,function (data) {
@@ -104,6 +103,7 @@
 
         //初始化点赞、收藏功能
         $.get("/comments/" + params.id, function (data) {
+            console.log(data);
             if (data.praise == 1) {
                 $("#likeBtn").removeClass().addClass("fa fa-thumbs-up");
             }
@@ -116,7 +116,6 @@
         var commentArr = [];
         //评论相关拼接
         $.get("/comments", {type: 1, typeId: params.id}, function (data) {
-            console.log(data);
             // console.log($("#template")[0]);
             if (data.list) {
                 $.each(data.list, function (index, ele) {
@@ -152,7 +151,6 @@
                 //为每一个按钮都添加点击事件
                 $("ul .fa-commenting-o").click(function () {
                     var pId = $(this).data("id");
-                    console.log($(this).data("collect"));
                     var collect = $(this).data("collect");
                     //判断用户是否登陆
                     var item = sessionStorage.getItem("user");
@@ -187,7 +185,7 @@
                                         url: "/comments/comment",
                                         data: data,
                                         success: function () {
-
+                                            window.location.reload();
                                         }
                                     });
                                     Dialog.close(this);

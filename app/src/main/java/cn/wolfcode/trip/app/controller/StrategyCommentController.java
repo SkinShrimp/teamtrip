@@ -28,7 +28,6 @@ public class StrategyCommentController {
     @GetMapping()
     public List<StrategyComment> selectStrategy(StrategyComment strategyComment){
         strategyComment.setState(1);
-        return   strategyCommentService.selectStrategyAll(strategyComment);
+        return  strategyCommentService.selectStrategyAll(strategyComment);
     }
-
 }

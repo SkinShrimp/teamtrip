@@ -28,6 +28,24 @@
 				$(main).css({paddingTop:cont_pt,paddingBottom:cont_pb});
 			}
 		});
+
+	</script>
+	<script>
+		$(function () {
+		var totalPrice =sessionStorage.getItem("totalPrice");
+        $("#pay").html(totalPrice);
+        $("input[name='pay']").val(totalPrice);
+
+        })
+
+
+		//支付操作
+		$("#zhifu").click(function () {
+			var password = $("input[name=password]").attr("value");
+			$.get("/verifyPassword",{password:password},function (data) {
+                console.log(data);
+            })
+        })
 	</script>
 </head>
 <!--loading页开始-->
@@ -48,32 +66,34 @@
 			<a href="javascript:history.go(-1)"><i class="iconfont icon-fanhui fl"></i></a>
 			<p>确认支付</p>
 	    </header>
-	    <div id="main" class="mui-clearfix contaniner sorder">	    	
+	    <div id="main" class="mui-clearfix contaniner sorder">
 	    	<div class="warning clearfloat box-s">
     			提示：请在24小时内完成在线支付，逾期将视为订单无效
     		</div>
-    		<div class="odernum clearfloat">
-    			<ul>
-    				<li>您的订单号：1298451221</li>
-    				<li>应付积分：<span>10000</span></li>
-    			</ul>
-    		</div>
-    		<div class="pay-method clearfloat">
-    			<ul>
-    				<li>
-    					<div style="height: 1rem">
-    						
-	    					<label>请输入支付密码：</label>
-	    					<input type="password" name="password">
-    					</div>
-    				</li>
-    			</ul>
-    		</div>
+				<div class="odernum clearfloat">
+					<ul>
+						<li>您的订单号：1298451221</li>
+						<li>应付积分：<span id="pay">10000</span></li>
+						<input type="hidden" name="pay">
 
-	    	<a href="#" class="address-add fl">
+					</ul>
+				</div>
+				<div class="pay-method clearfloat">
+					<ul>
+						<li>
+							<div style="height: 1rem">
+
+								<label>请输入支付密码：</label>
+								<input type="password" name="password">
+							</div>
+						</li>
+					</ul>
+				</div>
+
+	    	<a href="#" class="address-add fl" id="zhifu">
 	     		确认支付
 	     	</a>
 	    </div>
-	    
+
 	</body>
 </html>

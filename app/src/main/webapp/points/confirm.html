@@ -9,14 +9,109 @@
     <link rel="stylesheet" type="text/css" href="css/mui.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/loaders.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/loading.css"/>
-	<script src="js/rem.js"></script> 
+	<script src="js/rem.js"></script>
     <script src="js/jquery.min.js" type="text/javascript"></script>
+	<script src="/js/plugins/jrender/jrender.min.js"></script>
+	<script src="/js/common.js"></script>
 	<script type="text/javascript">
 		sessionStorage.url = "confirm";
 		$(window).load(function(){
 			$(".loading").addClass("loader-chanage")
 			$(".loading").fadeOut(300)
 		})
+	</script>
+
+	<script>
+        $(function () {
+
+
+            //获取地址栏的id
+            var params=getParams();
+
+            //商品价格
+			var price;
+
+			//添加购买商品的数量
+            var count=1;
+
+            //所选商品的总价格
+			var totalPrice;
+
+			//生成要提交的数据
+			var json;
+
+            if(params.id){
+
+                //根据id获取指定的商品
+                $.get("/points/getGoodsById/"+params.id+"/goodses",function (data) {
+                    price=data.money;
+
+                    console.log(data);
+
+                 /*   $(".showGoods").renderValues(data);*/
+                   /* $("#buy").renderValues(data,{
+                        getHref: getHref
+
+                    });*/
+                    $(".showGoods").renderValues(data,{
+                        getHref:getHref
+
+                    });
+
+
+                    //对订单数量和总价的处理
+					totalPrice=count*price;
+                    json={goodsId:params.id,count:count,totalPrice:totalPrice};
+                    $(".count").html(count);
+                    $(".totalPrice").html(totalPrice);
+					$("#subtract").click(function () {
+						if(count>1){
+
+							count=count-1;
+                            $(".count").html(count);
+                            totalPrice=count*price;
+                            json={goodsId:params.id,count:count,totalPrice:totalPrice};
+                            $(".totalPrice").html(totalPrice);
+
+							//存储订单应付的积分
+							sessionStorage.setItem(totalPrice,"totalPrice");
+
+
+						}
+					})
+
+					$("#add").click(function () {
+						if(count<10000){
+
+							count=count+1;
+							$(".count").html(count);
+							totalPrice=count*price;
+                            json={goodsId:params.id,count:count,totalPrice:totalPrice};
+							$(".totalPrice").html(totalPrice);
+
+							//存储订单应付的积分
+							sessionStorage.setItem("totalPrice",totalPrice);
+						}
+					})
+                })
+            }
+
+
+			//获取客户的地址等相关数据
+            $.get("/customers",function (data) {
+                $("#customers").renderValues(data);
+			})
+
+
+
+
+			//提交订单,生成订单
+			$(".db").click(function () {
+                    console.log(json);
+				$.post("/orders",json,function (data) {
+                })
+            })
+        })
 	</script>
 </head>
 <!--loading页开始-->
@@ -46,16 +141,17 @@
 	    
 	    <div class="warp warptwo clearfloat">
 	    	<div class="confirm clearfloat">
-	    		<div class="add clearfloat box-s">
+	    		<div class="add clearfloat box-s" id="customers">
 	    			<a href="address.html">
 		    			<div class="left clearfloat fl">
 		    				<i class="iconfont icon-dizhi1"></i>
 		    			</div>
 		    			<div class="middle clearfloat fl">
 		    				<p class="tit">
-		    					收货人：小王&nbsp;&nbsp;&nbsp;&nbsp;1580888888
+								收货人：<nobr render-html="name">小王</nobr>&nbsp;&nbsp;&nbsp;&nbsp;
+								<nobr render-html="phone">1580888888</nobr>
 		    				</p>
-		    				<p class="fu-tit over2">
+		    				<p class="fu-tit over2"  render-html="address">
 		    					收货地址：湖南省长沙市高新区拓基城市广场金座A2002
 		    				</p>
 		    			</div>
@@ -64,20 +160,20 @@
 		    			</div>
 	    			</a>
 	    		</div>
-	    		<div class="lie clearfloat">
-					<a href="detail.html">
-						<div class="tu clearfloat fl">
-							<img src="images/xj.jpg"/>
+	    		<div class="lie clearfloat showGoods">
+					<a data-href="detail.html?id=" render-key="id" render-fun="getHref">
+						<div class="tu clearfloat fl showGoods">
+							<img src="images/xj.jpg" render-src="picture"/>
 						</div>
 					</a>
-					<div class="right clearfloat fl">
-						<a href="detail.html">
+					<div class="right clearfloat fl showGoods">
+						<a data-href="detail.html?id=" render-key="id" render-fun="getHref">
 							<p class="tit over">单反相机，彰显你的风格</p>
 							<p class="fu-tit">颜色：蓝色  内存：120G</p>
 						</a>
 						<div class="xia clearfloat">
 							<a href="detail.html">
-								<p class="jifen fl over">100000积分</p>
+								<p class="jifen fl over" render-html="money">100000积分</p>
 							</a>
 							<span class="fr db">×1</span>
 						</div>
@@ -88,9 +184,9 @@
 						<p class="fl">购买数量</p>
 			     		<div class="you clearfloat fr">
 			     			<ul>
-			     				<li><img src="images/jian.jpg"/></li>
-			     				<li>1</li>
-			     				<li><img src="images/jia.jpg"/></li>
+			     				<li><a><img src="images/jian.jpg" id="subtract"/></a></li>
+			     				<li class="count">1</li>
+			     				<li><a><img src="images/jia.jpg" id="add"/></a></li>
 			     			</ul>
 			     		</div>
 					</div>		     		
@@ -138,7 +234,7 @@
 					</div>		     		
 		     	</div>
 		     	<div class="gmshu clearfloat box-s fl">
-					<p class="fr">共1件商品   合计<samp>100000积分</samp></p>	     		
+					<p class="fr">共<span class="count">1</span>件商品   合计<samp class="totalPrice">100000积分</samp></p>
 		     	</div>
 		     	
 	    	</div>
@@ -147,9 +243,9 @@
 		<!--settlement star-->
 	    <div class="settlement clearfloat">
 	    	<div class="zuo clearfloat fl box-s">
-	    		共<span>1</span>件  总积分：<span>100000</span>
+	    		共<span class="count">1</span>件  总积分：<span class="totalPrice">100000</span>
 	    	</div>
-	    	<a href="zhifu.html" class="fl db">
+	    	<a href="#" class="fl db">
 	    		提交订单
 	    	</a>
 	    </div>

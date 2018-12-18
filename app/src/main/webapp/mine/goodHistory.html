@@ -12,64 +12,74 @@
     <script src="/js/plugins/jrender/jrender.min.js"></script>
     <link rel="stylesheet" href="/js/plugins/dialog2/dialog.css"/>
     <script src="/js/plugins/dialog2/dialog.min.js"></script>
+    <script src="/js/common.js"></script>
+    <script>
+        $(function () {
+            //获取当前用户的id
+            var user = JSON.parse(sessionStorage.getItem("user"));
+            var userId = user.id;
+
+            //当前页
+            var currentPage = 1;
+            //总页数
+            var pages;
+            //存储游记的数组
+            var travelArr = [];
+
+            function query(){
+                //获取当前用户的所有评论
+                $.get("/comments/"+userId+"/praises",{currentPage:currentPage,pageSize:10},function (data) {
+                    console.log(data.list);
+                    //把第二个数组合并第一个数组中
+                    $.merge(travelArr,data.list);
+
+                    var json = {
+                        list:travelArr
+                    };
+                    //渲染数据
+                    $(".userGood").renderValues(json,{
+                        getHref:getHref,
+                        setTime:function (item,value) {
+                            $(item).html(CurentTimeWithSeconds(new Date(value)));
+                        }
+                    });
+                    //获取总页数
+                    pages = data.pages;
+                })
+                currentPage = currentPage + 1;
+            }
+
+            //默认查询第一页
+            query();
+
+            //给window绑定滚动事件
+            $(window).scroll( function() {
+                if($(window).height()+$(document).scrollTop()+1>=$(document).height()){
+                    //如果是大于总页数就不发送请求了
+                    if(currentPage<=pages){
+                        query();
+                    }else{
+                        $(document).dialog({
+                            type : 'notice',
+                            content: '<span class="info-text">亲,已经到底了!</span>',
+                            autoClose: 2500
+                        });
+                    }
+                }
+            });
+        });
+    </script>
 </head>
 <body>
-<script>
-   /* $(function () {
-        var authorId = JSON.parse(sessionStorage.getItem("user")).id;
-
-        var currentPage = 1;//当前页
-        var pages;//总页数
-        var travelData=[];//定义一个数组用来接收每次分页时的数据
-        function query() {//记得传递当前页这个参数
-            $.get("/users/"+authorId+"/travels/userGoods",{currentPage:currentPage},function (data) {
-                $.merge(travelData,data.list);
-                var json = {
-                    list: travelData
-                };
-                $(".userGood").renderValues(json,{
-                    getHref:function (item,value) {
-                        var url = $(item).data("href");
-                        $(item).attr("href",url+value);
-                    }
-                });
-                pages = data.pages;
-            });
-            currentPage ++;
-        }
-        //默认查询第一页
-        query();
-        //监听滚动事件,当滚动条发生变化时触发
-        $(window).scroll(function(){
-            //document滚上去的高度+手机窗口的高度 >= 整个文档的高度
-            if (($(document).scrollTop()+$(window).height()) >= $(document).height()-1){
-                if (currentPage <= pages){//如果当前页数小于等于总页数
-                    query();
-                }else {
-                    $(document).dialog({
-                        type : 'notice',
-                        content: '<span class="info-text">我是有底线的!</span>',
-                        autoClose: 1000,
-                        position: 'bottom'
-                    });
-                }
-            }
-        });
-    });*/
-</script>
 <section class="aui-flexView">
     <header class="aui-navBar aui-navBar-fixed b-line">
         <a href="/mine/message.html" class="aui-navBar-item">
             <i class="icon icon-return"></i>
         </a>
         <div class="row nav-search">
-            <div class="col">
-                <a href="javascript:history.go(-1);" style="position: absolute;top: 3px;left: 22px;">
-                    <span><i class="fa fa-chevron-left fa-2x" style="color: white;"></i></span>
-                </a>
-            </div>
             <div class="aui-center">
-                <span class="aui-center-title">赞我的</span>
+                <a href="javascript:history.go(-1);" style="position: absolute;top: 3px;left: 22px;">
+                    <span class="aui-center-title">返回</span>                </a>
             </div>
             <div class="col"></div>
         </div>
@@ -78,21 +88,22 @@
         </a>
     </header>
     <section class="aui-scrollView userGood">
-        <div class="aui-list-box" >
-            <div class="aui-flex">
-                <a>
-                    <div class="aui-flex-logo">
-                        <img src="" alt="">
-                    </div>
-                </a>
+        <div class="aui-list-box praise" render-loop="list">
+            <div class="aui-flex" >
                 <div class="aui-flex-box">
                     <h2>
-                        <span>彭于晏</span>
-                        <span style="font-size: 12px">赞了你的游记</span>
+                        <span style="font-size: 12px">我点赞了</span>
+                        <span render-html="list.authorName">彭于晏</span>
+                        <div class="aui-flex-logo">
+                            <img render-src="list.authorUrl" style="width: 30px;">
+                        </div>
                     </h2>
-                    <h3>叩丁狼180日游</h3>
+                    <span class="comment-date" render-fun="setTime" render-key="list.createTime">19:20:15</span>
+                    <a render-fun="getHref" render-key="list.travelId" data-href="/travelContent.html?id=">
+                        <h3 style="color: #732D2D" render-html="list.title">叩丁狼180日游</h3>
+                    </a>
                 </div>
-                </span>
+                <hr/>
             </div>
         </div>
     </section>

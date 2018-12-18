@@ -65,10 +65,10 @@
             $("#detailForm").ajaxForm({
                 beforeSubmit:function(arr){//提交表单之前会执行该函数
                     //arr代表提交表单时传递的数据
-                    arr.push({name: "title", value: $("#title").val()});//标题
-                    arr.push({name: "coverUrl", value: $("#coverUrl").attr("src")});//封面
-                    arr.push({name: "state", value: state});//状态
-                    arr.push({name: "travelContent.content", value: edr.getContent()});//游记内容
+                      arr.push({name: "title", value: $("#title").val()});//标题
+                      arr.push({name: "coverUrl", value: $("#coverUrl").attr("src")});//封面
+                      arr.push({name: "state", value: state});//状态
+                      arr.push({name: "travelContent.content", value: edr.getContent()});//游记内容
                 },
                 success:function (data) {//表单提交成功后执行的函数
                     if(data.success){

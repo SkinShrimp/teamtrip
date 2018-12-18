@@ -9,4 +9,5 @@ public class CommentQueryObject extends QueryObject {
     private Integer type;
     private Long typeId;
     private Long parentId;
+    private Long userId;
 }

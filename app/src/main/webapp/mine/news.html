@@ -1,0 +1,101 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>消息</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <script src="/js/jquery/jquery.min.js"></script>
+    <script src="/js/plugins/jrender/jrender.min.js"></script>
+    <link href="/css/likeHistory.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/js/plugins/dialog2/dialog.css">
+    <script src="/js/plugins/dialog2/dialog.min.js"></script>
+    <script src="/js/common.js"></script>
+    <script>
+        $(function () {
+            //当前页
+            var currentPage = 1;
+            //总页数
+            var pages=10;
+            //存储游记的数组
+            var travelArr = [];
+
+            function query(){
+                $.ajax({
+                    url :'/news',
+                    type:"get",
+                    async:false,
+                    data:{page:currentPage},
+                    success:function (data) {
+                        console.log(data[0]);
+                        //把第二个数组合并第一个数组中
+                        $.merge(travelArr,data);
+
+                        var json = {
+                            list:travelArr
+                        };
+                        //渲染数据
+                        $(".container").renderValues(json);
+                    }
+                });
+                currentPage = currentPage + 1;
+            }
+
+            //默认查询第一页
+            query();
+
+            //给window绑定滚动事件
+            $(window).scroll( function() {
+                if($(window).height()+$(document).scrollTop()+1>=$(document).height()){
+                    //如果是大于总页数就不发送请求了
+                    if(currentPage<=pages){
+                        query();
+                    }else{
+                        $(document).dialog({
+                            type : 'notice',
+                            content: '<span class="info-text">亲,已经到底了!</span>',
+                            autoClose: 2500
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+
+<section class="aui-flexView">
+    <header id="top" class="aui-navBar aui-navBar-fixed b-line" style="background-color: white">
+        <a href="/mine/profiles.html" class="aui-navBar-item">
+            <i class="icon icon-return"></i>
+        </a>
+        <div class="aui-center">
+            <span class="aui-center-title"><strong>内涵段子</strong></span>
+        </div>
+        <a href="javascript:;" class="aui-navBar-item">
+        </a>
+    </header>
+    <br/><br/><br/>
+    <div class="container"  style="background-color: cornsilk">
+        <div class="aui-list-box" render-loop="list">
+            <div class="aui-flex">
+                <div class="aui-flex-logo">
+                    <img src="/img/gaoxiao1.jpeg">
+                </div>
+                <div>
+                    <h2>
+                        <span style="font-size: 16px;color: #732D2D"><strong render-html="list.title"></strong></span>
+                        <a href="#top" style="margin-right: 5px;"><img src="/img/weather/上.png" style="width: 20px;"/></a>
+                    </h2>
+                    <br/>
+                    <span render-html="list.content"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+</body>
+</html>
