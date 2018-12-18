@@ -64,15 +64,4 @@
         <filter-name>imageFilter</filter-name>
         <url-pattern>/upload/*</url-pattern>
     </filter-mapping>
-
-
-    <filter>
-        <filter-name>ForbidFilter</filter-name>
-        <filter-class>cn.wolfcode.trip.app.filter.ForbidFilter</filter-class>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>ForbidFilter</filter-name>
-        <url-pattern>/**</url-pattern>
-    </filter-mapping>
 </web-app>

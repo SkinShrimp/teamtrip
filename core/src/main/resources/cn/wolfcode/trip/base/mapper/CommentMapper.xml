@@ -126,4 +126,30 @@
     <select id="selectByCollect" resultType="long"  parameterType="comment">
         SELECT  max(flagId) FROM COMMENT WHERE type_id=#{typeId} AND type=#{type} AND collect = #{collect} GROUP BY collect
     </select>
+
+    <select id="selectCommentByUserId" resultType="map">
+        select c.comment comment,c.user_id userId,u.nickName userName,u.headImgUrl userUrl,u1.id authorId,u1.nickName authorName,u1.headImgUrl authorUrl,c.createTime,t.title,t.id travelId from comment c
+        left join user u
+        on c.user_id = u.id
+        left join travel t on c.type_id = t.id
+        join user u1 on t.author_id = u1.id
+        <where>
+            <if test="userId!=null">
+                AND c.user_id = #{userId}
+            </if>
+        </where>
+    </select>
+    <select id="selectPraiseByUserId" resultType="map">
+        select c.user_id userId,u.nickName userName,u.headImgUrl userUrl,u1.id authorId,u1.nickName authorName,u1.headImgUrl authorUrl,c.createTime,t.title,t.id travelId from comment c
+        left join user u
+        on c.user_id = u.id
+        left join travel t on c.type_id = t.id
+        join user u1 on t.author_id = u1.id
+        <where>
+            <if test="userId!=null">
+                AND c.user_id = #{userId}
+            </if>
+            and c.type= 0
+        </where>
+    </select>
 </mapper>

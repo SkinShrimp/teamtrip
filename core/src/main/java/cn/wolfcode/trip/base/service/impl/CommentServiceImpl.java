@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CommentServiceImpl implements ICommentService {
@@ -94,5 +95,19 @@ public class CommentServiceImpl implements ICommentService {
         }
         commentMapper.insert(entry);
 
+    }
+
+    @Override
+    public PageInfo getCommentByUserId(CommentQueryObject qo) {
+        PageHelper.startPage(qo.getCurrentPage(), qo.getPageSize(),qo.getOrderBy());
+        List<Map<String,Object>> comments = commentMapper.selectCommentByUserId(qo);
+        return new PageInfo(comments);
+    }
+
+    @Override
+    public PageInfo getPraiseByUserId(CommentQueryObject qo) {
+        PageHelper.startPage(qo.getCurrentPage(), qo.getPageSize(),qo.getOrderBy());
+        List<Map<String,Object>> comments = commentMapper.selectPraiseByUserId(qo);
+        return new PageInfo(comments);
     }
 }
