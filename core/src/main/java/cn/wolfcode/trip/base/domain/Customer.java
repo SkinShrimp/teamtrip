@@ -6,6 +6,8 @@ import lombok.Setter;
 @Setter@Getter
 public class Customer extends BaseDomain{
 
+    private Long userId;
+
     private String name;
 
     private String address;

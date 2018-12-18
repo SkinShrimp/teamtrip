@@ -50,6 +50,23 @@
                     }
                 })
             });
+
+            //删除按钮
+            $(".btn-delete").click(function () {
+                var json = $(this).data('json');
+
+                console.log(json);
+                $.messager.confirm("温馨提示", "您确定要删除选中的数据吗?", function () {
+                    $.post("/goods/deleteById.do",{id:json.id},function (data) {
+                        if(data.success){
+                            $.messager.alert("温馨提示","操作成功,2S之后关闭");
+                            setTimeout(function () {
+                                window.location.reload();
+                            },2000);
+                        }
+                    })
+                })
+            })
         })
     </script>
 </head>
@@ -104,6 +121,9 @@
                     <td>${entity.sellcount}</td>
                     <td>
                         <a href="javascript:void(0);" class="btn-input" data-json='${entity.json}'>修改</a>
+                    </td>
+                    <td>
+                        <a href="javascript:void(0);" class="btn-delete" data-json='${entity.json}'>删除</a>
                     </td>
                 </tr>
                 </#list>

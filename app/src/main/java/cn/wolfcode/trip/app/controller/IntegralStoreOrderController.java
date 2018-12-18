@@ -35,7 +35,7 @@ public class IntegralStoreOrderController {
      * @param password
      * @return
      */
-    @PostMapping("/verifyPassword")
+    @GetMapping("/verifyPassword")
     public JsonResult verifyPassword(String password){
 
         JsonResult jsonResult = new JsonResult();
