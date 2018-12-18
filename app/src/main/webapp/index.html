@@ -221,64 +221,21 @@
 
     <script>
         $(function () {
-            //当前页
-            var currentPage = 1;
-            //总页数
-            var pages;
-            //存储日报的数组
-            var dailyArr = [];
-
-
-            function query() {
-                //获取所有日报
-                $.get("/dailies", {currentPage: currentPage}, function (data) {
-                    // console.log(data);
-                    //把第二个数组合并到第一个数组
-                    $.merge(dailyArr, data.list);
-                    console.log(dailyArr);
-                    //用于渲染时循环,循环时是取list的属性出来
-                    var json = {
-                        list: dailyArr
-                    };
-
-                    //渲染数据
-                    $(".container").renderValues(json, {
-                        getHref: getHref
+            //搜索关键字按钮
+            $("#searchBtn").click(function () {
+                var keyword = $("#search").val();
+                if (keyword) {
+                    //将输入的关键字保存到sessionStorage中
+                    sessionStorage.setItem("keyword", JSON.stringify(keyword));
+                    window.location.href = '/search.html'
+                } else {
+                    $(document).dialog({
+                        type: 'notice',
+                        content: '<span class="info-text">请输入要搜索的关键字!</span>',
+                        autoClose: 2500
                     });
-
-                    //如果currentPage大于1，拼接在后面
-                    if(currentPage > 1){
-
-                    }
-
-
-                    //获取总页数
-                    pages = data.pages;
-                });
-                currentPage += 1;
-            }
-
-            //默认查询第一页
-            query();//默认查询第一页
-
-            $(window).scroll(function () {
-                if ($(window).height() + $(document).scrollTop() >= $(document).height()) {
-                    // console.log("==============");
-                    // console.log(pages);
-                    // console.log(currentPage);
-                    //如果是大于总页数就不发送请求了
-                    if (currentPage <= pages) {
-                        query();
-                    } else {
-                        $(document).dialog({
-                            type: 'notice',
-                            infoText: '已经到底了',
-                            autoClose: 2500,
-                            position: 'bottom'  // center: 居中; bottom: 底部
-                        });
-                    }
                 }
-            });
+            })
 
 
             //加载侧边栏的时候带上毫秒值,解决缓存问题
@@ -323,7 +280,7 @@
                 json = {
                     list: data
                 }
-                // console.log(data);
+                console.log(data);
                 $(".dynamic").renderValues(json)
             })
         })
@@ -333,26 +290,6 @@
 
 
 <body>
-<div id="templet" style="display: none">
-    <div>
-        <div id="">
-            <div style="margin-bottom: 20px">
-                <a data-href="newsContent.html?id=" render-key="id" render-fun="getHref">
-                    <div class="row news-detail">
-                        <div class="col-5">
-                            <img render-src="coverUrl">
-                        </div>
-                        <div class="col-7">
-                            <h4 render-html="title"></h4>
-                            <p render-html="subTitle"></p>
-                        </div>
-                    </div>
-                </a>
-                <hr>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!--缓存-->
 <!--<div class="page" id="app">
@@ -504,9 +441,11 @@
         <div class="safe_class">
             <img src="picture/safe_icon.png" style="width: 100%;">
         </div>
-        <div class="kf_class" id="kf_btn_div" onclick="jiaxinTogglerDiv()">
-            <img src="picture/onlinekf.png" style="width: 100%;">
-        </div>
+        <a href="/reply.html">
+            <div class="kf_class" id="kf_btn_div">
+                <img src="picture/onlinekf.png" style="width: 100%;">
+            </div>
+        </a>
 
         <div class="safe_info">
             <div class="img_safe">
