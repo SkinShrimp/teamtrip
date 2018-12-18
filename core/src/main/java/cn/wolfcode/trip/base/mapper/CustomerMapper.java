@@ -9,4 +9,6 @@ public interface CustomerMapper {
     List<Customer> selectAll();
 
     Customer selectByUserId(Long userId);
+
+    void updateByUserId(Customer customer);
 }

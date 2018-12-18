@@ -1,6 +1,7 @@
 package cn.wolfcode.trip.admin.controller;
 
 import cn.wolfcode.trip.base.domain.Goods;
+import cn.wolfcode.trip.base.domain.StrategyContent;
 import cn.wolfcode.trip.base.query.GoodsQueryObject;
 import cn.wolfcode.trip.base.service.IGoodsService;
 import cn.wolfcode.trip.base.service.IGoodsTypeService;
@@ -45,10 +46,11 @@ public class GoodsController {
     }
 
 
-    /*@RequestMapping("/getContentById")
+    @RequestMapping("/deleteById")
     @ResponseBody
-    public StrategyContent getContentById(Long id){
-        return goodsServicef.getContentById(id);
-    }*/
+    public JsonResult getContentById(Long id){
+         goodsService.deleteById(id);
+         return new JsonResult();
+    }
 
 }
