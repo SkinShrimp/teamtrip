@@ -15,25 +15,142 @@
     <link rel="stylesheet" href="/js/plugins/dialog2/dialog.css"/>
     <script src="/js/plugins/dialog2/dialog.min.js"></script>
     <script src="/js/common.js"></script>
+
     <script src="/js/plugins/inputbox/dist/mDialogMin.js"></script>
-    <link rel="stylesheet" href="/js/plugins/inputbox/dist/dialog.css">
+    <link rel="stylesheet" href="/js/plugins/inputbox/dist/dialog.css"/>
+
 
     <script>
         $(function () {
-            //获取到文章的id
             var params = getParams();
-            //获取到当前用户的id
-            var user = JSON.parse(sessionStorage.getItem("user"));
+            var user = sessionStorage.getItem("user");
             if (params.id) {
 
-                $.get("/dailies/" + params.id, function (data) {
-                    console.log(data);
-                    $('.newsDetail').renderValues(data)
-
-
+                $.ajax({
+                    url: "/dailies/" + params.id, method: "get", async: false, success: function (data) {
+                        $('.detail').renderValues(data);
+                    }
                 })
-
             }
+
+            //
+            // //保存评论
+            // $(".commentingParent").click(function () {
+            //     Dialog.init('<input type="text" placeholder="说点什么吧"  style="margin:8px 0;width:100%;padding:11px 8px;font-size:15px; border:1px solid #999;"/>', {
+            //         title: '说点什么吧！',
+            //         button: {
+            //             确定: function () {
+            //                 if (this.querySelector('input').value.length >= 50) {
+            //                     content = this.querySelector('input').value;
+            //                     Dialog.init('你输入的内容不符合格式', 500);
+            //                     Dialog.close(this);
+            //                     return;
+            //                 } else {
+            //                     comment = this.querySelector('input').value;
+            //
+            //                     data = {
+            //                         type: 3,//日报评论
+            //                         typeId: params.id,
+            //                         comment: comment,
+            //                         parentId: 0
+            //                     }
+            //                     //提交评论表单
+            //                     $.post("/newsContentComment", data, function (data) {
+            //
+            //                     });
+            //                     Dialog.close(this);
+            //                     window.location.reload();
+            //                     return;
+            //                 }
+            //                 ;
+            //             },
+            //             点击关闭: function () {
+            //                 Dialog.init('您取消了评论', 1000);
+            //                 Dialog.close(this);
+            //             }
+            //         }
+            //     });
+            // });
+            //
+            // //渲染评论
+            // $.get("/newsContentComment/parent", {type: 3, typeId: 0, parentId: params.id}, function (data) {
+            //     var parentId;
+            //     var json = {
+            //         list: data
+            //     }
+            //     $("#comment").renderValues(json, {
+            //         //设置父节点的ID
+            //         getId: function (item, value) {
+            //             parentId = value;
+            //             $(item).attr("data-parentid", value);
+            //             $(item).attr("data-acceptuserid", value);
+            //         },
+            //         getParentId: function (item, value) {
+            //             console.log(value);
+            //             $.ajax({
+            //                 url: "/newsContentComment/parent", async: false, data: {
+            //                     type: 3,
+            //                     typeId: value,
+            //                     parentId: params.id
+            //                 }, success: function (data) {
+            //                     console.log(data);
+            //                     var temp = "";
+            //                     $.each(data, function (index, ele) {
+            //                         temp += "<span class='commenting' data-acceptuserid='" + ele.userId + "' data-parentid='" + parentId + "' >" + ele.userName + "回复了" + ele.acceptUserName + ":" + ele.comment + "</span></br> ";
+            //                     });
+            //                     $("#subCommit").html(temp);
+            //                 }
+            //             });
+            //         }
+            //     });
+            //
+            //
+            //     //对子节点的评论
+            //     $(".commenting").click(function () {
+            //         var parentId = $(this).data("parentid");
+            //         var acceptUserId = $(this).data("acceptuserid");
+            //         Dialog.init('<input type="text" placeholder="说点什么吧"  style="margin:8px 0;width:100%;padding:11px 8px;font-size:15px; border:1px solid #999;"/>', {
+            //             title: '说点什么吧！',
+            //             button: {
+            //                 确定: function () {
+            //                     if (this.querySelector('input').value.length >= 50) {
+            //                         content = this.querySelector('input').value;
+            //                         Dialog.init('你输入的内容不符合格式', 500);
+            //                         Dialog.close(this);
+            //                         return;
+            //                     } else {
+            //                         comment = this.querySelector('input').value;
+            //
+            //                         data = {
+            //                             type: 3,//日报评论
+            //                             typeId: params.id,
+            //                             comment: comment,
+            //                             parentId: parentId,
+            //                             'acceptUser.id': parentId,
+            //                             'user.id': user.id
+            //                         }
+            //                         //提交评论表单
+            //                         $.post("/newsContentComment", data, function (data) {
+            //
+            //                         });
+            //                         Dialog.close(this);
+            //                         window.location.reload();
+            //                         return;
+            //                     }
+            //                     ;
+            //                 },
+            //                 点击关闭: function () {
+            //                     Dialog.init('您取消了评论', 1000);
+            //                     Dialog.close(this);
+            //                 }
+            //             }
+            //         });
+            //
+            //     });
+            //
+            // });
+
+
         })
     </script>
 
@@ -41,7 +158,7 @@
 
 <body>
 <div class="newsDetail">
-    <div >
+    <div class="detail">
         <a href="javascript:history.go(-1);" style="position: absolute;top: 10px;left: 22px;">
             <span><i class="fa fa-chevron-left fa-2x" style="color: white;"></i></span>
         </a>
@@ -64,14 +181,60 @@
 
             <div class="detail">
                 <h2 class="title" render-html="title"></h2>
-                <div class="content"  render-html="content.content">
+                <div class="content" render-html="content.content">
 
                 </div>
             </div>
+        </div>
+    </div>
 
+
+    <!--评论区-->
+    <div class="container d-flex">
+        <div class="p-2  flex-fill fa-2x">
+            <i data-id="1" class="fa fa-thumbs-o-up" id="like-Btn"> </i>
+        </div>
+        <div class="p-2  flex-fill fa-2x">
+            <i data-id="2" class="commentingParent fa  fa-commenting-o" id="comment-Btn"> </i>
+        </div>
+        <div class="p-2  flex-fill fa-2x">
+            <i data-id="3" class="fa fa-star-o" id="collect-Btn"> </i>
+        </div>
+    </div>
+    <div id="comment">
+        <div render-loop="list">
+            <div class="container row comment">
+                <div class="col-2 comment-head">
+                    <a href="userProfiles.html">
+                        <img class="rounded-circle"
+                             render-src="list.headImgUrl">
+                    </a>
+                </div>
+                <div class="col comment-right">
+                    <p class="authorName"><span render-html="list.userName"></span></p>
+                    <!--
+                                        <span class="comment-date" render-html="list.createTime"></span>
+                    -->
+                    <div class="comment-content">
+                        <a href="strategyComment.html">
+                            <p render-html="list.comment"></p>
+                        </a>
+                    </div>
+
+                    <div class="d-flex icon">
+                        <i class="commenting fa  fa-commenting-o " style="margin-right: 10px" render-key="list.userId"
+                           render-fun="getId"> 评论 </i>
+                        <div id="subCommit" render-fun="getParentId" render-key="list.userId">
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
 
 </div>
 </body>
+
 </html>

@@ -42,7 +42,7 @@ public class CommentController {
     @GetMapping("/{typeId}")
     public Comment get(Comment entry) {
         entry.setUser(UserContext.getUser());
-        entry.setParentId(null);
+        entry.setParentId(0L);
         return commentService.getCommentByTypeId(entry);
     }
 
