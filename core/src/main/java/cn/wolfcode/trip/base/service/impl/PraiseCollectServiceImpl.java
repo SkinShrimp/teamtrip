@@ -54,24 +54,53 @@ public class PraiseCollectServiceImpl implements IPraiseCollectService {
     public void saveOrUpdatePraise(PraiseCollect entry) {
         //带入 type typeId parentId 必须
         PraiseCollectQueryObject qo = new PraiseCollectQueryObject();
-        qo.setTypeId(entry.getTypeId());
-        qo.setTypeFlag(entry.getTypeFlag());
-        qo.setParentId(entry.getParentId());
+            qo.setTypeId(entry.getTypeId());
+            qo.setTypeFlag(entry.getTypeFlag());
+            qo.setParentId(entry.getParentId());
         //是否存在
         PraiseCollect isFlag = praiseCollectMapper.selectByQueryObject(qo);
 
-        if (isFlag == null && entry.getPraise() == 1) {
+        if (isFlag == null && entry.getPraise() ==1 ) {
+            Long user=UserContext.getUser().getId();
             entry.setTypeId(UserContext.getUser().getId());
             praiseCollectMapper.insert(entry);
-        } else {
+        } else{
             entry.setId(isFlag.getId());
-//            praiseCollectMapper.updateByPrimaryKey(entry);
-            if (entry.getPraise() == 1) {
+            //praiseCollectMapper.updateByPrimaryKey(entry);
+                if (entry.getPraise() == 1) {
                 return;
             }
+
             praiseCollectMapper.deleteByPrimaryKey(isFlag.getId());
         }
+
     }
+   @Override
+    public void saveOrUpdateCollect(PraiseCollect entry) {
+       //带入 type typeId parentId 必须
+       PraiseCollectQueryObject qo = new PraiseCollectQueryObject();
+       qo.setTypeId(entry.getTypeId());
+       qo.setTypeFlag(entry.getTypeFlag());
+       qo.setParentId(entry.getParentId());
+       //是否存在
+       PraiseCollect isFlag = praiseCollectMapper.selectByQueryObject(qo);
+
+       if (isFlag == null && entry.getCollect() ==1 ) {
+           Long user=UserContext.getUser().getId();
+           entry.setTypeId(UserContext.getUser().getId());
+           praiseCollectMapper.insert(entry);
+       } else{
+           entry.setId(isFlag.getId());
+           //praiseCollectMapper.updateByPrimaryKey(entry);
+           if (entry.getCollect() == 1) {
+               return;
+           }
+
+           praiseCollectMapper.deleteByPrimaryKey(isFlag.getId());
+       }
+    }
+
+
 
     @Override
     public List<PraiseCollect> selectPraiseByTypeId(QueryObject qo) {
@@ -87,4 +116,6 @@ public class PraiseCollectServiceImpl implements IPraiseCollectService {
     public List<PraiseCollect> selectPraiseByParentId(PraiseCollectQueryObject qo) {
         return praiseCollectMapper.selectPraiseByParentId(qo);
     }
+
+
 }

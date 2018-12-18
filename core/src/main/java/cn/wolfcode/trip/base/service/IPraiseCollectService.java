@@ -25,10 +25,12 @@ public interface IPraiseCollectService {
 
     void saveOrUpdatePraise(PraiseCollect entry);
 
+    //保存或修改日报点赞收藏
+    void saveOrUpdateCollect(PraiseCollect entry);
+
     List<PraiseCollect> selectPraiseByTypeId(QueryObject qo);
 
     List<String> selectPraiseNameByParentId(Long parenId);
 
-    //日报点赞
     List<PraiseCollect> selectPraiseByParentId(PraiseCollectQueryObject qo);
 }

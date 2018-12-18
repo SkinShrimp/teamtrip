@@ -57,6 +57,7 @@
     WHERE typeflag = #{typeFlag} AND type_id = #{typeId} AND parentId = #{parentId}
   </select>
 
+
   <!--根据(typeId用户名 查询点赞)-->
   <select id="selectPraiseByTypeId" resultType="praiseCollect">
     SELECT id, praise, collect, typeflag, type_id, parentId

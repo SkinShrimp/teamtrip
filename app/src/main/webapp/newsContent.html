@@ -30,16 +30,20 @@
                     $('.newsDetail').renderValues(data)
                 })
             }
-           //初始化点赞、收藏功能
-            $.get("/praiseCollects/parent",{ParentId:params.id},function (data) {
-                console.log(data);
-                if (data[0].praise == 1) {
+            console.log(params.id);
+            //初始化点赞
+            $.get("/praiseCollects/parent",{parentId:params.id},function (data) {
+                if (data[0].praise == 1 || data[1].praise == 1) {
                     $("#likeBtn").removeClass().addClass("fa fa-thumbs-up");
                 }
-                if (data[0].collect == 1) {
+            });
+            //初始化收藏
+            $.get("/praiseCollects/parent",{parentId:params.id},function (data) {
+                if (data[0].collect == 1 || data[1].collect == 1) {
                     $("#collectBtn").removeClass().addClass("fa fa-star");
                 }
             });
+
             //点赞、收藏评论
             $(".d-flex i").click(function () {
                 var data;
@@ -67,7 +71,8 @@
                     $.post("/praiseCollects/praise",data, function (data) {
 
                     });
-                }else if ($(this).data("id") == 3){   //收藏
+                }
+                if ($(this).data("id") == 3){   //收藏
                     //判断用户是否登陆
                     var item = sessionStorage.getItem("user");
                     if (!item) {
@@ -82,13 +87,14 @@
                         collect = 0;
                     }
                     data = {
+
                         typeId: user.id,
                         parentId: params.id,
                         collect: collect
                     };
-                        $.post("/praiseCollects/praise",data, function (data) {
+                    $.post("/praiseCollects/praises",data, function (data) {
 
-                        });
+                    });
                 }
             });
         })

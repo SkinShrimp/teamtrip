@@ -27,6 +27,13 @@ public class PraiseCollectController {
         return new JsonResult();
     }
 
+    //日报收藏
+    @PostMapping("/praises")
+    public JsonResult saveOrUpdateCollect(PraiseCollect entry) {
+        praiseCollectService.saveOrUpdateCollect(entry);
+        return new JsonResult();
+    }
+
     @GetMapping("/praise/{parenId}")
     public List<String> getPraiseNames(@PathVariable Long parenId) {
         return praiseCollectService.selectPraiseNameByParentId(parenId);

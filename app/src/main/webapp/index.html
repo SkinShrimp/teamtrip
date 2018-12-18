@@ -281,7 +281,9 @@
                     list:data
                 }
                 console.log(data);
-                $(".dynamic").renderValues(json)
+                $(".dynamic").renderValues(json,{
+                    getHref:getHref
+                })
             })
         })
     </script>
@@ -462,11 +464,11 @@
 
                     <div class="Marquee" render-loop="list">
                             <div class="d-flex" >
-                                <a href="userProfiles.html">
+                                <a render-key="list.user.id" render-fun="getHref" data-href="/userProfiles.html?id=">
                                     <img class="rounded-circle dynamic-head"
                                          render-src="list.user.headImgUrl">
                                 </a>
-                                <a href="strategyComment.html" class="dynamic-detail" data-id="list.user.id">
+                                <a class="dynamic-detail" data-id="list.user.id">
                                     <span render-html="list.user.nickName">叩丁狼</span> 点评了攻略<p render-html="list.strategy.title">广州攻略</p>
                                 </a>
                             </div>

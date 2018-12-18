@@ -34,4 +34,7 @@ public interface PraiseCollectMapper {
     List<String> selectPraiseNameByParentId(@Param("parentId") Long parentId);
 
     List<PraiseCollect> selectPraiseByParentId(PraiseCollectQueryObject qo);
+
+
+
 }
