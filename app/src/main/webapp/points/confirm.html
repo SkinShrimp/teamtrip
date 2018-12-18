@@ -109,6 +109,8 @@
 			$(".db").click(function () {
                     console.log(json);
 				$.post("/orders",json,function (data) {
+				    window.location.href="zhifu.html";
+                    sessionStorage.setItem("totalPrice",totalPrice);
                 })
             })
         })
