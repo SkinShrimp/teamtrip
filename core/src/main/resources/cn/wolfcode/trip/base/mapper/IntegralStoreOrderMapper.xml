@@ -28,7 +28,10 @@
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select id, expressage_id, goods_id, customer_id, total_money, date, state,count
+    from integral_store_order WHERE customer_id= #{userId} and state = 1
+  </select>
+  <select id="selectForList" resultMap="BaseResultMap">
+     select id, expressage_id, goods_id, customer_id, total_money, date, state,count
     from integral_store_order WHERE customer_id= #{userId} and state = #{status}
-
   </select>
 </mapper>

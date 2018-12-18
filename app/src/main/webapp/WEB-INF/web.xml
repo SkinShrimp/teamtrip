@@ -64,7 +64,4 @@
         <filter-name>imageFilter</filter-name>
         <url-pattern>/upload/*</url-pattern>
     </filter-mapping>
-
-
-
 </web-app>

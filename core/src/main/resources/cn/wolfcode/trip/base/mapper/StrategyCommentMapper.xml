@@ -59,8 +59,10 @@
     JOIN strategy s ON sc.strategy_id=s.id
   </select>
   <select id="selectForList" resultMap="BaseResultMap">
-     select sc.id, sc.user_id, sc.createTime, sc.content, sc.imgUrls, sc.starNum, sc.strategy_id, sc.state, sc.commendTime,
+     select sc.id, sc.user_id, sc.createTime, sc.content, sc.imgUrls, sc.starNum, sc.strategy_id, sc.state, sc.commendTime
     from strategycomment sc
+    JOIN user u on sc.user_id = u.id
+    join strategy s on sc.strategy_id = s.id
     <where>
       <if test="strategyId!=null">
         and sc.strategy_id = #{strategyId}

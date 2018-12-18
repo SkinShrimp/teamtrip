@@ -23,6 +23,12 @@
                 $(".col").renderValues(data)
             })
 
+			//获取关注数
+			$.get("/users/"+user.id+"/focuses",function (data) {
+				if(data){
+					$("#focus").html(data);
+				}
+            });
         })
 	</script>
 </head>
@@ -44,8 +50,8 @@
 			<ul class="list-inline">
 				<li class="list-inline-item"><small>常住地</small></li>
 				<li class="list-inline-item"><small render-html="place"></small></li>
-				<li class="list-inline-item"><small>关注<span>0</span></small></li>
-				<li class="list-inline-item"><small>粉丝<span>0</span></small></li>
+				<li class="list-inline-item"><small>关注<span id="focus">0</span></small></li>
+				<li class="list-inline-item"><small>粉丝<span>4</span></small></li>
 			</ul>
 		</div>
 	</div>
@@ -91,16 +97,17 @@
 </div>
 <hr />
 <ul class="mainmenu">
-	<li><a href="#" ><b><i class="fa fa-star fa-2x"></i></b><span>我的收藏</span></a></li>
-	<li><a href="#" ><b><i class="fa fa-commenting-o fa-2x"></i></b><span>我的评论</span></a></li>
-	<li><a href="/mine/travels.html" ><b><i class="fa fa-book fa-2x"></i></b><span>我的游记</span></a></li>
+	<!--<li><a href="#" ><b><i class="fa fa-star fa-2x"></i></b><span>我的收藏</span></a></li>-->
 	<li><a href="/mine/userStrategy.html" ><b><i class="fa fa-list-ul fa-2x"></i></b><span>我的旅行单</span></a></li>
 	<li><a href="/mine/message.html" ><b><i class="fa fa-bullhorn fa-2x"></i></b><span>我的消息</span></a></li>
 	<li><a href="#" ><b><i class="fa fa-file-text fa-2x"></i></b><span>我的订单</span></a></li>
-	<li><a href="#" ><b><i class="fa fa-briefcase fa-2x"></i></b><span>我的钱包</span></a></li>
+	<!--<li><a href="#" ><b><i class="fa fa-briefcase fa-2x"></i></b><span>我的钱包</span></a></li>-->
 	<li><a href="/mine/circleFriends.html" ><b><i class="fa fa-globe fa-2x"></i></b><span>我的朋友圈</span></a></li>
 	<li><a href="/mine/question.html" ><b><i class="fa fa-pencil fa-2x"></i></b><span>问达人</span></a></li>
-	<li><a href="/mine/game.html" ><b><i class="fa fa-list-alt fa-2x"></i></b><span>游戏休闲</span></a></li>
+	<li><a href="/mine/news.html" ><b><i class="fa fa-fire fa-2x"></i></b><span>搞笑段子</span></a></li>
+	<li><a href="/mine/game.html" ><b><i class="fa fa-glass fa-2x"></i></b><span>游戏休闲</span></a></li>
+	<li><a href="/mine/weather.html" ><b><i class="fa fa-cloud fa-2x"></i></b><span>骡窝天气</span></a></li>
+	<li><a href="/mine/travels.html" ><b><i class="fa fa-book fa-2x"></i></b><span>我的游记</span></a></li>
 </ul>
 
 </body>

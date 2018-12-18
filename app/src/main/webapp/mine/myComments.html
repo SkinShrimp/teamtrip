@@ -20,39 +20,59 @@
     <link rel="stylesheet" href="/js/jqueryAlert/common.css"/>
     <script type="text/javascript">
         $(function () {
-            var usern = JSON.parse(sessionStorage.getItem('user'));
-            var currentPage = 1;//当前页
-            var pages;//总页数
-            var commentData = [];//定义一个数组用来接收每次分页时的数据
-            function query() {//记得传递当前页这个参数
-                //根据攻略id获得其对应的评论信息
-                $.get("/travelComments/" + usern.id + "/userComments", {
-                    pageSize: 8,
-                    currentPage: currentPage,
-                }, function (data) {
-                    $.merge(commentData, data.list);
-                    var json = {
-                        list: commentData
-                    };
-                    $(".comment").renderValues(json);
+            //获取当前用户的id
+            var user = JSON.parse(sessionStorage.getItem("user"));
+            var userId = user.id;
 
+
+            //当前页
+            var currentPage = 1;
+            //总页数
+            var pages;
+            //存储游记的数组
+            var travelArr = [];
+
+            function query(){
+                //获取当前用户的所有评论
+                $.get("/comments/"+userId+"/comments",{currentPage:currentPage,pageSize:10},function (data) {
+                    //把第二个数组合并第一个数组中
+                    $.merge(travelArr,data.list);
+
+                    var json = {
+                        list:travelArr
+                    };
+                    //渲染数据
+                    $("#containerBtn").renderValues(json,{
+                        getHref:getHref,
+                        setTime:function (item,value) {
+                            $(item).html(CurentTimeWithSeconds(new Date(value)));
+                        }
+                    });
+                    //获取总页数
+                    pages = data.pages;
+                })
+                currentPage = currentPage + 1;
+            }
+
+            //默认查询第一页
             query();
-            //监听滚动事件,当滚动条发生变化时触发
-            $(window).scroll(function () {
-                //document滚上去的高度+手机窗口的高度 >= 整个文档的高度
-                if (($(document).scrollTop() + $(window).height()) >= $(document).height() - 1) {
-                    if (currentPage <= pages) {//如果当前页数小于等于总页数
+
+            //给window绑定滚动事件
+            $(window).scroll( function() {
+                if($(window).height()+$(document).scrollTop()+1>=$(document).height()){
+                    //如果是大于总页数就不发送请求了
+                    if(currentPage<=pages){
                         query();
-                    } else {
+                    }else{
                         $(document).dialog({
-                            type: 'notice',
-                            content: '<span class="info-text">我是有底线的!</span>',
-                            autoClose: 1000,
-                            position: 'bottom'
+                            type : 'notice',
+                            content: '<span class="info-text">亲,已经到底了!</span>',
+                            autoClose: 2500
                         });
                     }
                 }
             });
+
         })
     </script>
 </head>
@@ -73,34 +93,35 @@
 </div>
 
 <div class="comment">
-    <div >
-        <div class="container" id="containerBtn">
+    <div  id="containerBtn">
+        <div class="container" render-loop="list">
             <div class="row">
                 <div class="col-2 comment-head">
                     <a>
-                        <img class="rounded-circle userInfBtn" src="">
+                        <img class="rounded-circle userInfBtn" render-src="list.authorUrl">
                     </a>
                 </div>
                 <div class="col">
-                    <a style="font-size: 10px;color: #61CAD0" >大哥</a>
-                    <span class="comment-date">19:20:15</span>
-                    <div class="comment-content">
+                    <a style="font-size: 10px;color: #61CAD0" render-html="list.authorName">大哥</a>
+                    <span class="comment-date" render-fun="setTime" render-key="list.createTime">19:20:15</span>
+                    <div class="comment-content" render-html="list.comment">
                         <p>牛逼</p>
                     </div>
                     <div>
-                        <span style="color: #28a745">所属类型:<a class="articleFormBtn">游记</a></span>
+                        <span style="color: #28a745" >所属类型:<a class="articleFormBtn">游记</a></span>
                     </div>
                     <div>
-                        <span style="color: #28a745">所属文章:
+                        <span style="color: #28a745" >所属文章:
                             <input type="hidden"
                                    class="strategyChooseBtn">
-                            <a
-                               class="articleSkipBtn">这个文章
-                        </a>
+                            <a render-fun="getHref" render-key="list.travelId" data-href="/travelContent.html?id=">
+                                <h3 style="color: #732D2D" render-html="list.title">叩丁狼180日游</h3>
+                            </a>
                             <input type="hidden"
                                    class="articleSkipBtnHidden">
                         </span>
                     </div>
+                    <hr/>
                 </div>
             </div>
             <div class="count d-flex justify-content-between">

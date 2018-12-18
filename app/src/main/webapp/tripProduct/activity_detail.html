@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>活动详情</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <!--库-->
+    <link rel="stylesheet" type="text/css" href="css/amazeui.css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.Spinner.js"></script>
+    <script type="text/javascript" src="js/amazeui.js"></script>
+    <!--核心样式-->
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+<body>
+<div id="activity_detail">
+    <div class="cover">
+        <a title="" class="return" href="trip_list.html"><i class="am-icon-angle-left"></i></a>
+    </div>
+    <div  class="title">
+        <label>黄河小浪底：一场灵魂与身体的旅行</label>
+        <div class="sprice">
+           报名费：<font>￥230</font>起/人
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="time">
+        <div class="date">
+            <img src="images/time.png">
+            <p>出发时间：2017/01/23</p>
+            <div class="clear"></div>
+        </div>
+        <ul>
+            <li class="phone">
+                <p>活动咨询：<span>0379-656445441</span></p>
+            </li>
+            <li class="phone">
+                <p>集合地点：<span>洛阳市关林庙会</span></p>
+            </li>
+        </ul>
+    </div>
+
+    <div class="introduce">
+        <div class="detail">
+            <label>活动介绍:</label>
+            <div class="clear"></div>
+            <div class="con">
+                小浪底风景区主要由小浪底水利枢纽工程、坝后公园、西霞院水库、黄河西滩等几个风景区组成。它是融观光休闲度假为一体的特大省级生态旅游区。2005年被河南省命名为“十大旅游热点景区”，06年获得“中国最具吸引人的地方的荣誉称号”                <div class="all_text" style="display:none;">
+                </div>
+                <a class="more" href="javascript:void(0)">
+                    <i class="am-icon-angle-down" ></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <!-----------加入购物车/购买----------->
+    <div id="buy_nav">
+        <a class="call" href="#"> <img src="images/call.png"/>
+            <p>电话咨询</p>
+        </a>
+        <a class="cur" href="join.html">立即报名</a>
+    </div>
+</div>
+</div>
+</body>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".more").click(function(){
+            $(".all_text").toggle();
+        });
+    });
+</script>
+ </html>
