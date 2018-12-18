@@ -11,12 +11,16 @@ import java.util.List;
  * 敏感词过滤
  */
 public class FilterUtil {
-
     //存放读取的敏感词
     private static List<String> forbidWord = new ArrayList<>();
     //对敏感词集合进行初始化
     static {
-        readFile();
+        //readFile();
+        forbidWord.add("script");
+        forbidWord.add("垃圾");
+        forbidWord.add("蠢");
+        forbidWord.add("笨蛋");
+        forbidWord.add("习近平");
     }
 
     /**
@@ -25,7 +29,9 @@ public class FilterUtil {
      */
     public static void readFile() {
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File("C:\\Users\\陈晋\\Desktop\\forbid.txt")),
+            File f = new File("classpath:forbid.txt");
+            System.out.println("f:"+f);
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(f),
                     "UTF-8"));
             String lineTxt = null;
             while ((lineTxt = br.readLine()) != null) {

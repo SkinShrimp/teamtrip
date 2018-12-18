@@ -18,7 +18,7 @@ import java.net.URLConnection;
 
 public class SpiderTest {
 
-    @Test
+   /* @Test
     public void test1() throws Exception {
         HttpClient client = new HttpClient();
         // 设置代理服务器地址和端口
@@ -126,5 +126,5 @@ public class SpiderTest {
 
         //将内容写入磁盘
         SpiderUtil.writeToFile(allText.toString(),"C:\\Users\\陈晋\\Desktop\\xx\\a.txt");
-    }
+    }*/
 }

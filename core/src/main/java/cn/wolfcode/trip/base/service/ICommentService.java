@@ -1,6 +1,7 @@
 package cn.wolfcode.trip.base.service;
 
 import cn.wolfcode.trip.base.domain.Comment;
+import cn.wolfcode.trip.base.query.CommentQueryObject;
 import cn.wolfcode.trip.base.query.QueryObject;
 import com.github.pagehelper.PageInfo;
 
@@ -23,4 +24,8 @@ public interface ICommentService {
      * @param entry
      */
     public abstract void saveComment(Comment entry);
+
+    PageInfo getCommentByUserId(CommentQueryObject qo);
+
+    PageInfo getPraiseByUserId(CommentQueryObject qo);
 }

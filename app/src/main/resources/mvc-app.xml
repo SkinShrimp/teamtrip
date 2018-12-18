@@ -28,10 +28,6 @@
             <mvc:mapping path="/points/**"/>
             <bean class="cn.wolfcode.trip.app.interceptor.LoginInterceptor"/>
         </mvc:interceptor>
-        <mvc:interceptor>
-            <mvc:mapping path="/strategies/**"/>
-            <bean class="cn.wolfcode.trip.app.interceptor.ForbiddenInterceptor"/>
-        </mvc:interceptor>
     </mvc:interceptors>
 
 </beans>

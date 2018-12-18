@@ -57,4 +57,27 @@ public class CommentController {
         qo.setPageSize(0);
         return commentService.query(qo);
     }
+
+    /**
+     * 查询一个用户的所有评论
+     * @param qo
+     * @return
+     */
+    @GetMapping("/{userId}/comments")
+    public PageInfo getCommentByUserId(CommentQueryObject qo) {
+        qo.setOrderBy("c.createTime desc");
+        return commentService.getCommentByUserId(qo);
+    }
+
+
+    /**
+     * 查询一个用户的所有点赞
+     * @param qo
+     * @return
+     */
+    @GetMapping("/{userId}/praises")
+    public PageInfo getPraiseByUserId(CommentQueryObject qo) {
+        qo.setOrderBy("c.createTime desc");
+        return commentService.getPraiseByUserId(qo);
+    }
 }
